@@ -1,0 +1,62 @@
+<div class="container mt-5">
+  <div class="row">
+    
+    <!-- COLUMNA IZQUIERDA: Perfil de GitHub -->
+    <div class="col-md-4 mb-4">
+      @if (githubData()) {
+        <div class="card shadow-sm text-center">
+          <div class="card-body">
+            <!-- La API de GitHub devuelve la URL de la foto en 'avatar_url' -->
+            <img [src]="githubData().avatar_url" alt="Mi Foto de Perfil" class="rounded-circle mb-3 border border-3" width="150" height="150">
+            
+            <h3 class="card-title fw-bold">{{ githubData().name || githubData().login }}</h3>
+            <p class="text-muted">{{ githubData().bio || 'Estudiante de la Tecnicatura en Programación en UTN.' }}</p>
+            
+            <ul class="list-group list-group-flush text-start mt-3">
+              <li class="list-group-item"><strong>Repositorios Públicos:</strong> {{ githubData().public_repos }}</li>
+              <li class="list-group-item"><strong>Seguidores:</strong> {{ githubData().followers }}</li>
+              <li class="list-group-item"><strong>Ubicación:</strong> {{ githubData().location || 'Argentina' }}</li>
+            </ul>
+          </div>
+        </div>
+      } @else {
+        <!-- Estado de carga mientras esperamos a la API -->
+        <div class="text-center my-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2 text-muted">Cargando perfil desde GitHub...</p>
+        </div>
+      }
+    </div>
+
+    <!-- COLUMNA DERECHA: Explicación del Juego Propio -->
+    <div class="col-md-8">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="card-title text-primary fw-bold mb-3">🎮 Mi Juego: Flash Loan Arbitrage</h2>
+          <hr>
+          
+          <h4 class="fw-semibold mt-4">¿De qué trata?</h4>
+          <p>
+            Es un minijuego de agilidad y reacción rápida que simula la búsqueda de oportunidades MEV (Maximal Extractable Value) en la blockchain. 
+            El jugador observará dos paneles de precios de tokens que suben y bajan de forma caótica.
+          </p>
+
+          <h4 class="fw-semibold mt-4">Reglas del Juego:</h4>
+          <ul>
+            <li>El usuario tiene <strong>30 segundos</strong> de tiempo límite por partida.</li>
+            <li>Debe presionar el botón "¡Ejecutar Arbitraje!" únicamente cuando la diferencia de precio entre ambos exchanges sea mayor al "Costo de Gas" generado aleatoriamente en pantalla.</li>
+            <li>Si ejecuta la acción con pérdida, se le resta 1 vida (comienza con 3 vidas).</li>
+          </ul>
+
+          <h4 class="fw-semibold mt-4">Condiciones de Fin de Partida:</h4>
+          <ul>
+            <li><span class="text-success fw-bold">Victoria:</span> Lograr 5 operaciones rentables antes de que se acabe el tiempo límite.</li>
+            <li><span class="text-danger fw-bold">Derrota:</span> Quedarse sin vidas o que el temporizador llegue a 0 antes de cumplir la meta.</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
