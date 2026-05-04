@@ -1,62 +1,149 @@
 <div class="container mt-5">
-  <div class="row">
-    
-    <!-- COLUMNA IZQUIERDA: Perfil de GitHub -->
-    <div class="col-md-4 mb-4">
-      @if (githubData()) {
-        <div class="card shadow-sm text-center">
-          <div class="card-body">
-            <!-- La API de GitHub devuelve la URL de la foto en 'avatar_url' -->
-            <img [src]="githubData().avatar_url" alt="Mi Foto de Perfil" class="rounded-circle mb-3 border border-3" width="150" height="150">
-            
-            <h3 class="card-title fw-bold">{{ githubData().name || githubData().login }}</h3>
-            <p class="text-muted">{{ githubData().bio || 'Estudiante de la Tecnicatura en Programación en UTN.' }}</p>
-            
-            <ul class="list-group list-group-flush text-start mt-3">
-              <li class="list-group-item"><strong>Repositorios Públicos:</strong> {{ githubData().public_repos }}</li>
-              <li class="list-group-item"><strong>Seguidores:</strong> {{ githubData().followers }}</li>
-              <li class="list-group-item"><strong>Ubicación:</strong> {{ githubData().location || 'Argentina' }}</li>
-            </ul>
+  
+  <!-- SECCIÓN 1: PERFIL DE GITHUB (Dashboard Horizontal) -->
+  @if (githubService.profileData()) {
+    <div class="card custom-card shadow border-0 mb-4 overflow-hidden">
+      <div class="row g-0 align-items-center">
+        
+        <!-- Avatar Izquierda -->
+        <div class="col-md-3 text-center p-4 bg-black bg-opacity-25 h-100 d-flex align-items-center justify-content-center">
+          <img [src]="githubService.profileData().avatar_url" 
+               alt="Foto de perfil de GitHub" 
+               class="rounded-circle border border-3 shadow-sm" 
+               width="120" height="120" 
+               style="object-fit: cover; border-color: var(--accent-cyan) !important;">
+        </div>
+        
+        <!-- Info y Bio Centro -->
+        <div class="col-md-6 p-4">
+          <h3 class="fw-bold text-primary mb-1">
+            {{ githubService.profileData().name || githubService.profileData().login }}
+          </h3>
+          <p class="text-secondary small fw-bold mb-2">
+            <i class="bi bi-geo-alt-fill me-1"></i>{{ githubService.profileData().location || 'Argentina' }}
+          </p>
+          <p class="text-light opacity-75 small lh-sm mb-0">
+            Estudiante de la Tecnicatura en Programación y Sistemas, con conocimientos en Python, Java, MySQL, HTML, CSS y JavaScript y formación en C++ de Ing. Electrónica.
+          </p>
+        </div>
+        
+        <!-- Estadísticas Derecha -->
+        <div class="col-md-3 p-4 border-start border-secondary border-opacity-25">
+          <div class="d-flex flex-column justify-content-center h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-light opacity-75 small"><i class="bi bi-person me-2"></i>Usuario</span>
+              <span class="fw-bold text-primary">{{ githubService.profileData().login }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-light opacity-75 small"><i class="bi bi-folder me-2"></i>Repos</span>
+              <span class="badge bg-primary rounded-pill px-3">{{ githubService.profileData().public_repos }}</span>
+            </div>
           </div>
         </div>
-      } @else {
-        <!-- Estado de carga mientras esperamos a la API -->
-        <div class="text-center my-5">
-          <div class="spinner-border text-primary" role="status"></div>
-          <p class="mt-2 text-muted">Cargando perfil desde GitHub...</p>
-        </div>
-      }
-    </div>
 
-    <!-- COLUMNA DERECHA: Explicación del Juego Propio -->
-    <div class="col-md-8">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h2 class="card-title text-primary fw-bold mb-3">🎮 Mi Juego: Flash Loan Arbitrage</h2>
-          <hr>
-          
-          <h4 class="fw-semibold mt-4">¿De qué trata?</h4>
-          <p>
-            Es un minijuego de agilidad y reacción rápida que simula la búsqueda de oportunidades MEV (Maximal Extractable Value) en la blockchain. 
-            El jugador observará dos paneles de precios de tokens que suben y bajan de forma caótica.
-          </p>
-
-          <h4 class="fw-semibold mt-4">Reglas del Juego:</h4>
-          <ul>
-            <li>El usuario tiene <strong>30 segundos</strong> de tiempo límite por partida.</li>
-            <li>Debe presionar el botón "¡Ejecutar Arbitraje!" únicamente cuando la diferencia de precio entre ambos exchanges sea mayor al "Costo de Gas" generado aleatoriamente en pantalla.</li>
-            <li>Si ejecuta la acción con pérdida, se le resta 1 vida (comienza con 3 vidas).</li>
-          </ul>
-
-          <h4 class="fw-semibold mt-4">Condiciones de Fin de Partida:</h4>
-          <ul>
-            <li><span class="text-success fw-bold">Victoria:</span> Lograr 5 operaciones rentables antes de que se acabe el tiempo límite.</li>
-            <li><span class="text-danger fw-bold">Derrota:</span> Quedarse sin vidas o que el temporizador llegue a 0 antes de cumplir la meta.</li>
-          </ul>
-
-        </div>
       </div>
     </div>
+  } @else if (githubService.loading()) {
+    <div class="card custom-card shadow mb-4 p-4 text-center">
+      <div class="spinner-border text-primary mx-auto mb-2" role="status"></div>
+      <p class="text-muted mb-0 fw-bold">Conectando con GitHub...</p>
+    </div>
+  } @else if (githubService.error()) {
+    <div class="card custom-card shadow mb-4 p-4 text-center border-danger">
+      <p class="text-danger fw-bold mb-0">⚠ Error al cargar el perfil de GitHub.</p>
+    </div>
+  }
 
+  <!-- SECCIÓN 2: MANUAL RÁPIDO DEL JUEGO (Game Guide) -->
+  <div class="card custom-card shadow border-0 mb-5">
+    <div class="card-body p-4 p-lg-5">
+      
+      <!-- Encabezado del Manual -->
+      <div class="d-flex flex-wrap align-items-center justify-content-between border-bottom border-secondary border-opacity-25 pb-3 mb-4">
+        <h2 class="card-title fw-bold fun-title fs-2 mb-0">
+          <i class="bi bi-bicycle me-2"></i>Bici Rush
+        </h2>
+        <span class="badge bg-secondary text-dark fs-6 rounded-pill px-3 py-2 mt-2 mt-md-0 shadow-sm">
+          <i class="bi bi-journal-check me-1"></i> Guía de juego
+        </span>
+      </div>
+
+      <!-- Breve introducción -->
+      <p class="text-light opacity-75 fs-6 mb-5 text-center mx-auto" style="max-width: 750px;">
+        Prepárate para un descenso vertiginoso. Tu objetivo es dominar el sendero esquivando la naturaleza a altas velocidades. <strong>Reflejos rápidos son tu única ventaja.</strong>
+      </p>
+
+      <!-- Grilla Visual (El Manual) -->
+      <div class="row g-4 align-items-stretch">
+        
+        <!-- Columna 1: Controles (Visuales) -->
+        <div class="col-md-4">
+          <div class="p-4 bg-dark bg-opacity-25 rounded-4 h-100 border border-secondary border-opacity-25">
+            <h5 class="text-secondary fw-bold mb-4"><i class="bi bi-dpad-fill me-2"></i>Controles</h5>
+            
+            <!-- Tecla Espacio Visual (Efecto Tecla Mecánica 3D) -->
+            <div class="d-flex align-items-center mb-4">
+              <div class="bg-black border border-secondary border-opacity-50 rounded-3 text-light fw-bold me-3 shadow-lg d-flex justify-content-center align-items-center" 
+                   style="min-width: 130px; height: 45px; border-bottom: 4px solid #6c757d !important;">
+                <!-- Usamos letter-spacing para que el texto "ESPACIO" ocupe la tecla a lo ancho -->
+                <span style="letter-spacing: 3px; font-size: 0.85rem;">ESPACIO</span>
+              </div>
+              <span class="text-light opacity-75 small lh-sm">Salto principal para esquivar obstáculos.</span>
+            </div>
+            
+            <!-- Click Visual (Efecto Tecla Mecánica 3D con ícono de Mouse) -->
+            <div class="d-flex align-items-center">
+              <div class="bg-black border border-secondary border-opacity-50 rounded-3 text-light fw-bold me-3 shadow-lg d-flex justify-content-center align-items-center" 
+                   style="min-width: 130px; height: 45px; border-bottom: 4px solid #6c757d !important;">
+                <!-- Ícono de un ratón moderno (bi-mouse2-fill) resaltado en color -->
+                <i class="bi bi-mouse2-fill text-primary fs-5 me-2"></i>
+                <span style="letter-spacing: 2px; font-size: 0.85rem;">CLIC</span>
+              </div>
+              <span class="text-light opacity-75 small lh-sm">Alternativa para táctil o ratón.</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Columna 2: Peligros y Métricas (Info Técnica) -->
+        <div class="col-md-4">
+          <div class="p-4 bg-dark bg-opacity-25 rounded-4 h-100 border border-primary border-opacity-25 d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="text-primary fw-bold mb-3"><i class="bi bi-exclamation-triangle-fill me-2"></i>El Sendero</h5>
+              <p class="small text-light opacity-75 mb-0">
+                La velocidad aumenta progresivamente. El efecto <em>parallax</em> del fondo generará la sensación de caída libre.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-top border-primary border-opacity-25">
+              <h6 class="text-light fw-bold mb-2 small"><i class="bi bi-database-fill text-secondary me-2"></i>Métricas Registradas:</h6>
+              <p class="small text-light opacity-75 mb-1"><i class="bi bi-dot text-primary"></i> Puntaje (Distancia recorrida)</p>
+              <p class="small text-light opacity-75 mb-0"><i class="bi bi-dot text-primary"></i> Resultado (Win/Lose)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna 3: Condiciones (Win/Loss Apilados) -->
+        <div class="col-md-4">
+          <div class="d-flex flex-column gap-3 h-100">
+            
+            <!-- Tarjeta Victoria -->
+            <div class="p-3 bg-white bg-opacity-10 rounded-4 border-start border-success border-5 flex-grow-1 d-flex flex-column justify-content-center shadow-sm transition-all hover-scale">
+              <h6 class="text-success fw-bold mb-1 fs-5">VICTORIA 🏆</h6>
+              <p class="small text-light opacity-75 mb-0">Llegar a la meta alcanzando los <strong>2000 metros</strong> de recorrido sin caer.</p>
+            </div>
+            
+            <!-- Tarjeta Derrota -->
+            <div class="p-3 bg-white bg-opacity-10 rounded-4 border-start border-danger border-5 flex-grow-1 d-flex flex-column justify-content-center shadow-sm">
+              <h6 class="text-danger fw-bold mb-1 fs-5">DERROTA ❌</h6>
+              <p class="small text-light opacity-75 mb-0">Cualquier impacto directo con un obstáculo termina la partida al instante.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
   </div>
+
 </div>

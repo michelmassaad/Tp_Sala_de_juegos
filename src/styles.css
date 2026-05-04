@@ -1,1 +1,86 @@
-/* You can add global styles to this file, and also import other style files */
+/* Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap');
+
+:root {
+  /* Paleta Dark Arcade (Morado MUY oscuro y elegante) */
+  --bg-base: #0f0518;       /* Morado casi negro */
+  --bg-card: #1a0f2e;       /* Morado profundo para tarjetas */
+  --accent-pink: #ff2e93;   
+  --accent-cyan: #08f7fe;   
+  --accent-yellow: #f5d300; 
+  --text-main: #ffffff;
+  --text-muted: #b8a6d9;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  /* Patrón de puntitos muy sutil de fondo */
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 2px, transparent 2px);
+  background-size: 30px 30px;
+}
+
+/* === TIPOGRAFÍA === */
+.fun-title {
+  font-family: 'Righteous', cursive;
+  letter-spacing: 1px;
+  color: var(--accent-yellow) !important;
+  /* Sombra limpia y oscura para que resalte sobre el fondo */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
+}
+
+.fun-title i {
+  color: var(--accent-pink);
+}
+
+/* === NAVBAR === */
+.custom-navbar {
+  background-color: rgba(15, 5, 24, 0.95) !important;
+  border-bottom: 3px solid var(--accent-pink); 
+}
+
+.custom-navbar .nav-link {
+  color: var(--text-muted) !important;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.custom-navbar .nav-link:hover, 
+.custom-navbar .nav-link.active {
+  color: var(--accent-cyan) !important;
+}
+
+/* === TARJETAS (Animación suave restaurada) === */
+.custom-card {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main);
+  border-radius: 16px; 
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
+}
+
+/* Hover: se eleva suavemente e ilumina el borde */
+.custom-card:hover {
+  transform: translateY(-6px); 
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(8, 247, 254, 0.15) !important;
+}
+
+/* === SOBREESCRITURAS DE BOOTSTRAP === */
+.text-primary { color: var(--accent-yellow) !important; }
+.text-secondary { color: var(--accent-cyan) !important; }
+.bg-light { background-color: rgba(255, 255, 255, 0.95) !important; color: #0f0518 !important; }
+.badge.bg-primary { background-color: var(--accent-pink) !important; color: white !important;}
+
+.list-group-item {
+  background-color: transparent !important;
+  color: var(--text-main) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+hr.text-muted { border-color: rgba(255, 255, 255, 0.1); opacity: 1; }
