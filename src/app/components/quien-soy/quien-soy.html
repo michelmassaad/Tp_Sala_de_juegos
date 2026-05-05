@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
   
   <!-- SECCIÓN 1: PERFIL DE GITHUB (Dashboard Horizontal) -->
   @if (githubService.profileData()) {
@@ -6,16 +6,14 @@
       <div class="row g-0 align-items-center">
         
         <!-- Avatar Izquierda -->
-        <div class="col-md-3 text-center p-4 bg-black bg-opacity-25 h-100 d-flex align-items-center justify-content-center">
+        <div class="col-12 col-lg-3 text-center p-4 bg-black bg-opacity-25 h-100 d-flex align-items-center justify-content-center">
           <img [src]="githubService.profileData().avatar_url" 
                alt="Foto de perfil de GitHub" 
-               class="rounded-circle border border-3 shadow-sm" 
-               width="120" height="120" 
-               style="object-fit: cover; border-color: var(--accent-cyan) !important;">
+               class="rounded-circle border border-3 shadow-sm profile-avatar">
         </div>
         
         <!-- Info y Bio Centro -->
-        <div class="col-md-6 p-4">
+        <div class="col-12 col-lg-6 p-4 text-center text-lg-start">
           <h3 class="fw-bold text-primary mb-1">
             {{ githubService.profileData().name || githubService.profileData().login }}
           </h3>
@@ -28,11 +26,13 @@
         </div>
         
         <!-- Estadísticas Derecha -->
-        <div class="col-md-3 p-4 border-start border-secondary border-opacity-25">
+        <div class="col-12 col-lg-3 p-4 border-lg-start border-secondary border-opacity-25 mt-3 mt-lg-0">
           <div class="d-flex flex-column justify-content-center h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <span class="text-light opacity-75 small"><i class="bi bi-person me-2"></i>Usuario</span>
-              <span class="fw-bold text-primary">{{ githubService.profileData().login }}</span>
+              <span class="fw-bold text-primary text-truncate ms-2 username-truncate" title="{{ githubService.profileData().login }}">
+                {{ githubService.profileData().login }}
+              </span>
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <span class="text-light opacity-75 small"><i class="bi bi-folder me-2"></i>Repos</span>
@@ -68,36 +68,32 @@
         </span>
       </div>
 
-      <!-- Breve introducción -->
-      <p class="text-light opacity-75 fs-6 mb-5 text-center mx-auto" style="max-width: 750px;">
-        Prepárate para un descenso vertiginoso. Tu objetivo es dominar el sendero esquivando la naturaleza a altas velocidades. <strong>Reflejos rápidos son tu única ventaja.</strong>
+      <!-- Breve introducción (Nueva redacción) -->
+      <p class="text-light opacity-75 fs-6 mb-5 text-center mx-auto intro-text">
+        Bici Rush pone a prueba tu capacidad de respuesta motriz. Siente la adrenalina del descenso, esquiva los obstáculos del terreno y rompe tus propios récords en este desafío de pura concentración.
       </p>
 
       <!-- Grilla Visual (El Manual) -->
       <div class="row g-4 align-items-stretch">
         
-        <!-- Columna 1: Controles (Visuales) -->
-        <div class="col-md-4">
+        <!-- Columna 1: Controles -->
+        <div class="col-12 col-lg-4">
           <div class="p-4 bg-dark bg-opacity-25 rounded-4 h-100 border border-secondary border-opacity-25">
             <h5 class="text-secondary fw-bold mb-4"><i class="bi bi-dpad-fill me-2"></i>Controles</h5>
             
-            <!-- Tecla Espacio Visual (Efecto Tecla Mecánica 3D) -->
+            <!-- Tecla Espacio Visual -->
             <div class="d-flex align-items-center mb-4">
-              <div class="bg-black border border-secondary border-opacity-50 rounded-3 text-light fw-bold me-3 shadow-lg d-flex justify-content-center align-items-center" 
-                   style="min-width: 130px; height: 45px; border-bottom: 4px solid #6c757d !important;">
-                <!-- Usamos letter-spacing para que el texto "ESPACIO" ocupe la tecla a lo ancho -->
-                <span style="letter-spacing: 3px; font-size: 0.85rem;">ESPACIO</span>
+              <div class="key-visual bg-black border border-secondary border-opacity-50 rounded-3 text-light fw-bold me-3 shadow-lg d-flex justify-content-center align-items-center">
+                <span class="key-text">ESPACIO</span>
               </div>
               <span class="text-light opacity-75 small lh-sm">Salto principal para esquivar obstáculos.</span>
             </div>
             
-            <!-- Click Visual (Efecto Tecla Mecánica 3D con ícono de Mouse) -->
+            <!-- Click Visual -->
             <div class="d-flex align-items-center">
-              <div class="bg-black border border-secondary border-opacity-50 rounded-3 text-light fw-bold me-3 shadow-lg d-flex justify-content-center align-items-center" 
-                   style="min-width: 130px; height: 45px; border-bottom: 4px solid #6c757d !important;">
-                <!-- Ícono de un ratón moderno (bi-mouse2-fill) resaltado en color -->
-                <i class="bi bi-mouse2-fill text-primary fs-5 me-2"></i>
-                <span style="letter-spacing: 2px; font-size: 0.85rem;">CLIC</span>
+              <div class="key-visual bg-black border border-secondary border-opacity-50 rounded-3 text-light fw-bold me-3 shadow-lg d-flex justify-content-center align-items-center">
+                <i class="bi bi-mouse2-fill text-white fs-5 me-2"></i>
+                <span class="key-text">CLIC</span>
               </div>
               <span class="text-light opacity-75 small lh-sm">Alternativa para táctil o ratón.</span>
             </div>
@@ -105,37 +101,37 @@
           </div>
         </div>
 
-        <!-- Columna 2: Peligros y Métricas (Info Técnica) -->
-        <div class="col-md-4">
+        <!-- Columna 2: El Desafío (Nueva redacción) -->
+        <div class="col-12 col-lg-4">
           <div class="p-4 bg-dark bg-opacity-25 rounded-4 h-100 border border-primary border-opacity-25 d-flex flex-column justify-content-between">
             <div>
-              <h5 class="text-primary fw-bold mb-3"><i class="bi bi-exclamation-triangle-fill me-2"></i>El Sendero</h5>
+              <h5 class="text-primary fw-bold mb-3"><i class="bi bi-sign-turn-right-fill me-2"></i>El Desafío</h5>
               <p class="small text-light opacity-75 mb-0">
-                La velocidad aumenta progresivamente. El efecto <em>parallax</em> del fondo generará la sensación de caída libre.
+                El recorrido escala en dificultad cada segundo que pasas sobre la bicicleta. Mantén la vista al frente y calcula tus saltos con precisión milimétrica.
               </p>
             </div>
             <div class="mt-4 pt-3 border-top border-primary border-opacity-25">
-              <h6 class="text-light fw-bold mb-2 small"><i class="bi bi-database-fill text-secondary me-2"></i>Métricas Registradas:</h6>
-              <p class="small text-light opacity-75 mb-1"><i class="bi bi-dot text-primary"></i> Puntaje (Distancia recorrida)</p>
-              <p class="small text-light opacity-75 mb-0"><i class="bi bi-dot text-primary"></i> Resultado (Win/Lose)</p>
+              <h6 class="text-light fw-bold mb-2 small"><i class="bi bi-controller text-secondary me-2"></i>Registro de Partida:</h6>
+              <p class="small text-light opacity-75 mb-1"><i class="bi bi-dot text-primary"></i> Metros conquistados (Puntaje)</p>
+              <p class="small text-light opacity-75 mb-0"><i class="bi bi-dot text-primary"></i> Resultado (Completado / Fallido)</p>
             </div>
           </div>
         </div>
 
-        <!-- Columna 3: Condiciones (Win/Loss Apilados) -->
-        <div class="col-md-4">
+        <!-- Columna 3: Condiciones Win/Loss (Nueva redacción) -->
+        <div class="col-12 col-lg-4">
           <div class="d-flex flex-column gap-3 h-100">
             
             <!-- Tarjeta Victoria -->
             <div class="p-3 bg-white bg-opacity-10 rounded-4 border-start border-success border-5 flex-grow-1 d-flex flex-column justify-content-center shadow-sm transition-all hover-scale">
               <h6 class="text-success fw-bold mb-1 fs-5">VICTORIA 🏆</h6>
-              <p class="small text-light opacity-75 mb-0">Llegar a la meta alcanzando los <strong>2000 metros</strong> de recorrido sin caer.</p>
+              <p class="small text-light opacity-75 mb-0">Sobrevive el tiempo suficiente para completar los <strong>2000 metros</strong> de recorrido intacto.</p>
             </div>
             
             <!-- Tarjeta Derrota -->
-            <div class="p-3 bg-white bg-opacity-10 rounded-4 border-start border-danger border-5 flex-grow-1 d-flex flex-column justify-content-center shadow-sm">
+            <div class="p-3 bg-white bg-opacity-10 rounded-4 border-start border-danger border-5 flex-grow-1 d-flex flex-column justify-content-center shadow-sm transition-all hover-scale">
               <h6 class="text-danger fw-bold mb-1 fs-5">DERROTA ❌</h6>
-              <p class="small text-light opacity-75 mb-0">Cualquier impacto directo con un obstáculo termina la partida al instante.</p>
+              <p class="small text-light opacity-75 mb-0">Perder el equilibrio o chocar con un obstáculo finaliza tu carrera inmediatamente.</p>
             </div>
 
           </div>

@@ -2,14 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap');
 
 :root {
-  /* Paleta Dark Arcade (Morado MUY oscuro y elegante) */
-  --bg-base: #0f0518;       /* Morado casi negro */
-  --bg-card: #1a0f2e;       /* Morado profundo para tarjetas */
-  --accent-pink: #ff2e93;   
-  --accent-cyan: #08f7fe;   
-  --accent-yellow: #f5d300; 
-  --text-main: #ffffff;
-  --text-muted: #b8a6d9;
+  --bg-base: #0e1117;
+  --bg-card: #161b27;
+  --bg-nav: rgba(14,17,23,0.92);
+  --text-main: #e2e8f0;
+  --text-muted: #b6c2d4;
+  --black: #000000;
+  --accent-primary: #6ee7f7;
+  --accent-secondary: #a78bfa;
+  --accent-logo: #34d399;
+  --accent-primary-rgb: 110,231,247;
+  --white-rgb: 255,255,255;
+  --black-rgb: 0,0,0;
 }
 
 body {
@@ -18,8 +22,8 @@ body {
   font-family: 'Nunito', sans-serif;
   margin: 0;
   min-height: 100vh;
-  /* Patrón de puntitos muy sutil de fondo */
-  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 2px, transparent 2px);
+  /* Patrón alimentado por variable blanca con 2% de opacidad */
+  background-image: radial-gradient(rgba(var(--white-rgb), 0.02) 2px, transparent 2px);
   background-size: 30px 30px;
 }
 
@@ -27,19 +31,49 @@ body {
 .fun-title {
   font-family: 'Righteous', cursive;
   letter-spacing: 1px;
-  color: var(--accent-yellow) !important;
-  /* Sombra limpia y oscura para que resalte sobre el fondo */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
+  color: var(--accent-logo) !important; 
+  /* Sombra alimentada por variable negra */
+  text-shadow: 2px 2px 4px rgba(var(--black-rgb), 0.8); 
 }
 
-.fun-title i {
-  color: var(--accent-pink);
+/* === SOBREESCRITURAS CLAVES DE BOOTSTRAP === */
+.text-primary { color: var(--accent-primary) !important; } 
+.text-secondary { color: var(--text-muted) !important; }   
+
+.bg-primary { background-color: var(--accent-primary) !important; color: var(--black) !important; }
+
+.badge.bg-secondary { 
+  background-color: rgba(var(--white-rgb), 0.05) !important; 
+  border: 1px solid rgba(var(--white-rgb), 0.1); 
+  color: var(--text-muted) !important; 
+}
+
+hr.text-muted { border-color: rgba(var(--white-rgb), 0.1); opacity: 1; }
+
+/* === TARJETAS === */
+.custom-card {
+  background-color: var(--bg-card) !important;
+  border-radius: 16px; 
+  border: 1px solid rgba(var(--white-rgb), 0.03) !important; 
+  box-shadow: 0 8px 24px rgba(var(--black-rgb), 0.4) !important; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
+}
+
+/* El toque interactivo */
+.custom-card:hover {
+  transform: translateY(-4px); 
+  border-color: var(--accent-primary) !important;
+  /* La sombra oscura + el brillo de color alimentado por el RGB del acento */
+  box-shadow: 0 10px 25px rgba(var(--black-rgb), 0.5), 0 0 15px rgba(var(--accent-primary-rgb), 0.10) !important;
 }
 
 /* === NAVBAR === */
 .custom-navbar {
-  background-color: rgba(15, 5, 24, 0.95) !important;
-  border-bottom: 3px solid var(--accent-pink); 
+  background-color: var(--bg-nav) !important; 
+  border-bottom: 3px solid var(--text-muted) !important; 
+  /* Resplandor alimentado por el RGB del acento principal */
+  box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.15) !important;
+  backdrop-filter: blur(10px); 
 }
 
 .custom-navbar .nav-link {
@@ -51,36 +85,7 @@ body {
 
 .custom-navbar .nav-link:hover, 
 .custom-navbar .nav-link.active {
-  color: var(--accent-cyan) !important;
+  color: var(--accent-primary) !important;
+  /* Brillo del texto alimentado por el RGB del acento */
+  text-shadow: 0 0 8px rgba(var(--accent-primary-rgb), 0.4); 
 }
-
-/* === TARJETAS (Animación suave restaurada) === */
-.custom-card {
-  background-color: var(--bg-card) !important;
-  color: var(--text-main);
-  border-radius: 16px; 
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important; 
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
-}
-
-/* Hover: se eleva suavemente e ilumina el borde */
-.custom-card:hover {
-  transform: translateY(-6px); 
-  border-color: var(--accent-cyan) !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(8, 247, 254, 0.15) !important;
-}
-
-/* === SOBREESCRITURAS DE BOOTSTRAP === */
-.text-primary { color: var(--accent-yellow) !important; }
-.text-secondary { color: var(--accent-cyan) !important; }
-.bg-light { background-color: rgba(255, 255, 255, 0.95) !important; color: #0f0518 !important; }
-.badge.bg-primary { background-color: var(--accent-pink) !important; color: white !important;}
-
-.list-group-item {
-  background-color: transparent !important;
-  color: var(--text-main) !important;
-  border-color: rgba(255, 255, 255, 0.05) !important;
-}
-
-hr.text-muted { border-color: rgba(255, 255, 255, 0.1); opacity: 1; }
