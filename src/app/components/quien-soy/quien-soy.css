@@ -1,0 +1,44 @@
+/* ========================================================
+   ESTILOS ESPECÍFICOS DEL COMPONENTE "QUIÉN SOY"
+   ======================================================== */
+
+/* Avatar de GitHub */
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  /* Se adapta automáticamente al color de acento que elijas en el styles.css global */
+  border-color: var(--accent-primary) !important; 
+}
+
+/* Limita el ancho del usuario para que funcione el text-truncate en celulares */
+.username-truncate {
+  max-width: 130px;
+}
+
+/* Limita el ancho del texto de introducción para facilitar la lectura */
+.intro-text {
+  max-width: 750px;
+}
+
+/* Estructura base de las teclas 3D de los controles */
+.key-visual {
+  min-width: 130px;
+  height: 45px;
+  border-bottom: 4px solid #6c757d !important; /* Borde grueso para dar efecto 3D */
+}
+
+/* Formato del texto dentro de las teclas */
+.key-text {
+  letter-spacing: 3px;
+  font-size: 0.85rem;
+}
+
+/* Efecto hover suave para las tarjetas de victoria/derrota */
+.hover-scale {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
