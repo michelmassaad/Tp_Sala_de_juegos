@@ -1,1 +1,86 @@
-<p>login works!</p>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+
+      <!-- Dejamos SOLO tu custom-card, sin colores de Bootstrap que estorben -->
+      <div class="card custom-card p-4 p-sm-5">
+        <div class="card-body p-0">
+
+          <!-- Título (fun-title ya trae el color accent-logo desde tu styles.css) -->
+          <h2 class="fun-title text-center mb-1 fs-2">Iniciar Sesión</h2>
+          <p class="text-center text-secondary small mb-4">Ingresá a la Sala de Juegos</p>
+
+          <form (ngSubmit)="onSubmit()">
+
+            <!-- Input Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label text-secondary small mb-1">Email</label>
+              <input 
+                id="email" 
+                type="email" 
+                name="email" 
+                [(ngModel)]="email" 
+                required
+                class="form-control custom-input">
+            </div>
+
+            <!-- Input Contraseña -->
+            <div class="mb-4">
+              <label for="password" class="form-label text-secondary small mb-1">Contraseña</label>
+              <input 
+                id="password" 
+                type="password" 
+                name="password" 
+                [(ngModel)]="password" 
+                autocomplete="off"
+                required
+                class="form-control custom-input">
+            </div>
+
+            <!-- Alerta de Error (Estilizada para que no desentone) -->
+            @if (errorMensaje()) {
+              <div class="alert custom-alert py-2 mb-4 small">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMensaje() }}
+              </div>
+            }
+
+            <!-- Botón Ingresar -->
+            <button type="submit" class="btn btn-accent w-100 fw-bold py-2" [disabled]="loading()">
+              @if (loading()) {
+                <span class="spinner-border spinner-border-sm me-2"></span> Ingresando...
+              } @else {
+                <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
+              }
+            </button>
+
+          </form>
+
+          <!-- Separador -->
+          <hr class="text-muted my-4">
+
+          <!-- Accesos Rápidos -->
+          <p class="text-secondary small text-center mb-3">Acceso rápido para pruebas:</p>
+          <div class="d-flex gap-2 flex-wrap justify-content-center">
+            @for (u of usuariosPrueba; track u.email) {
+              <button 
+                type="button" 
+                class="btn btn-custom-outline btn-sm" 
+                (click)="loginRapido(u.email, u.password)" 
+                [disabled]="loading()">
+                <i class="bi bi-person-fill me-1"></i>{{ u.label }}
+              </button>
+            }
+          </div>
+
+          <!-- Link a registro -->
+          <p class="text-center text-secondary small mt-4 mb-0">
+            ¿No tenés cuenta?
+            <a routerLink="/registro" class="text-accent fw-bold text-decoration-none">Registrate</a>
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
