@@ -15,41 +15,46 @@
             <!-- Input Email -->
             <div class="mb-3">
               <label for="email" class="form-label text-secondary small mb-1">Email</label>
-              <input 
-                id="email" 
-                type="email" 
-                name="email" 
-                [(ngModel)]="email" 
-                required
-                class="form-control custom-input">
+              <input id="email" type="email" name="email" [(ngModel)]="email" 
+                class="form-control custom-input" required>
             </div>
 
             <!-- Input Contraseña -->
             <div class="mb-4">
               <label for="password" class="form-label text-secondary small mb-1">Contraseña</label>
-              <input 
-                id="password" 
-                type="password" 
-                name="password" 
-                [(ngModel)]="password" 
-                autocomplete="off"
-                required
-                class="form-control custom-input">
+
+              <div class="password-wrapper">
+
+                <input id="password" [type]="mostrarPassword() ? 'text' : 'password'" name="password" autocomplete="off"
+                  [(ngModel)]="password" required class="form-control custom-input pe-5">
+
+                <button type="button" class="toggle-password-btn" (click)="habilitarPassword()" tabindex="-1">
+                  <i class="bi" [ngClass]="mostrarPassword() ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+                </button>
+
+              </div>
             </div>
 
             <!-- Alerta de Error (Estilizada para que no desentone) -->
             @if (errorMensaje()) {
-              <div class="alert custom-alert py-2 mb-4 small">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMensaje() }}
-              </div>
+            <div class="alert custom-alert py-2 mb-4 small">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMensaje() }}
+            </div>
+            }
+
+            <!-- Alerta de Éxito -->
+            @if (mensajeExito()) {
+            <div class="alert custom-success-alert py-2 mb-4 small">
+                <i class="bi bi-check-circle-fill me-2 fs-5"></i>{{ mensajeExito() }}
+            </div>
             }
 
             <!-- Botón Ingresar -->
             <button type="submit" class="btn btn-accent w-100 fw-bold py-2" [disabled]="loading()">
               @if (loading()) {
-                <span class="spinner-border spinner-border-sm me-2"></span> Ingresando...
+              <span class="spinner-border spinner-border-sm me-2"></span> Ingresando...
               } @else {
-                <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
+              <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
               }
             </button>
 
@@ -62,13 +67,10 @@
           <p class="text-secondary small text-center mb-3">Acceso rápido para pruebas:</p>
           <div class="d-flex gap-2 flex-wrap justify-content-center">
             @for (u of usuariosPrueba; track u.email) {
-              <button 
-                type="button" 
-                class="btn btn-custom-outline btn-sm" 
-                (click)="loginRapido(u.email, u.password)" 
-                [disabled]="loading()">
-                <i class="bi bi-person-fill me-1"></i>{{ u.label }}
-              </button>
+            <button type="button" class="btn btn-custom-outline btn-sm" (click)="loginRapido(u.email, u.password)"
+              [disabled]="loading()">
+              <i class="bi bi-person-fill me-1"></i>{{ u.label }}
+            </button>
             }
           </div>
 

@@ -1,1 +1,102 @@
-<p>registro works!</p>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-5">
+
+            <div class="card custom-card p-4 p-sm-5">
+                <div class="card-body p-0">
+
+                    <!-- Título -->
+                    <h2 class="fun-title text-center mb-1 fs-2">Crea tu cuenta</h2>
+                    <p class="text-center text-secondary small mb-4">Regístrate en la Sala de Juegos</p>
+
+                    <!-- Formulario de Registro -->
+                    <form (ngSubmit)="onSubmit()">
+
+                        <!-- Campos de Nombre y Apellido -->
+                        <div class="row">
+                            <div class="col-12 col-sm-6 mb-3">
+                                <label for="nombre" class="form-label text-secondary small mb-1">Nombre</label>
+                                <input id="nombre" type="text" name="nombre" [(ngModel)]="nombre" required
+                                    class="form-control custom-input">
+                            </div>
+
+                            <div class="col-12 col-sm-6 mb-3">
+                                <label for="apellido" class="form-label text-secondary small mb-1">Apellido</label>
+                                <input id="apellido" type="text" name="apellido" [(ngModel)]="apellido" required
+                                    class="form-control custom-input">
+                            </div>
+                        </div>
+
+                        <!-- Campo de Edad -->
+                        <div class="mb-3">
+                            <label for="edad" class="form-label text-secondary small mb-1">Edad</label>
+                            <input id="edad" autocomplete="off" type="number" name="edad" [(ngModel)]="edad" required
+                                min="1" class="form-control custom-input">
+                        </div>
+
+                        <!-- Campo de Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-secondary small mb-1">Email</label>
+                            <input id="email" type="email" name="email" [(ngModel)]="email" required
+                                class="form-control custom-input">
+                        </div>
+
+                        <!-- Campo de Contraseña -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label text-secondary small mb-1">Contraseña</label>
+
+                            <div class="password-wrapper">
+
+                                <input id="password" [type]="mostrarPassword() ? 'text' : 'password'" name="password"
+                                autocomplete="off" [(ngModel)]="password" required
+                                class="form-control custom-input pe-5">
+                                
+                                <!-- Botón ojito para mostrar la contraseña  -->
+                                <button type="button" class="toggle-password-btn" (click)="habilitarPassword()"
+                                    tabindex="-1">
+                                    <i class="bi"
+                                        [ngClass]="mostrarPassword() ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                        <!-- Alerta de Error -->
+                        @if (errorMensaje()) {
+                        <div class="alert custom-alert py-2 mb-4 small">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMensaje() }}
+                        </div>
+                        }
+                        <!-- Alerta de Éxito -->
+                        @if (mensajeExito()) {
+                        <div class="alert custom-success-alert py-2 mb-4 small">
+                            <i class="bi bi-check-circle-fill me-2 fs-5"></i>{{ mensajeExito() }}
+                        </div>
+                        }
+
+                        <!-- Botón de Registro -->
+                        <button type="submit" class="btn btn-accent w-100 fw-bold py-2" [disabled]="loading()">
+                            @if (loading()) {
+                            <span class="spinner-border spinner-border-sm me-2"></span> Registrando...
+                            } @else {
+                            <i class="bi bi-person-plus-fill me-2"></i>Registrarse
+                            }
+                        </button>
+                    </form>
+
+                    <!-- Separador horizontal -->
+
+                    <hr class="text-muted my-4">
+
+                    <!-- Link a login -->
+                    <p class="text-center text-secondary small mb-0">
+                        ¿Ya tenés cuenta?
+                        <a routerLink="/login" class="text-accent fw-bold text-decoration-none">Ingresar</a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

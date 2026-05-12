@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { timer } from 'rxjs/internal/observable/timer';
+import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +14,7 @@ import { AuthService } from '../../services/auth';
   styleUrl: './login.css',
 })
 export class LoginComponent {
+  private router = inject(Router);
   // Inyectamos nuestro servicio
   private authService = inject(AuthService);
 
@@ -21,6 +24,12 @@ export class LoginComponent {
   email = '';
   password = '';
 
+  // Ojito de password oculto para mostrar la contraseña en el formulario
+  mostrarPassword = signal(false);
+  habilitarPassword() {
+    this.mostrarPassword.set(!this.mostrarPassword());
+  }
+
   // ==========================================
   // ESTADO DE LA INTERFAZ (Signals)
   // ==========================================
@@ -28,6 +37,8 @@ export class LoginComponent {
   loading = signal(false);
   // Controla el mensaje de error rojo que le mostramos al usuario
   errorMensaje = signal('');
+  // Controla el mensaje de éxito verde que le mostramos al usuario
+  mensajeExito = signal('');
 
   // ==========================================
   // REQUISITO DEL SPRINT 2: Accesos Rápidos
@@ -58,12 +69,20 @@ export class LoginComponent {
     const success = await this.authService.login(this.email, this.password);
     
     // 4. ¿Qué hacemos con la respuesta?
-    if (!success) {
+    if (success) {
+      this.loading.set(false);
+      this.mensajeExito.set('Inicio de sesión exitoso! Bienvenido a tu Sala de Juegos...');
+      
+      // 3. Hacemos la pausa de 2 segundos para que el usuario disfrute su éxito
+      await firstValueFrom(timer(2000));
+      
+      // 4. Recién ahora, ejecutamos el login (y el login sí nos lleva al /home)
+      this.router.navigate(['/home']); // Redirigimos al usuario a la página principal.
+
+    } else {
       this.errorMensaje.set('Credenciales incorrectas o usuario no registrado.');
       this.loading.set(false); // Desactivamos el spinner si falló.
     } 
-    // Nota: Si success es true, no hacemos nada más. El AuthService 
-    // ya se encarga de redirigirnos a la pantalla '/home' automáticamente.
   }
 
   // ==========================================

@@ -69,3 +69,47 @@
   border: 1px solid rgba(220, 53, 69, 0.4);
   color: #ff6b6b;
 }
+
+/* ======================================================= */
+/* INPUT DE CONTRASEÑA CON OJITO                           */
+/* ======================================================= */
+
+/* La caja contenedora (clave para que el botón no se escape) */
+.password-wrapper {
+  position: relative;
+  display: block;
+}
+
+/* El botón transparente y flotante */
+.toggle-password-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%); /* Centrado matemático vertical */
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 10;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+/* Brillo con tu color cuando se pasa el mouse */
+.toggle-password-btn:hover {
+  color: var(--accent-primary);
+}
+
+/* Sacamos el borde feo que le ponen los navegadores al hacer clic */
+.toggle-password-btn:focus {
+  outline: none;
+}
+
+.custom-success-alert {
+  background-color: rgba(52, 211, 153, 0.1); 
+  border: 1px solid rgba(52, 211, 153, 0.4); 
+  color: #34d399; /* Verde esmeralda que usás en tu logo */
+  animation: slideDownFade 0.3s ease forwards;
+}

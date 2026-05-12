@@ -4,7 +4,7 @@
 export interface PerfilUsuario {
     id?: number;          
     created_at?: string;  
-    authId: string;       // uuid (Foreign Key)
+    authId?: string;       // uuid (Foreign Key)
     correo: string;       
     nombre: string;       
     apellido: string;     
@@ -16,5 +16,8 @@ export interface PerfilUsuario {
  
 export interface SesionUsuario {
     id: string;           
-    email: string;        
+    email: string;   
+    nombre: string;       
+    apellido: string;     
+    edad: number;  
 }

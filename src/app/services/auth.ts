@@ -17,10 +17,27 @@ export class AuthService {
   
   // Guarda los datos del usuario activo o 'null' si no hay nadie.
   user = signal<SesionUsuario | null>(null);
-  
+  // 3. Un "atajo" para el HTML (opcional, para que quede más limpio)
+  nombreUsuario = computed(() => this.user()?.email ?? 'Jugador');
+
   // Devuelve 'true' si hay alguien en 'user', o 'false' si es null.
   isAuthenticated = computed(() => this.user() !== null); 
+
+  // Controla el mensaje de error rojo que le mostramos al usuario
+  errorMensaje = signal('');
   
+  private cargarUsuario(supabaseUser: any) {
+    const metadata = supabaseUser.user_metadata;
+    
+    this.user.set({
+      id: supabaseUser.id,
+      email: supabaseUser.email ?? '',
+      nombre: metadata?.nombre ?? 'Usuario',
+      apellido: metadata?.apellido ?? '',
+      edad: metadata?.edad ?? 0
+    });
+  }
+
   // Signal computado: Devuelve el correo del usuario logueado o la palabra 'Invitado'.
   // userEmail = computed(() => this.user()?.email ?? 'Invitado'); 
 
@@ -33,7 +50,7 @@ export class AuthService {
     // actualiza nuestro Signal automáticamente para que Angular se entere.
     this.supabase.getClient().auth.onAuthStateChange((event, session) => {
       if (session?.user) {
-        this.user.set({ id: session.user.id, email: session.user.email ?? '' });
+        this.cargarUsuario(session.user); // Si hay sesión, cargamos los datos del usuario en el megáfono
       } else {
         this.user.set(null); // Si cerró sesión, vaciamos el megáfono
       }
@@ -47,10 +64,7 @@ export class AuthService {
     
     // Si la hay, restauramos los datos en nuestro Signal
     if (session?.user) {
-      this.user.set({ 
-        id: session.user.id, 
-        email: session.user.email ?? '' 
-      });
+        this.cargarUsuario(session.user); // Si hay sesión, cargamos los datos del usuario en el megáfono
     }
   }
 
@@ -71,13 +85,7 @@ export class AuthService {
     // Si salió todo bien y Supabase nos devolvió el objeto 'user'
     if (data.user) {
       // 1. Avisamos por el megáfono que entró alguien
-      this.user.set({ 
-        id: data.user.id, 
-        email: data.user.email ?? '' 
-      });
-      // 2. Lo mandamos directo a la pantalla principal
-      this.router.navigate(['/home']); 
-      // 3. Le avisamos al componente que fue un éxito
+      this.cargarUsuario(data.user);
       return true;
     }
 
@@ -106,17 +114,14 @@ export class AuthService {
     
     // Si el registro falla (ej: el correo ya estaba usado)
     if (error) {
-      console.error('Error al registrarse:', error.message);
-      alert('Error al registrarse: ' + error.message); // Mostramos un mensaje de error visual
+        this.errorMensaje.set(error.message);
       // Devolvemos false para que el componente actúe en consecuencia
       return false; 
     }
 
     // Si el registro fue exitoso
     if (data.user) {
-
-        this.login(datosUsuario.correo, password); // Iniciamos sesión automáticamente después de registrarse
-        return true;
+      return true; // El usuario recién creado no se loguea solo, por eso no seteamos el megáfono ni redirigimos.
     }
 
     return false;
@@ -133,6 +138,6 @@ export class AuthService {
     this.user.set(null);
     
     // Pateamos al usuario de vuelta a la pantalla de Login
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 }
