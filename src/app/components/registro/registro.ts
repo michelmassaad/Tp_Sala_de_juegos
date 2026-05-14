@@ -1,33 +1,38 @@
-import { Component, inject, signal } from '@angular/core';
-import { AuthService } from '../../services/auth';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth';
 import { timer } from 'rxjs/internal/observable/timer';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 
 @Component({
   selector: 'app-registro',
-  imports: [FormsModule, CommonModule, RouterLink],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, RouterLink], 
   templateUrl: './registro.html',
   styleUrl: './registro.css',
 })
 export class RegistroComponent {
 
-  // Inyectamos nuestro servicio
   private authService = inject(AuthService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder); 
 
   // ==========================================
-  // ESTADO DEL FORMULARIO (Lo que el usuario tipea)
+  // CEREBRO DEL FORMULARIO REACTIVO
   // ==========================================
-  email = '';
-  password = '';
-  nombre = '';
-  apellido = '';
-  edad: number | null = null;
+  registroForm = this.fb.nonNullable.group({
+    // Aplicamos los validadores nativos + el nuestro custom
+    nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40), soloLetrasValidator()]],
+    apellido: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40), soloLetrasValidator()]],
+    // Usamos 'null' inicial para que la caja aparezca vacía, pero le exigimos rango
+    edad: [null as unknown as number, [Validators.required, Validators.min(1), Validators.max(120)]], 
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
+  });
 
-
-  // Ojito de password oculto para mostrar la contraseña en el formulario
+  // Ojito de password oculto
   mostrarPassword = signal(false);
   habilitarPassword() {
     this.mostrarPassword.set(!this.mostrarPassword());
@@ -36,62 +41,71 @@ export class RegistroComponent {
   // ==========================================
   // ESTADO DE LA INTERFAZ (Signals)
   // ==========================================
-  // Controla si se muestra el spinner de "Cargando..."
   loading = signal(false);
-  // Controla el mensaje de error rojo que le mostramos al usuario
   errorMensaje = signal('');
-  // Controla el mensaje de éxito verde que le mostramos al usuario
   mensajeExito = signal('');
 
-
   // ==========================================
-  // MÉTODO PRINCIPAL: Cuando el usuario aprieta "Ingresar"
+  // MÉTODO PRINCIPAL
   // ==========================================
   async onSubmit() {
-    // 1. Mini validación: No dejamos que mande el formulario vacío
-    if (!this.email || !this.password || !this.nombre || !this.apellido || this.edad === null) {
-      this.errorMensaje.set('Por favor, completá todos los campos.');
-      return; // Cortamos la ejecución acá mismo
-    }
-
-    // 2. Validación de la edad: Aseguramos que sea un número entre 1 y 120
-    if (!this.edad || this.edad < 1 || this.edad > 120) {
-      this.errorMensaje.set('Ingresá una edad válida.');
-      return;
+    // 1. Mini validación usando el Formulario Reactivo
+    if (this.registroForm.invalid) {
+      this.registroForm.markAllAsTouched(); 
+      this.errorMensaje.set('Por favor, completá todos los campos correctamente.');
+      return; 
     }
 
     // 2. Prendemos el spinner y limpiamos cualquier error viejo
     this.loading.set(true);
     this.errorMensaje.set('');
 
-    // 3. Llamamos al servicio (Fijate que ya no hay try...catch)
-    // Nos va a devolver 'true' si entró, o 'false' si falló.
+    // 3. Extraemos todos los valores ya validados por nuestro TS
+    const formValues = this.registroForm.getRawValue();
+
+    // 4. Llamamos al servicio de registro
     const success = await this.authService.registro(
       {
-        correo: this.email,
-        nombre: this.nombre,
-        apellido: this.apellido,
-        edad: this.edad,
-      }, this.password);
+        correo: formValues.email,
+        nombre: formValues.nombre,
+        apellido: formValues.apellido,
+        edad: formValues.edad,
+      }, 
+      formValues.password
+    );
 
-    // 4. ¿Qué hacemos con la respuesta?
+    // 5. Manejo de la respuesta
     if (success) {
-      // 2. ¡ÉXITO! Apagamos el spinner rojo de error y mostramos la alerta verde
-      this.loading.set(false);
+      await firstValueFrom(timer(1000));
       this.mensajeExito.set('¡Registro exitoso! Preparando tu Sala de Juegos...');
-
-      // 3. Hacemos la pausa de 2 segundos para que el usuario disfrute su éxito
-      await firstValueFrom(timer(2000));
-
-      // 4. Recién ahora, ejecutamos el login (y el login sí nos lleva al /home)
-      await this.authService.login(this.email, this.password);
+      
+      await firstValueFrom(timer(1500));
+      
+      // Auto-Login
+      await this.authService.login(formValues.email, formValues.password);
+      
+      this.loading.set(false);
+      this.router.navigate(['/home']);
       
     } else {
-      // 5. Si falló, mostramos el error y apagamos el spinner
-      this.errorMensaje.set('Error al registrarse. El correo ya está en uso o es inválido.');
+      this.errorMensaje.set(this.authService.errorMensaje() || 'Error al registrarse. El correo ya está en uso o es inválido.');
       this.loading.set(false); 
     }
   }
+}
 
-
+// ==========================================
+// VALIDADOR CUSTOM: La bóveda de seguridad
+// ==========================================
+export function soloLetrasValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valor = control.value;
+    if (!valor) return null; // Si está vacío, lo ataja el Validators.required
+    
+    // Solo acepta letras (incluyendo acentos y ñ) y espacios
+    const esValido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(valor);
+    
+    // Si no pasa la prueba, dispara el error 'soloLetras'
+    return !esValido ? { soloLetras: true } : null;
+  };
 }

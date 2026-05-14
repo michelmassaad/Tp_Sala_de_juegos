@@ -18,41 +18,28 @@ export class AuthService {
   // Guarda los datos del usuario activo o 'null' si no hay nadie.
   user = signal<SesionUsuario | null>(null);
   // 3. Un "atajo" para el HTML (opcional, para que quede más limpio)
-  nombreUsuario = computed(() => this.user()?.email ?? 'Jugador');
+  nombreUsuario = computed(() => (this.user()?.nombre && this.user()?.apellido) ? `${this.user()?.nombre} ${this.user()?.apellido}` : 'Jugador');
 
   // Devuelve 'true' si hay alguien en 'user', o 'false' si es null.
   isAuthenticated = computed(() => this.user() !== null); 
 
   // Controla el mensaje de error rojo que le mostramos al usuario
   errorMensaje = signal('');
-  
-  private cargarUsuario(supabaseUser: any) {
-    const metadata = supabaseUser.user_metadata;
-    
-    this.user.set({
-      id: supabaseUser.id,
-      email: supabaseUser.email ?? '',
-      nombre: metadata?.nombre ?? 'Usuario',
-      apellido: metadata?.apellido ?? '',
-      edad: metadata?.edad ?? 0
-    });
-  }
 
-  // Signal computado: Devuelve el correo del usuario logueado o la palabra 'Invitado'.
-  // userEmail = computed(() => this.user()?.email ?? 'Invitado'); 
+
+
+  // Storage para guardar la promesa que resuelve cuando Supabase responde con la sesión actual.
+  sessionReady: Promise<void>;
 
   constructor() {
-    // Apenas arranca la app, nos fijamos si ya había alguien logueado de antes
-    this.checkSession();
+    // Guardamos la promesa para que los guards puedan esperarla
+    this.sessionReady = this.checkSession();
 
-    // Este es un "vigilante" de Supabase. 
-    // Si la sesión cambia por cualquier motivo (ej: se cierra desde otra pestaña), 
-    // actualiza nuestro Signal automáticamente para que Angular se entere.
     this.supabase.getClient().auth.onAuthStateChange((event, session) => {
       if (session?.user) {
-        this.cargarUsuario(session.user); // Si hay sesión, cargamos los datos del usuario en el megáfono
+        this.cargarUsuario(session.user);
       } else {
-        this.user.set(null); // Si cerró sesión, vaciamos el megáfono
+        this.user.set(null);
       }
     });
   }
@@ -64,8 +51,20 @@ export class AuthService {
     
     // Si la hay, restauramos los datos en nuestro Signal
     if (session?.user) {
-        this.cargarUsuario(session.user); // Si hay sesión, cargamos los datos del usuario en el megáfono
+      this.cargarUsuario(session.user);
     }
+  }
+
+  private cargarUsuario(supabaseUser: any) {
+    const metadata = supabaseUser.user_metadata; 
+    
+    this.user.set({
+      id: supabaseUser.id,
+      email: supabaseUser.email ?? '',
+      nombre: metadata.nombre ?? '',
+      apellido: metadata.apellido ?? '',
+      edad: metadata.edad ?? 0
+    });
   }
 
   // ==========================================
@@ -86,6 +85,7 @@ export class AuthService {
     if (data.user) {
       // 1. Avisamos por el megáfono que entró alguien
       this.cargarUsuario(data.user);
+      // 2. Redirigimos al usuario a la página de bienvenida
       return true;
     }
 

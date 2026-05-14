@@ -2,55 +2,64 @@
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-5">
 
-      <!-- Dejamos SOLO tu custom-card, sin colores de Bootstrap que estorben -->
       <div class="card custom-card p-4 p-sm-5">
         <div class="card-body p-0">
 
-          <!-- Título (fun-title ya trae el color accent-logo desde tu styles.css) -->
           <h2 class="fun-title text-center mb-1 fs-2">Iniciar Sesión</h2>
           <p class="text-center text-secondary small mb-4">Ingresá a la Sala de Juegos</p>
 
-          <form (ngSubmit)="onSubmit()">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-            <!-- Input Email -->
             <div class="mb-3">
               <label for="email" class="form-label text-secondary small mb-1">Email</label>
-              <input id="email" type="email" name="email" [(ngModel)]="email" 
-                class="form-control custom-input" required>
+              
+              <input id="email" type="email" formControlName="email" class="form-control custom-input"
+                     [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+              
+              @if(loginForm.get('email')?.invalid && loginForm.get('email')?.touched){
+                <div class="text-danger small mt-1 ms-1 fw-bold">
+                  @if(loginForm.get('email')?.errors?.['required']){ <span><i class="bi bi-asterisk me-1"></i>El email es obligatorio.</span> }
+                  @if(loginForm.get('email')?.errors?.['email']){ <span><i class="bi bi-x-circle me-1"></i>El formato es inválido.</span> }
+                </div>
+              }
             </div>
 
-            <!-- Input Contraseña -->
             <div class="mb-4">
               <label for="password" class="form-label text-secondary small mb-1">Contraseña</label>
 
               <div class="password-wrapper">
-
-                <input id="password" [type]="mostrarPassword() ? 'text' : 'password'" name="password" autocomplete="off"
-                  [(ngModel)]="password" required class="form-control custom-input pe-5">
+                
+                <input id="password" [type]="mostrarPassword() ? 'text' : 'password'" formControlName="password" 
+                  autocomplete="off" class="form-control custom-input pe-5"
+                  [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
 
                 <button type="button" class="toggle-password-btn" (click)="habilitarPassword()" tabindex="-1">
                   <i class="bi" [ngClass]="mostrarPassword() ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
                 </button>
 
               </div>
+
+              @if(loginForm.get('password')?.invalid && loginForm.get('password')?.touched){
+                <div class="text-danger small mt-1 ms-1 fw-bold">
+                  @if(loginForm.get('password')?.errors?.['required']){ <span><i class="bi bi-asterisk me-1"></i>La contraseña es obligatoria.</span> }
+                  @if(loginForm.get('password')?.errors?.['minlength']){ <span><i class="bi bi-shield-lock me-1"></i>El mínimo es de 6 caracteres.</span> }
+                </div>
+              }
             </div>
 
-            <!-- Alerta de Error (Estilizada para que no desentone) -->
             @if (errorMensaje()) {
             <div class="alert custom-alert py-2 mb-4 small">
               <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMensaje() }}
             </div>
             }
 
-            <!-- Alerta de Éxito -->
             @if (mensajeExito()) {
             <div class="alert custom-success-alert py-2 mb-4 small">
                 <i class="bi bi-check-circle-fill me-2 fs-5"></i>{{ mensajeExito() }}
             </div>
             }
 
-            <!-- Botón Ingresar -->
-            <button type="submit" class="btn btn-accent w-100 fw-bold py-2" [disabled]="loading()">
+            <button type="submit" class="btn btn-accent w-100 fw-bold py-2" [disabled]="loginForm.invalid || loading()">
               @if (loading()) {
               <span class="spinner-border spinner-border-sm me-2"></span> Ingresando...
               } @else {
@@ -60,10 +69,8 @@
 
           </form>
 
-          <!-- Separador -->
           <hr class="text-muted my-4">
 
-          <!-- Accesos Rápidos -->
           <p class="text-secondary small text-center mb-3">Acceso rápido para pruebas:</p>
           <div class="d-flex gap-2 flex-wrap justify-content-center">
             @for (u of usuariosPrueba; track u.email) {
@@ -74,7 +81,6 @@
             }
           </div>
 
-          <!-- Link a registro -->
           <p class="text-center text-secondary small mt-4 mb-0">
             ¿No tenés cuenta?
             <a routerLink="/registro" class="text-accent fw-bold text-decoration-none">Registrate</a>

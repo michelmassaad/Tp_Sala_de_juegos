@@ -18,7 +18,7 @@
           </a>
         </li>
 
-        @if (authService.isAuthenticated()) {
+        @if (authService.isAuthenticated() && !esRutaAuth()) {
           
           <li class="nav-item">
             <a class="nav-link" routerLink="/quien-soy" routerLinkActive="active">

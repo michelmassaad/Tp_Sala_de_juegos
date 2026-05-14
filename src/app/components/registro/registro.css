@@ -114,3 +114,19 @@
   color: #34d399; /* Verde esmeralda que usás en tu logo */
   animation: slideDownFade 0.3s ease forwards;
 }
+
+/* Estilo dinámico cuando el input tiene un error de Angular */
+.custom-input.is-invalid {
+  border-color: #ff6b6b !important;
+  box-shadow: 0 0 8px rgba(220, 53, 69, 0.4) !important;
+  color: #ff6b6b;
+  
+  /* 👇 LA SOLUCIÓN AL PROBLEMA DEL OJITO 👇 */
+  background-image: none !important; 
+}
+
+/* Para que el input no pierda el estilo rojo al hacerle click de nuevo */
+.custom-input.is-invalid:focus {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 12px rgba(220, 53, 69, 0.6) !important;
+}
