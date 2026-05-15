@@ -42,10 +42,10 @@ export class LoginComponent {
   // ==========================================
   // REQUISITO DEL SPRINT 2: Accesos Rápidos
   // ==========================================
-  usuariosPrueba = [
-    { email: 'jugador1@test.com', password: 'test123456', label: 'Jugador 1' },
-    { email: 'jugador2@test.com', password: 'test123456', label: 'Jugador 2' },
-    { email: 'jugador3@test.com', password: 'test123456', label: 'Jugador 3' },
+usuariosPrueba = [
+    { email: 'tester1@test.com', password: 'PruebaUTN2026!', label: 'Tester Alfa' },
+    { email: 'tester2@test.com', password: 'PruebaUTN2026!', label: 'Tester Beta' },
+    { email: 'tester3@test.com', password: 'PruebaUTN2026!', label: 'Tester Gamma' },
   ];
 
   // ==========================================

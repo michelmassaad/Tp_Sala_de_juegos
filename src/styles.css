@@ -1,6 +1,8 @@
 /* Fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Rajdhani:wght@600;700&display=swap');
+
 :root {
   --bg-base: #0e1117;
   --bg-card: #161b27;
@@ -10,7 +12,7 @@
   --black: #000000;
   --accent-primary: #6ee7f7;
   --accent-secondary: #a78bfa;
-  --accent-logo: #34d399;
+  --accent-logo: #34d3b6;
   --accent-primary-rgb: 110,231,247;
   --white-rgb: 255,255,255;
   --black-rgb: 0,0,0;
@@ -29,7 +31,9 @@ body {
 
 /* === TIPOGRAFÍA === */
 .fun-title {
-  font-family: 'Righteous', cursive;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
   letter-spacing: 1px;
   color: var(--accent-logo) !important; 
   /* Sombra alimentada por variable negra */
@@ -70,9 +74,9 @@ hr.text-muted { border-color: rgba(var(--white-rgb), 0.1); opacity: 1; }
 /* === NAVBAR === */
 .custom-navbar {
   background-color: var(--bg-nav) !important; 
-  border-bottom: 3px solid var(--text-muted) !important; 
+  border-bottom: 0.5px solid var(--text-muted) !important; 
   /* Resplandor alimentado por el RGB del acento principal */
-  box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.15) !important;
+  box-shadow: 0 4px 6px rgba(var(--accent-primary-rgb), 0.15) !important;
   backdrop-filter: blur(10px); 
 }
 
