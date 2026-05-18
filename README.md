@@ -1,59 +1,51 @@
-# TpSalaDeJuegos
+# 🎮 Sala de Juegos — TP #1
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+[![Deploy](https://img.shields.io/badge/Deploy-Vercel-black?style=flat-square&logo=vercel)](https://tp-sala-de-juegos-eight.vercel.app/)
+[![Angular](https://img.shields.io/badge/Angular-18-DD0031?style=flat-square&logo=angular)](https://angular.dev/)
+[![Supabase](https://img.shields.io/badge/Backend-Supabase-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com/)
 
-## Development server
+**Materia:** Programación IV — UTN Avellaneda<br>
+**Alumno:** Michel Antonio Massaad Saba<br>
+**Deploy principal:** https://tp-sala-de-juegos-eight.vercel.app/
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🛠️ Tecnologías utilizadas
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+| Capa           | Tecnología                         |
+| -------------- | ---------------------------------- |
+| Framework      | Angular 18 (Standalone Components) |
+| Backend / Auth | Supabase                           |
+| Estilos        | Bootstrap 5 + Bootstrap Icons      |
+| Formularios    | Reactive Forms & Signals           |
+| Deploy         | Vercel                             |
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🚦 Estado del proyecto
 
-```bash
-ng generate component component-name
-```
+| Sprint    | Contenido                             | Estado           | Deploy                                                                            |
+| --------- | ------------------------------------- | ---------------- | --------------------------------------------------------------------------------- |
+| Sprint #1 | Estructura, Deploy y Presentación     | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-1-michelmassaads-projects.vercel.app/) |
+| Sprint #2 | Autenticación y Home Dinámico         | 🚧 En desarrollo    | |
+| Sprint #3 | Ahorcado, Mayor o Menor, Chat         | 🚧 En desarrollo | —                                                                                 |
+| Sprint #4 | Preguntados, Juego propio, Resultados | 🔜 Pendiente     | —                                                                                 |
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 📦 Sprint #1 — Estructura, Deploy y Presentación
 
-## Building
+> Deploy: https://tp-sala-de-juegos-git-sprint-1-michelmassaads-projects.vercel.app/<br>
+> Tag: `v1.0.0`
 
-To build the project run:
+Esqueleto de la aplicación funcional, con navegación libre entre secciones y deploy activo en Vercel.
 
-```bash
-ng build
-```
+**Componentes creados:** `Login` · `Registro` · `Home` · `QuienSoy`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Deploy inicial conectado y funcionando en Vercel.
+- Ruteo completo configurado en `app.routes.ts`, sin restricciones de accesibilidad.
+- `QuienSoy` consume la [API de GitHub](https://api.github.com/users/michelmassaad) vía `HttpClient` para mostrar foto de perfil y datos biográficos dinámicamente.
+- Presentación del juego propio incluida en `QuienSoy`: temática, mecánicas y reglas de juego.
+- Favicon personalizado implementado.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
