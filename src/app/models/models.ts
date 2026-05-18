@@ -21,3 +21,14 @@ export interface SesionUsuario {
     apellido: string;     
     edad: number;  
 }
+
+
+//Representa los datos de la tabla 'sala-chat' en Supabase.
+
+export interface Mensaje {
+  id: number;
+  user_id: string;
+  nombre_usuario: string; // <-- Ajustado al nombre exacto de tu columna
+  contenido: string;
+  created_at: string;
+}

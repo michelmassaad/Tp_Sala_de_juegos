@@ -15,6 +15,7 @@ export const routes: Routes = [
     { path:'login', component:LoginComponent, canActivate: [guestGuard] },
     { path:'registro', component:RegistroComponent, canActivate: [guestGuard]},
     { path:'quien-soy', component:QuienSoyComponent, canActivate: [authGuard] }, // <-- Ruta protegida},
+    
 
     // Comodín: cualquier ruta que no existe → home
   { path: '**', redirectTo: 'home' }
