@@ -12,10 +12,5 @@ import { TitleCasePipe } from '@angular/common';
 export class Header {
   authService = inject(AuthService);
   router = inject(Router);
-
-
-  // Creamos un método que devuelve TRUE si estamos en Login o Registro
-  esRutaAuth(): boolean {
-    return this.router.url.includes('/login') || this.router.url.includes('/registro');
-  }
+  
 }

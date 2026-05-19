@@ -1,2 +1,27 @@
 <app-header></app-header>
-<router-outlet></router-outlet>
+
+<div class="app-layout" [class.chat-open]="chatAbierto()">
+
+    <main class="content-area">
+        <router-outlet></router-outlet>
+    </main>
+
+    @if (authService.isAuthenticated() && !authService.esRutaAuth()) {
+
+    <aside class="chat-sidebar shadow-lg">
+
+        <button class="chat-close-btn" (click)="toggleChat()">
+            <i class="bi bi-x-lg"></i>
+        </button>
+
+        <app-sala-chat></app-sala-chat>
+    </aside>
+
+    @if (!chatAbierto()) {
+    <button class="chat-toggle-btn" (click)="toggleChat()">
+        <i class="bi bi-chat-dots-fill"></i>
+    </button>
+    }
+    }
+
+</div>

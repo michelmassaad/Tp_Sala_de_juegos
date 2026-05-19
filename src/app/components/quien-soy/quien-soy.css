@@ -42,3 +42,8 @@
 .hover-scale:hover {
   transform: scale(1.02);
 }
+
+.github-link:hover {
+  opacity: 0.8;
+  text-shadow: 0 0 8px var(--accent-primary); /* Le da un brillito neón cuando pasás el mouse */
+}

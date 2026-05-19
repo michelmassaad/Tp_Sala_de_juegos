@@ -25,14 +25,13 @@
           </p>
         </div>
         
-        <!-- Estadísticas Derecha -->
-        <div class="col-12 col-lg-3 p-4 border-lg-start border-secondary border-opacity-25 mt-3 mt-lg-0">
+       <div class="col-12 col-lg-3 p-4 border-lg-start border-secondary border-opacity-25 mt-3 mt-lg-0">
           <div class="d-flex flex-column justify-content-center h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <span class="text-light opacity-75 small"><i class="bi bi-person me-2"></i>Usuario</span>
-              <span class="fw-bold text-primary text-truncate ms-2 username-truncate" title="{{ githubService.profileData().login }}">
+              <a class="fw-bold text-primary text-truncate ms-2 username-truncate text-decoration-none github-link" href="{{ githubService.profileData().html_url }}" target="_blank">
                 {{ githubService.profileData().login }}
-              </span>
+              </a>
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <span class="text-light opacity-75 small"><i class="bi bi-folder me-2"></i>Repos</span>

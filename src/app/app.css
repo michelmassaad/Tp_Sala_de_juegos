@@ -1,0 +1,96 @@
+/* ── CONTENEDOR PRINCIPAL ── */
+.app-layout {
+  position: relative;
+  overflow-x: hidden; /* Evita que aparezca la barra de scroll horizontal */
+  /* Eliminamos el display: flex y el min-height que rompían tu diseño */
+}
+
+/* ── ZONA DE JUEGO / CONTENIDO ── */
+.content-area {
+  display: block;
+  width: 100%;
+  transition: padding-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── EL TRUCO PARA ESCRITORIO (EFECTO YOUTUBE/TWITCH) ── */
+@media (min-width: 992px) {
+  /* Al usar padding en vez de margin, los contenedores de Bootstrap no pierden su centro */
+  .app-layout.chat-open .content-area {
+    padding-right: 350px; 
+  }
+}
+
+/* ── PANEL DEL CHAT ── */
+.chat-sidebar {
+  position: fixed;
+  top: 80px; /* Justo debajo de tu navbar */
+  right: -350px; /* Escondido afuera de la pantalla por defecto */
+  width: 350px;
+  height: calc(100vh - 80px);
+  background: rgba(14, 17, 23, 0.95); /* Tu fondo oscuro */
+  border-left: 1px solid rgba(var(--accent-primary-rgb), 0.2);
+  backdrop-filter: blur(10px);
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1040;
+}
+
+/* Cuando el chat está activo, el panel entra a la pantalla */
+.app-layout.chat-open .chat-sidebar {
+  right: 0;
+}
+
+/* ── BOTÓN DE ABRIR/CERRAR (Burbuja Flotante) ── */
+.chat-toggle-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: var(--bg-base); /* Color oscuro para el ícono */
+  border: none;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1050;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.4);
+}
+
+.chat-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(var(--accent-primary-rgb), 0.6);
+}
+
+/* Cuando el chat se abre, el botón viaja a la izquierda acompañando el borde del panel */
+.app-layout.chat-open .chat-toggle-btn {
+  right: 380px; /* 350px del chat + 30px de separación */
+  background: var(--bg-card); /* Se vuelve oscuro para no distraer */
+  color: var(--text-main);
+  border: 1px solid rgba(var(--white-rgb), 0.1);
+  width: 50px; /* Se achica un poquito */
+  height: 50px;
+  font-size: 1.3rem;
+}
+
+/* ── BOTÓN CERRAR (X) DENTRO DEL CHAT ── */
+.chat-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 1060;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.chat-close-btn:hover {
+  color: var(--accent-primary);
+  transform: scale(1.1);
+}

@@ -5,7 +5,7 @@
       <i class="bi bi-controller me-2"></i> Sala de Juegos
     </a>
 
-    @if (authService.isAuthenticated() && !esRutaAuth()) {
+    @if (authService.isAuthenticated() && !authService.esRutaAuth()) {
       <div class="d-flex align-items-center d-lg-none ms-auto me-2">
         <div class="user-avatar">
           {{ authService.nombreUsuario().charAt(0).toUpperCase() }}
@@ -26,7 +26,7 @@
           </a>
         </li>
 
-        @if (authService.isAuthenticated() && !esRutaAuth()) {
+        @if (authService.isAuthenticated() && !authService.esRutaAuth()) {
 
           <li class="nav-item">
             <a class="nav-link" routerLink="/quien-soy" routerLinkActive="active">

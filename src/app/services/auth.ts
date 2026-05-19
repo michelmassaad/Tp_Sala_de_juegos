@@ -140,4 +140,10 @@ export class AuthService {
     // Pateamos al usuario de vuelta a la pantalla de Login
     this.router.navigate(['/home']);
   }
+
+
+  esRutaAuth(): boolean {
+    return this.router.url.includes('/login') || this.router.url.includes('/registro');
+  }
+
 }

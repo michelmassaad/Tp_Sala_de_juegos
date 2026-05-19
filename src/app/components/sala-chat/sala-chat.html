@@ -1,55 +1,53 @@
-<div class="container py-4">
-  <div class="chat-wrapper custom-card shadow-lg">
-    
-    <div class="chat-header d-flex justify-content-between align-items-center">
-      <h3 class="fun-title m-0 fs-4 d-flex align-items-center">
-        <i class="bi bi-chat-square-text me-2"></i> Chat Global
-      </h3>
-      <div class="live-indicator">
-        <span class="dot"></span> Live
-      </div>
+<div class="chat-container">
+  
+  <div class="chat-panel-header">
+    <div class="d-flex align-items-center gap-2">
+      <span class="chat-live-dot"></span>
+      <span class="fw-bold text-light">Chat Global</span>
     </div>
-
-    <div class="chat-messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
-      
-      @for (mensaje of chatService.mensajes(); track mensaje.id) {
-        <div class="message-row" 
-             [class.my-message]="mensaje.user_id === authService.user()?.id">
-          
-          <div class="message-bubble">
-            @if (mensaje.user_id !== authService.user()?.id) {
-              <span class="message-sender">{{ mensaje.nombre_usuario }}</span>
-            }
-            <p class="message-text">{{ mensaje.contenido }}</p>
-            <span class="message-time">
-              {{ mensaje.created_at | date:'shortTime' }}
-            </span>
-          </div>
-
-        </div>
-      } @empty {
-        <div class="empty-chat text-center text-muted mt-5">
-          <i class="bi bi-envelope-paper fs-1"></i>
-          <p class="mt-2 fw-bold">No hay mensajes aún. ¡Rompé el hielo!</p>
-        </div>
-      }
-
-    </div>
-
-    <div class="chat-input-area">
-      <form (ngSubmit)="enviar()" class="d-flex gap-2 w-100 m-0">
-        <input type="text" 
-               class="form-control chat-input" 
-               [(ngModel)]="nuevoMensaje" 
-               name="nuevoMensaje" 
-               placeholder="Escribe tu mensaje..." 
-               autocomplete="off">
-               
-        <button type="submit" class="btn btn-accent btn-send" [disabled]="!nuevoMensaje.trim()">
-          <i class="bi bi-send-fill"></i>
-        </button>
-      </form>
-    </div>
-
   </div>
+
+  <div class="chat-panel-messages" #mensajesContainer>
+    
+    @for (msg of chatService.mensajes(); track msg.id) {
+      
+      <div class="chat-msg-row" [class.chat-msg-mio]="esMio(msg.user_id)">
+        
+        <div class="chat-bubble" [class.chat-bubble-mio]="esMio(msg.user_id)">
+          
+          @if (!esMio(msg.user_id)) {
+            <span class="chat-sender" [style.color]="getColorUsuario(msg.nombre_usuario)">
+              {{ msg.nombre_usuario }}
+            </span>
+          }
+          
+          <p class="chat-text">{{ msg.contenido }}</p>
+          
+          <span class="chat-time">{{ msg.created_at | date:'HH:mm' }}</span>
+        </div>
+
+      </div>
+
+    } @empty {
+      <div class="chat-empty">
+        <i class="bi bi-chat-dots fs-2"></i>
+        <p class="mt-2 small">¡Rompé el hielo!</p>
+      </div>
+    }
+  </div>
+
+  <div class="chat-panel-input">
+    
+   <input type="text"
+           class="chat-input-field"
+           [(ngModel)]="nuevoMensaje"
+           (keydown.enter)="$event.preventDefault(); enviar()" 
+           placeholder="Escribí un mensaje..."
+           autocomplete="off">
+    
+    <button class="chat-send-btn" (click)="enviar()" [disabled]="!nuevoMensaje.trim()">
+      <i class="bi bi-send-fill"></i>
+    </button>
+  </div>
+  
 </div>
