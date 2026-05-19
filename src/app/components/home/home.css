@@ -1,0 +1,55 @@
+/* ======================================================= */
+/* ESTILOS INDEPENDIENTES PARA EL HOME COMPONENT           */
+/* ======================================================= */
+
+/* --- DIMENSIONES DE LA IMAGEN DEL JUEGO --- */
+.game-img {
+  height: 80px;         /* Tamaño fijo que antes estaba en el HTML */
+  width: auto;          /* Mantiene la proporción original de la imagen */
+  object-fit: contain;  /* Evita que la imagen se estire o deforme */
+}
+
+/* --- ANIMACIÓN DEL ICONO/IMAGEN PRINCIPAL --- */
+.custom-card .display-4,
+.custom-card .game-img {
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease;
+}
+
+/* Cuando el usuario pasa el mouse por la tarjeta, SOLO el elemento principal salta */
+.custom-card:hover .display-4,
+.custom-card:hover .game-img {
+  transform: scale(1.2) translateY(-5px); /* Salta y se agranda */
+  color: var(--accent-logo, #34d399) !important; /* Se pone verde (para iconos) */
+  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.6)); /* Resplandor verde */
+}
+
+/* --- BOTÓN DE JUGAR (Cyan) --- */
+.btn-accent {
+  background-color: var(--accent-primary, #6ee7f7);
+  color: #0e1117; /* Texto bien oscuro para contrastar */
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-accent:hover:not(:disabled) {
+  background-color: var(--accent-primary, #6ee7f7);
+  color: #0e1117;
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(110, 231, 247, 0.4); /* Sombra brillante */
+}
+
+/* --- BOTONES INFERIORES (Resultados y Quién Soy) --- */
+.btn-custom-outline {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Borde gris sutil */
+  color: var(--text-main, #e2e8f0);
+  transition: all 0.3s ease;
+}
+
+.btn-custom-outline:hover:not(:disabled) {
+  border-color: var(--accent-primary, #6ee7f7);
+  color: var(--accent-primary, #6ee7f7);
+  background-color: rgba(110, 231, 247, 0.05); /* Fondo apenas tintado de cyan */
+}

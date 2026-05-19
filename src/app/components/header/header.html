@@ -1,38 +1,83 @@
-<nav class="navbar navbar-expand-lg navbar-dark shadow-sm custom-navbar">
-  <div class="container">
-    <!-- Título o Logo de la App -->
-    <a class="navbar-brand fw-bold fun-title fs-2" routerLink="/home">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm custom-navbar py-3 ">
+  <div class="container-fluid px-4 px-lg-5 px-xl-5">
+
+    <a class="navbar-brand fw-bold fun-title fs-3 d-flex align-items-center" routerLink="/home">
       <i class="bi bi-controller me-2"></i> Sala de Juegos
     </a>
 
-    <!-- Botón para móviles (Hamburguesa) -->
+    @if (authService.isAuthenticated() && !esRutaAuth()) {
+      <div class="d-flex align-items-center d-lg-none ms-auto me-2">
+        <div class="user-avatar">
+          {{ authService.nombreUsuario().charAt(0).toUpperCase() }}
+        </div>
+      </div>
+    }
+
     <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Enlaces de navegación -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto gap-2 align-items-center">
+
         <li class="nav-item">
           <a class="nav-link" routerLink="/home" routerLinkActive="active">
             <i class="bi bi-house-door me-1"></i> Home
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/login" routerLinkActive="active">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Login
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/registro" routerLinkActive="active">
-            <i class="bi bi-person-plus me-1"></i> Registro
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/quien-soy" routerLinkActive="active">
-            <i class="bi bi-info-circle me-1"></i> Quién Soy
-          </a>
-        </li>
+
+        @if (authService.isAuthenticated() && !esRutaAuth()) {
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/quien-soy" routerLinkActive="active">
+              <i class="bi bi-info-circle me-1"></i> Quién Soy
+            </a>
+          </li>
+
+         <li class="nav-item d-none d-lg-flex align-items-center ms-lg-3">
+  <div class="launcher-pill d-flex align-items-center shadow-sm">
+    
+    <div class="user-avatar">
+      {{ authService.nombreUsuario().charAt(0).toUpperCase() }}
+    </div>
+
+    <div class="user-info d-flex flex-column justify-content-center">
+      <span class="user-label">JUGADOR</span>
+      <span class="user-name text-truncate" style="max-width: 130px;" title="{{ authService.nombreUsuario() }}">
+        {{ authService.nombreUsuario() | titlecase }}
+      </span>
+    </div>
+
+    <div class="pill-separator"></div>
+
+    <button class="btn-power-launcher" (click)="authService.logout()" title="Cerrar sesión">
+      <i class="bi bi-power"></i>
+    </button>
+
+  </div>
+</li>
+
+          <li class="nav-item d-lg-none mt-2">
+            <button class="btn btn-salir btn-sm px-3 rounded-pill w-100" (click)="authService.logout()">
+              <i class="bi bi-power me-1"></i> Cerrar sesión
+            </button>
+          </li>
+
+        } @else {
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Login
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/registro" routerLinkActive="active">
+              <i class="bi bi-person-plus me-1"></i> Registro
+            </a>
+          </li>
+
+        }
+
       </ul>
     </div>
   </div>

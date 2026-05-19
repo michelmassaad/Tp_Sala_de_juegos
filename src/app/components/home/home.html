@@ -1,1 +1,49 @@
-<p>home works!</p>
+<div class="container py-5">
+
+  <div class="mb-5 text-center">
+    <h1 class="fun-title display-5 mb-2">¡Bienvenido, {{ authService.nombreUsuario() }}!</h1>
+    <p class="text-secondary fs-5">Elegí un juego y empezá a jugar.</p>
+  </div>
+
+  <div class="row g-4 justify-content-center">
+    
+    @for (juego of juegos; track juego.ruta) {
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="card custom-card h-100 text-center p-4">
+          
+          <img 
+            [src]="juego.urlImagen" 
+            [alt]="juego.nombre" 
+            class="game-img mb-3 mx-auto">
+          
+          <h5 class="fw-bold mb-2" style="color: var(--text-main);">{{ juego.nombre }}</h5>
+          <p class="text-secondary small mb-4">{{ juego.descripcion }}</p>
+          
+          <a [routerLink]="juego.ruta" class="btn btn-accent fw-bold mt-auto py-2">
+            <i class="bi bi-play-fill me-1"></i>Jugar
+          </a>
+          
+        </div>
+      </div>
+    }
+    
+  </div>
+
+  <div class="d-flex gap-3 justify-content-center mt-5 flex-wrap">
+    
+    <a routerLink="/resultados" class="btn btn-custom-outline px-4 py-2">
+      <i class="bi bi-trophy-fill me-2"></i>Ver Resultados
+    </a>
+
+    <!-- perfil de usuario -->
+    <a routerLink="/perfil" class="btn btn-custom-outline px-4 py-2">
+      <i class="bi bi-person-circle me-2"></i>Perfil
+    </a>
+
+    <!-- <a routerLink="/quien-soy" class="btn btn-custom-outline px-4 py-2">
+      <i class="bi bi-person-circle me-2"></i>Quién Soy -->
+    <!-- </a> -->
+    
+  </div>
+
+</div>

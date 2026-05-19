@@ -1,6 +1,8 @@
 /* Fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Righteous&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Rajdhani:wght@600;700&display=swap');
+
 :root {
   --bg-base: #0e1117;
   --bg-card: #161b27;
@@ -10,7 +12,7 @@
   --black: #000000;
   --accent-primary: #6ee7f7;
   --accent-secondary: #a78bfa;
-  --accent-logo: #34d399;
+  --accent-logo: #34d3b6;
   --accent-primary-rgb: 110,231,247;
   --white-rgb: 255,255,255;
   --black-rgb: 0,0,0;
@@ -29,7 +31,9 @@ body {
 
 /* === TIPOGRAFÍA === */
 .fun-title {
-  font-family: 'Righteous', cursive;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
   letter-spacing: 1px;
   color: var(--accent-logo) !important; 
   /* Sombra alimentada por variable negra */
@@ -70,9 +74,9 @@ hr.text-muted { border-color: rgba(var(--white-rgb), 0.1); opacity: 1; }
 /* === NAVBAR === */
 .custom-navbar {
   background-color: var(--bg-nav) !important; 
-  border-bottom: 3px solid var(--text-muted) !important; 
+  border-bottom: 0.5px solid var(--text-muted) !important; 
   /* Resplandor alimentado por el RGB del acento principal */
-  box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.15) !important;
+  box-shadow: 0 4px 6px rgba(var(--accent-primary-rgb), 0.15) !important;
   backdrop-filter: blur(10px); 
 }
 
@@ -88,4 +92,46 @@ hr.text-muted { border-color: rgba(var(--white-rgb), 0.1); opacity: 1; }
   color: var(--accent-primary) !important;
   /* Brillo del texto alimentado por el RGB del acento */
   text-shadow: 0 0 8px rgba(var(--accent-primary-rgb), 0.4); 
+}
+
+/* ======================================================= */
+/* ALERTA DE ERROR ANIMADA                                 */
+/* ======================================================= */
+.custom-alert {
+  background-color: rgba(220, 53, 69, 0.1) !important;
+  border: 1px solid rgba(220, 53, 69, 0.4) !important;
+  color: #ff6b6b !important;
+  
+  /* Llama a la animación que creamos abajo */
+  animation: slideDownFade 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* La magia del deslizamiento suave */
+@keyframes slideDownFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px); /* Arranca un poco más arriba y transparente */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Llega a su posición final */
+  }
+}
+
+/* --- Botón Principal (Accent Primary) --- */
+.btn-accent {
+  background-color: var(--accent-primary);
+  /* Texto oscuro (--bg-base) para que contraste perfecto con el cyan claro */
+  color: var(--bg-base); 
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-accent:hover:not(:disabled) {
+  background-color: var(--accent-primary);
+  color: var(--bg-base);
+  /* Oscurece apenitas el botón y le da un brillo cyan */
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--accent-primary-rgb), 0.4);
 }
