@@ -7,7 +7,7 @@ import { Mensaje } from '../models/models';
 export class ChatService {
   private supabase = inject(SupabaseService).getClient();
   private authService = inject(AuthService);
-  private zone = inject(NgZone); // Para ejecutar código fuera de Angular y evitar que se quede esperando
+  private zone = inject(NgZone); 
 
   public mensajes = signal<Mensaje[]>([]);
 
@@ -18,7 +18,7 @@ export class ChatService {
 
   async cargarMensajesIniciales() {
     const { data } = await this.supabase
-      .from('sala-chat') // <-- Cambiado al nombre de tu tabla
+      .from('sala-chat')
       .select('*')
       .order('created_at', { ascending: true });
     
@@ -28,25 +28,38 @@ export class ChatService {
   escucharMensajesEnTiempoReal() {
     this.supabase
       .channel('sala-publica')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sala-chat' }, // <-- Cambiado al nombre de tu tabla
-      () => { 
-        // 3. Forzamos a que Angular ejecute esto de inmediato
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sala-chat' }, 
+      (payload) => { 
+        // Forzamos la sincronización inmediata con la zona de Angular
         this.zone.run(() => {
-          this.cargarMensajesIniciales(); 
+          // Extraemos el mensaje recién insertado y confirmado por la DB
+          const nuevoMensaje = payload.new as Mensaje;
+          
+          // Lo agregamos al final del Signal en milisegundos sin volver a descargar todo
+          this.mensajes.update(listaActual => [...listaActual, nuevoMensaje]);
         });
       })
       .subscribe();
   }
 
-  async enviarMensaje(contenido: string) {
+  async enviarMensaje(contenido: string): Promise<boolean> {
     const usuarioLogueado = this.authService.user(); 
+    if (!usuarioLogueado) return false;
 
-    if (!usuarioLogueado) return;
+    try {
+      const { error } = await this.supabase.from('sala-chat').insert({ 
+        contenido: contenido,
+        user_id: usuarioLogueado.id,
+        nombre_usuario: usuarioLogueado.nombre 
+      });
 
-    await this.supabase.from('sala-chat').insert({ // <-- Cambiado al nombre de tu tabla
-      contenido: contenido,
-      user_id: usuarioLogueado.id,
-      nombre_usuario: usuarioLogueado.nombre // <-- Mapeado a la columna correcta de tu DB
-    });
+      if (error) throw error;
+      return true;
+
+    } catch (err) {
+      console.error("Error transaccional de red:", err);
+      // alert("No se pudo enviar el mensaje. Revisá tu conexión a internet.");
+      return false;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, effect} from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../services/sala-chat';
 import { AuthService } from '../../services/auth';
@@ -16,35 +16,44 @@ export class SalaChatComponent {
   public authService = inject(AuthService);
   nuevoMensaje = '';
 
-  // 3. Recuperamos el control del Scroll
- @ViewChild('mensajesContainer') private scrollContainer!: ElementRef;
+  // Recuperamos el control del contenedor del scroll
+  @ViewChild('mensajesContainer') private scrollContainer!: ElementRef;
 
-  // Asignamos el effect directamente a una variable privada.
-  private scrollEffect = effect(() => { //
-    const mensajes = this.chatService.mensajes(); 
+  // Este effect se disparará únicamente cuando la lista de mensajes mute en memoria
+  private scrollEffect = effect(() => {
+    this.chatService.mensajes(); // Dependencia reactiva aislada
     this.scrollToBottom();
   });
 
+  // Método para hacer scroll al final del contenedor de mensajes
   scrollToBottom(): void {
     try {
       setTimeout(() => {
-        this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-      }, 50);
+        const el = this.scrollContainer.nativeElement;
+        el.scrollTop = el.scrollHeight;
+      }, 0);
     } catch(err) { }
   }
 
-  enviar() {
+  async enviar() {
     const texto = this.nuevoMensaje.trim();
 
     if (texto) {
-      // 1. Vaciamos el input en el acto
+      // Guardamos el texto temporalmente por si falla la red
+      const textoTemporal = this.nuevoMensaje;
       this.nuevoMensaje = ''; 
-      // 2. Mandamos el mensaje de fondo, sin usar "await" para que Angular no se quede esperando
-      this.chatService.enviarMensaje(texto);
+
+      // Esperamos a ver si el servicio lo pudo mandar a Supabase
+      const enviadoCorrectamente = await this.chatService.enviarMensaje(texto);
+      
+      // Si falló la conexión, le devolvemos el texto al input para que no pierda lo escrito
+      if (!enviadoCorrectamente) {
+        this.nuevoMensaje = textoTemporal;
+      }
     }
   }
 
-  // Comprueba si el mensaje es del usuario actual para pintarlo cyan y a la derecha
+  // Comprueba si el mensaje es del usuario actual para alinearlo a la derecha
   esMio(userId: string): boolean {
     return this.authService.user()?.id === userId;
   }
@@ -56,17 +65,15 @@ export class SalaChatComponent {
     '#ff7f50', '#00ced1', '#ff1493', '#adff2f'
   ];
 
-  // Toma el nombre, lo convierte a un hash y le asigna un color fijo
+  // Toma el nombre, lo convierte a un hash matemático y le asigna un color fijo por usuario
   getColorUsuario(nombre: string): string {
-    if (!nombre) return '#ffffff'; // Por si algún usuario no tiene nombre
+    if (!nombre) return '#ffffff';
     
     let hash = 0;
     for (let i = 0; i < nombre.length; i++) {
-      // Magia oscura de bits para generar un número único basado en las letras
       hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
     }
     
-    // Obtenemos un índice válido dentro del tamaño de nuestro array de colores
     const index = Math.abs(hash) % this.coloresUsuarios.length;
     return this.coloresUsuarios[index];
   }
