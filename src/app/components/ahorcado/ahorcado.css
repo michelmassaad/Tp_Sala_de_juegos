@@ -697,7 +697,7 @@ flex: 1;
   .utilities-row { flex-direction: row; gap: 2px; }
   .util-btn { width: 100%; padding: 10px; }
   .key { width: 32px; height: 36px; font-size: 0.8rem; }
-  .result-screen-overlay { padding-top: 345px; }
+  .result-screen-overlay { padding-top: 0px; }
 }
 
 @media (max-width: 450px) {
