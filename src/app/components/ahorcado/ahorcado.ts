@@ -1,5 +1,5 @@
-import { Component, inject, signal, computed, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ResultadosService } from '../../services/resultado';
 import { AuthService } from '../../services/auth';
@@ -87,12 +87,15 @@ const BANCO_CATEGORIAS: CategoriaJuego[] = [
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './ahorcado.html',
-  styleUrls: ['./ahorcado.css']
+  styleUrls: ['./ahorcado.css', './ahorcado-categoria.css']
 })
 export class AhorcadoComponent implements OnInit, OnDestroy { 
   private router = inject(Router);
   private auth = inject(AuthService); 
   private resultadosService = inject(ResultadosService); 
+  private scroller = inject(ViewportScroller);
+  // En lugar de la señal, usamos el decorador tradicional
+@ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
   
   readonly categorias = BANCO_CATEGORIAS;
   // Exponemos la configuración para poder leerla desde el HTML
@@ -162,6 +165,11 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
     this.rachaVictorias.set(0);
     this.nivelActual.set(1);
     this.lanzarNuevaPalabra();
+
+// 🚀 SCROLL IDIOMÁTICO: El servicio de Angular se encarga de reajustar el viewport de la app
+    setTimeout(() => {
+      this.scroller.scrollToPosition([0, 0]);
+    }, 35);
   }
 
   lanzarNuevaPalabra() {
@@ -298,6 +306,12 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
     this.detenerCronometro(); 
     this.juegoIniciado.set(false);
     this.juegoTerminado.set(false);
+
+
+    // 🚀 SCROLL IDIOMÁTICO: El servicio de Angular se encarga de reajustar el viewport de la app
+    setTimeout(() => {
+      this.scroller.scrollToPosition([0, 0]);
+    }, 35);
   }
 
   yaUsada(letra: string): boolean { 

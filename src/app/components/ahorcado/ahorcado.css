@@ -2,10 +2,10 @@
    BASE — Ocupa la pantalla de forma exacta y rígida
    ═══════════════════════════════════════════════ */
 .ahorcado-wrapper {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 74px);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: hidden; /* Sigue oculto porque la pantalla no debe moverse */
   position: relative;
   background: transparent;
   color: var(--text-main);
@@ -108,14 +108,17 @@
    ARENA DE JUEGO (Distribución de Escritorio)
    ═══════════════════════════════════════════════ */
 .game-arena {
-  flex: 1;
+flex: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 20px;
-  min-height: 0;
-  overflow: hidden;
   position: relative; 
+  
+  /* 🚀 ESTO EVITA QUE SE VAYA PARA ABAJO: */
+  height: 100%;
+  min-height: 0; 
+  overflow: hidden; /* Congela todo el juego adentro del viewport */
 }
 
 .arena-top-layout {

@@ -8,15 +8,29 @@
   padding-bottom: 40px;
 }
 
+/* ══════════════════════════════════════
+   ANIMACIÓN DE ENTRADA OPTIMIZADA
+   ══════════════════════════════════════ */
 .content-fade-in {
-  animation: fadeInHome 0.45s ease-out forwards;
+  /* Usamos un cubic-bezier idéntico al de tus tarjetas para mantener la fluidez */
+  animation: fadeInHome 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  
+  /* 🌟 EL TRUCO: Previene que cualquier residuo de renderizado active scrollbars extra */
+  will-change: transform, opacity;
 }
 
 @keyframes fadeInHome {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { 
+    opacity: 0; 
+    /* 🚀 Cambiamos el translateY por un micro-scale. 
+       Da un efecto arcade de acercamiento impecable y NO altera la altura del layout */
+    transform: scale(0.99); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
 }
-
 /* ══════════════════════════════════════
    HERO
    ══════════════════════════════════════ */
