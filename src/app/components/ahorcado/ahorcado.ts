@@ -87,7 +87,7 @@ const BANCO_CATEGORIAS: CategoriaJuego[] = [
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './ahorcado.html',
-  styleUrls: ['./ahorcado.css', './ahorcado-categorias.css']
+  styleUrls: ['./ahorcado.css']
 })
 export class AhorcadoComponent implements OnInit, OnDestroy { 
   private router = inject(Router);
