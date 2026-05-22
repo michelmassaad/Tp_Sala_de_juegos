@@ -5,6 +5,8 @@ import { RegistroComponent } from './components/registro/registro';
 import { QuienSoyComponent } from './components/quien-soy/quien-soy';
 import { authGuard } from './guards/auth';
 import { guestGuard } from './guards/guest';
+import { AhorcadoComponent } from './components/ahorcado/ahorcado';
+import { MayorMenor } from './components/mayor-menor/mayor-menor';
 
 export const routes: Routes = [
     // Ruta por defecto: cuando entran a '/', van al home
@@ -15,6 +17,9 @@ export const routes: Routes = [
     { path:'login', component:LoginComponent, canActivate: [guestGuard] },
     { path:'registro', component:RegistroComponent, canActivate: [guestGuard]},
     { path:'quien-soy', component:QuienSoyComponent, canActivate: [authGuard] }, // <-- Ruta protegida},
+
+    {path:'home/ahorcado', component: AhorcadoComponent, canActivate: [authGuard]},
+    {path:'home/mayor-menor', component: MayorMenor, canActivate: [authGuard]},
     
 
     // Comodín: cualquier ruta que no existe → home

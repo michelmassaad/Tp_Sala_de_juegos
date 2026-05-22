@@ -1,49 +1,61 @@
-<div class="container py-5">
+<div class="home-wrapper content-fade-in">
 
-  <div class="mb-5 text-center">
-    <h1 class="fun-title display-5 mb-2">¡Bienvenido, {{ authService.nombreUsuario() }}!</h1>
-    <p class="text-secondary fs-5">Elegí un juego y empezá a jugar.</p>
-  </div>
+  <!-- ══ HERO ══ -->
+  <section class="home-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <h1 class="hero-title hero-name">
+        ¡HOLA, <span class="hero-name">{{ authService.nombreUsuario() | uppercase}}</span>!
+      </h1>
+      <p class="hero-sub">Elegí tu próximo desafío y sumá monedas</p>
+    </div>
+  </section>
 
-  <div class="row g-4 justify-content-center">
-    
-    @for (juego of juegos; track juego.ruta) {
-      <div class="col-12 col-sm-6 col-lg-3">
-        <div class="card custom-card h-100 text-center p-4">
-          
-          <img 
-            [src]="juego.urlImagen" 
-            [alt]="juego.nombre" 
-            class="game-img mb-3 mx-auto">
-          
-          <h5 class="fw-bold mb-2" style="color: var(--text-main);">{{ juego.nombre }}</h5>
-          <p class="text-secondary small mb-4">{{ juego.descripcion }}</p>
-          
-          <a [routerLink]="juego.ruta" class="btn btn-accent fw-bold mt-auto py-2">
-            <i class="bi bi-play-fill me-1"></i>Jugar
-          </a>
-          
-        </div>
-      </div>
-    }
-    
-  </div>
+  <!-- ══ GRILLA DE JUEGOS ══ -->
+  <section class="games-section">
+    <div class="games-grid">
 
-  <div class="d-flex gap-3 justify-content-center mt-5 flex-wrap">
-    
-    <a routerLink="/resultados" class="btn btn-custom-outline px-4 py-2">
-      <i class="bi bi-trophy-fill me-2"></i>Ver Resultados
+      @for (juego of juegos; track juego.ruta) {
+        <a [routerLink]="juego.ruta" class="game-card">
+
+          <!-- Borde superior animado -->
+          <div class="card-top-bar"></div>
+
+          <!-- Badge estado -->
+          <span class="card-badge tech-font">DISPONIBLE</span>
+
+          <!-- Imagen -->
+          <div class="card-img-area">
+            <div class="card-img-grid"></div>
+            <img [src]="juego.urlImagen" [alt]="juego.nombre" class="card-img-game">
+          </div>
+
+          <!-- Info -->
+          <div class="card-body">
+            <h3 class="card-title tech-font">{{ juego.nombre }}</h3>
+            <p class="card-desc">{{ juego.descripcion }}</p>
+            <div class="card-play tech-font">
+              <i class="bi bi-play-fill me-1"></i> JUGAR
+              <i class="bi bi-arrow-right ms-auto"></i>
+            </div>
+          </div>
+
+        </a>
+      }
+
+    </div>
+  </section>
+
+  <!-- ══ ACCIONES ══ -->
+  <section class="home-actions">
+    <a routerLink="/resultados" class="action-btn">
+      <i class="bi bi-trophy-fill"></i>
+      <span class="tech-font">LEADERBOARD</span>
     </a>
-
-    <!-- perfil de usuario -->
-    <a routerLink="/perfil" class="btn btn-custom-outline px-4 py-2">
-      <i class="bi bi-person-circle me-2"></i>Perfil
+    <a routerLink="/perfil" class="action-btn">
+      <i class="bi bi-person-circle"></i>
+      <span class="tech-font">MI PERFIL</span>
     </a>
-    
-    <!-- <a routerLink="/quien-soy" class="btn btn-custom-outline px-4 py-2">
-      <i class="bi bi-person-circle me-2"></i>Quién Soy -->
-    <!-- </a> -->
-    
-  </div>
+  </section>
 
 </div>

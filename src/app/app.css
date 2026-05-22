@@ -2,7 +2,6 @@
 .app-layout {
   position: relative;
   overflow-x: hidden; /* Evita que aparezca la barra de scroll horizontal */
-  /* Eliminamos el display: flex y el min-height que rompían tu diseño */
 }
 
 /* ── ZONA DE JUEGO / CONTENIDO ── */
@@ -39,7 +38,7 @@
   right: 0;
 }
 
-/* ── BOTÓN DE ABRIR/CERRAR (Burbuja Flotante) ── */
+/* ── BOTÓN DE ABRIR/CERRAR (Burbuja Flotante en Escritorio) ── */
 .chat-toggle-btn {
   position: fixed;
   bottom: 30px;
@@ -93,4 +92,31 @@
 .chat-close-btn:hover {
   color: var(--accent-primary);
   transform: scale(1.1);
+}
+/* ═══════════════════════════════════════════════
+   MÓDULO RESPONSIVE UNIFICADO PARA CELULARES (TRUCO CSS)
+   ═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Achicamos la burbuja del chat flotante cuando el juego está visible */
+  .chat-toggle-btn {
+    width: 42px !important;
+    height: 42px !important;
+    bottom: 12px !important;
+    right: 12px !important;
+    font-size: 1.1rem !important;
+  }
+
+.chat-sidebar {
+  position: fixed;
+  top: 50%; /* Justo debajo de tu navbar */
+  right: -350px; /* Escondido afuera de la pantalla por defecto */
+  width: 350px;
+  height: calc(100vh - 50%); /* Ocupa la mitad inferior de la pantalla */
+  background: rgba(14, 17, 23, 0.95); /* Tu fondo oscuro */
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 12px 12px 0 0; /* Bordes redondeados solo en la parte superior */
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1040;
+}
 }

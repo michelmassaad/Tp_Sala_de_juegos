@@ -7,7 +7,7 @@ import { Mensaje } from '../models/models';
 export class ChatService {
   private supabase = inject(SupabaseService).getClient();
   private authService = inject(AuthService);
-  private zone = inject(NgZone); 
+  private zone = inject(NgZone); // NgZone es un servicio de Angular que se encarga de detectar y gestionar los cambios en la aplicación
 
   public mensajes = signal<Mensaje[]>([]);
 
@@ -30,9 +30,9 @@ export class ChatService {
       .channel('sala-publica')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sala-chat' }, 
       (payload) => { 
-        // Forzamos la sincronización inmediata con la zona de Angular
+        // Forzamos la sincronización inmediata con la zona de Angular para evitar problemas de detección de cambios
         this.zone.run(() => {
-          // Extraemos el mensaje recién insertado y confirmado por la DB
+          // Extraemos el mensaje recién insertado y confirmado por la DB 
           const nuevoMensaje = payload.new as Mensaje;
           
           // Lo agregamos al final del Signal en milisegundos sin volver a descargar todo

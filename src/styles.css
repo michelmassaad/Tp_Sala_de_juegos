@@ -12,7 +12,8 @@
   --black: #000000;
   --accent-primary: #6ee7f7;
   --accent-secondary: #a78bfa;
-  --accent-logo: #34d3b6;
+  --accent-logo: #6ee7f7;
+  --accent-logo-rgb: 110,231,247;
   --accent-primary-rgb: 110,231,247;
   --white-rgb: 255,255,255;
   --black-rgb: 0,0,0;
@@ -31,13 +32,15 @@ body {
 
 /* === TIPOGRAFÍA === */
 .fun-title {
-  font-family: 'Kanit', sans-serif;
-  font-weight: 700;
-  letter-spacing: 1px;
-  letter-spacing: 1px;
-  color: var(--accent-logo) !important; 
-  /* Sombra alimentada por variable negra */
-  text-shadow: 2px 2px 4px rgba(var(--black-rgb), 0.8); 
+font-family: 'Righteous', cursive; /* La misma fuente del H1 del Home */
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: var(--accent-logo) !important;
+  text-transform: uppercase;
+    /* 🌟 EFECTO DEGRADADO ARCADE (Sincronizado con el tope de las cards) */
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* === SOBREESCRITURAS CLAVES DE BOOTSTRAP === */

@@ -1,0 +1,206 @@
+<div class="ahorcado-wrapper" [class.shake-effect]="errorDetectado()">
+  <div class="canvas-texture"></div>
+@if (!juegoIniciado()) {
+  <div class="menu-screen animate-fade-in">
+    
+    <div class="menu-header text-center mb-4">
+      <h1 class="title-neon fun-title glitch-text mb-2">AHORCADO</h1>
+      <p class="hero-sub fs-5 text-uppercase tracking-wide text-purple-muted">Elegí una categoría para empezar</p>
+    </div>
+
+    <div class="categories-grid">
+      @for (cat of categorias; track cat.id) {
+        <div class="category-card" (click)="seleccionarCategoria(cat.id)">
+          <div class="card-top-bar"></div>
+          <span class="card-badge tech-font">{{ cat.badge }}</span>
+          
+          <div class="card-img-area">
+            <div class="card-img-grid"></div>
+            <span class="category-emoji-huge">{{ cat.emoji }}</span>
+          </div>
+          
+          <div class="card-body-mini">
+            <h3 class="card-title tech-font">{{ cat.nombre }}</h3>
+            <p class="card-desc">{{ cat.descripcion }}</p>
+            
+            <div class="cat-action-play tech-font">
+              SELECCIONAR <i class="bi bi-arrow-right ms-auto"></i>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="menu-actions mt-5 text-center">
+      <button class="action-btn-back tech-font" (click)="volver()">
+        <i class="bi bi-arrow-left me-2"></i> VOLVER AL INICIO
+      </button>
+    </div>
+
+  </div>
+}
+
+
+  @if (juegoIniciado()) {
+
+    <div class="game-hud">
+      <div class="hud-meta">
+        <span class="hud-cat tech-font">{{ categoriaActual() }}</span>
+        <span class="hud-nivel fun-title">NIVEL {{ nivelActual() }}</span>
+      </div>
+
+      <div class="hud-lives">
+        @for (i of [1,2,3,4,5,6]; track i) {
+          <i class="bi"
+             [class.bi-heart-fill]="i <= intentosRestantes()"
+             [class.bi-heart]="i > intentosRestantes()"
+             [class.life-active]="i <= intentosRestantes()"
+             [class.life-lost]="i > intentosRestantes()">
+          </i>
+        }
+      </div>
+
+      <div class="hud-right">
+        <span class="pts-badge timer-badge tech-font">
+          <i class="bi bi-stopwatch me-1 text-info"></i>{{ tiempoFormateado() }}
+        </span>
+        <span class="pts-badge tech-font" title="Tus Monedas">
+          <i class="bi bi-coin text-warning me-1"></i>{{ monedas() }}
+          <span class="d-none d-sm-inline ms-1">MONEDAS</span>
+        </span>
+        <button class="btn-menu-hud tech-font" (click)="irAlMenu()" title="Volver al Menú">
+          <i class="bi bi-grid-fill"></i> 
+          <span class="texto-btn-hud ms-1">MENÚ</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="game-arena animate-fade-in">
+      
+      <div class="arena-top-layout">
+        
+        <div class="arena-left">
+          <div class="hangman-frame">
+            <img [src]="imagenesAhorcado[partesMostradas()]"
+                 class="hangman-img-big" alt="Ahorcado">
+          </div>
+
+          <div class="wrong-zone">
+            <span class="wrong-label tech-font">LETRAS INCORRECTAS</span>
+            <div class="wrong-chips">
+              @for (l of letrasIncorrectas(); track l) {
+                <span class="chip-fail tech-font">{{ l }}</span>
+              }
+              @if (letrasIncorrectas().length === 0) {
+                <span class="chip-none">— NINGUNA —</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="arena-right">
+          
+          <div class="word-display-box">
+            <div class="word-row">
+              @for (letra of palabraStr.split(''); track $index) {
+                <div class="word-tile" [class.tile-on]="letrasUsadas().has(letra)">
+                  <span>{{ letrasUsadas().has(letra) ? letra : '' }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="hint-panel">
+            <span class="hint-label tech-font">
+              <i class="bi bi-geo-alt-fill me-1"></i> PISTA DEL NIVEL
+            </span>
+            <p class="hint-text">"{{ palabraActual()?.pista }}"</p>
+          </div>
+
+          @if (!juegoTerminado()) {
+            <div class="utilities-row">
+              <button class="util-btn util-cyan tech-font"
+                      [disabled]="oraculoUsado() || monedas() < 50"
+                      (click)="comprarPista()">
+                <i class="bi bi-search me-1"></i> REVELAR LETRA
+                <span class="util-cost">-{{ config.costoPista }} <i class="bi bi-coin text-warning ms-1"></i></span>
+              </button>
+              <button class="util-btn util-purple tech-font"
+                      [disabled]="bombaUsada() || monedas() < 40"
+                      (click)="comprarBomba()">
+                <i class="bi bi-trash me-1"></i> ELIMINAR LETRAS
+                <span class="util-cost">-{{ config.costoBomba }} <i class="bi bi-coin text-warning ms-1"></i></span>
+              </button>
+            </div>
+          }
+        </div>
+
+      </div>
+
+      <div class="arena-bottom-zone">
+        
+        @if (!juegoTerminado()) {
+          <div class="teclado animate-fade-in">
+            @for (letra of letras; track letra) {
+              <button class="key"
+                      [class.key-ok]="yaUsada(letra) && esCorrecta(letra)"
+                      [class.key-fail]="yaUsada(letra) && !esCorrecta(letra)"
+                      [disabled]="yaUsada(letra)"
+                      (click)="elegirLetra(letra)">
+                {{ letra }}
+              </button>
+            }
+          </div>
+        }
+
+        @if (juegoTerminado()) {
+  <div class="result-screen-overlay animate-fade-in" 
+       [class.overlay-win]="victoria()" 
+       [class.overlay-lose]="derrota()">
+    
+    <div class="result-card animate-scale-up">
+      
+      <div class="result-icon-badge">
+        @if (victoria()) {
+          <i class="bi bi-trophy-fill text-win-neon"></i>
+        }
+        @if (derrota()) {
+          <i class="bi bi-skull-fill text-lose-neon"></i>
+        }
+      </div>
+
+      <div class="result-header-text mt-3">
+        @if (victoria()) {
+          <h2 class="fun-title text-win-neon glitch-text">¡VICTORIA!</h2>
+          <div class="decoded-box border-win">
+            <span class="decoded-label tech-font">PALABRA DESENCRIPTADA</span>
+            <strong class="decoded-word text-light">{{ palabraStr }}</strong>
+          </div>
+        }
+        @if (derrota()) {
+          <h2 class="fun-title text-lose-neon glitch-text">GAME OVER</h2>
+          <div class="decoded-box border-lose">
+            <span class="decoded-label tech-font">LA PALABRA ERA</span>
+            <strong class="decoded-word text-light">{{ palabraStr }}</strong>
+          </div>
+        }
+      </div>
+
+      <div class="result-actions-zone mt-4">
+        <button class="btn-result-arcade-sec tech-font" (click)="irAlMenu()">
+          <i class="bi bi-grid-fill me-2"></i> CATEGORÍAS
+        </button>
+        <button class="btn-result-arcade-main tech-font" (click)="lanzarNuevaPalabra()">
+          <i class="bi bi-controller me-2"></i> JUGAR OTRA VEZ
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
+
+      </div>
+    </div>
+
+  }
+</div>

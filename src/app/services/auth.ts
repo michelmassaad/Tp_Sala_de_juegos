@@ -63,7 +63,8 @@ export class AuthService {
       email: supabaseUser.email ?? '',
       nombre: metadata.nombre ?? '',
       apellido: metadata.apellido ?? '',
-      edad: metadata.edad ?? 0
+      edad: metadata.edad ?? 0,
+      monedas: metadata.monedas ?? 0
     });
   }
 
@@ -107,7 +108,8 @@ export class AuthService {
         data: {
           nombre: datosUsuario.nombre,
           apellido: datosUsuario.apellido,
-          edad: datosUsuario.edad
+          edad: datosUsuario.edad,
+          monedas: 100 // Le damos 100 monedas de regalo a cada nuevo usuario :)
         }
       }
     });
@@ -145,5 +147,31 @@ export class AuthService {
   esRutaAuth(): boolean {
     return this.router.url.includes('/login') || this.router.url.includes('/registro');
   }
+
+  // 🌟 Agregá este método al final de tu AuthService:
+async actualizarMonedas(cantidad: number): Promise<boolean> {
+  const usuarioActual = this.user();
+  if (!usuarioActual) return false;
+
+  // Calculamos el nuevo saldo evitando que quede en negativo
+  const nuevasMonedas = Math.max(0, usuarioActual.monedas + cantidad);
+
+  // 1. Modificamos nuestro Signal ("Megáfono") local para que la UI cambie al instante
+  this.user.set({
+    ...usuarioActual,
+    monedas: nuevasMonedas
+  });
+
+  // 2. Lo guardamos en los metadatos de Supabase Auth para que sobreviva al F5
+  const { error } = await this.supabase.getClient().auth.updateUser({
+    data: { monedas: nuevasMonedas }
+  });
+
+  if (error) {
+    console.error('Error al sincronizar billetera en Supabase:', error.message);
+    return false;
+  }
+  return true;
+}
 
 }
