@@ -965,7 +965,6 @@ flex: 1;
 
   .arena-top-layout {
     gap: 8px !important;
-    grid-template-columns: 60% 40%;
   }
 
   .word-display-box {
