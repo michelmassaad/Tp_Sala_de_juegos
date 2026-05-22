@@ -20,7 +20,7 @@ export class HomeComponent {
       nombre: 'Ahorcado',
       descripcion: 'Juego para adivinar una palabra oculta por letras.',
       ruta: '/home/ahorcado',
-      urlImagen: 'ahorcado-6.png'
+      urlImagen: '/ahorcado/ahorcado.png'
     },
     {
       nombre: 'Mayor o Menor',

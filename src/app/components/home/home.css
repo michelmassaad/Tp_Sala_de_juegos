@@ -184,18 +184,25 @@
 }
 
 .card-img-game {
-  height: 80%;
-  width: auto;
-  object-fit: contain;
+/* 🚀 EL FIX: Forzamos a la imagen a ocupar el 100% del contenedor superior */
+  width: 100% !important;
+  height: 100% !important;
+  
+  /* 🌟 LA MAGIA: Actúa como un fondo de pantalla (wallpaper) adaptándose de borde a borde 
+     sin estirar ni deformar las proporciones del pixel art */
+  object-fit: cover; 
+  
   position: relative;
   z-index: 1;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease;
   filter: drop-shadow(0 4px 8px rgba(var(--black-rgb), 0.5));
 }
 
 .game-card:hover .card-img-game {
-  transform: scale(1.12) translateY(-3px);
-  filter: drop-shadow(0 0 12px rgba(var(--accent-primary-rgb), 0.5));
+/* 🎮 Bajamos el zoom de 1.12 a 1.05 para que al pasar el mouse 
+     haga un efecto de aproximación sutil pero NO te recorte los textos internos de la imagen */
+  transform: scale(1.05);
+  filter: brightness(1.1) drop-shadow(0 0 15px rgba(var(--accent-primary-rgb), 0.3));
 }
 
 .card-body {

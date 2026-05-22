@@ -102,8 +102,8 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   readonly config = CONFIG_ECONOMIA;
 
   public imagenesAhorcado = [
-    '/ahorcado-0.png', '/ahorcado-1.png', '/ahorcado-2.png',
-    '/ahorcado-3.png', '/ahorcado-4.png', '/ahorcado-5.png', '/ahorcado-6.png'
+    '/ahorcado/ahorcado-0.png', '/ahorcado/ahorcado-1.png', '/ahorcado/ahorcado-2.png',
+    '/ahorcado/ahorcado-3.png', '/ahorcado/ahorcado-4.png', '/ahorcado/ahorcado-5.png', '/ahorcado/ahorcado-6.png'
   ];
 
   readonly letras = LETRAS;

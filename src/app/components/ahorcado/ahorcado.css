@@ -421,7 +421,7 @@ flex: 1;
 }
 
 @media (min-width: 769px) {
-  .result-screen-overlay { padding-left: 45% !important; padding-bottom: 9%; }
+  .result-screen-overlay { padding-left: 45% !important;  }
   .game-arena:has(.result-screen-overlay) .arena-left { position: relative; z-index: 110; pointer-events: none; }
 }
 
@@ -438,13 +438,13 @@ flex: 1;
 }
 
 .overlay-win .result-card {
-  border-color: rgba(74, 222, 128, 0.35);
-  box-shadow: 0 0 30px rgba(74, 222, 128, 0.15), 0 20px 50px rgba(0, 0, 0, 0.6);
+  border-color: rgba(74, 222, 128, 0.35) !important;
+  box-shadow: 0 0 30px rgba(74, 222, 128, 0.15), 0 20px 50px rgba(0, 0, 0, 0.6) !important;
 }
 
 .overlay-lose .result-card {
-  border-color: rgba(248, 113, 113, 0.35);
-  box-shadow: 0 0 30px rgba(248, 113, 113, 0.15), 0 20px 50px rgba(0, 0, 0, 0.6);
+  border-color: rgba(248, 113, 113, 0.35) !important;
+  box-shadow: 0 0 30px rgba(248, 113, 113, 0.15), 0 20px 50px rgba(0, 0, 0, 0.6) !important;
 }
 
 .result-icon-badge {
@@ -669,6 +669,7 @@ flex: 1;
     border-radius: 4px;
     box-shadow: 0 2px 0 rgba(0,0,0,0.4);
   }
+  .result-screen-overlay { padding-top: 0px; backdrop-filter: blur(0px); background: rgba(10, 12, 16, 0.30); }
 
   /* Calibración fina para resoluciones pequeñas */
   @media (max-width: 550px) {
@@ -677,8 +678,9 @@ flex: 1;
     .pts-badge, .btn-menu-hud { padding: 2px 4px; }
     .utilities-row { flex-direction: row; gap: 4px; }
     .util-btn { width: 100%; padding: 10px; }
-    .result-screen-overlay { padding-top: 0px; }
   }
+
+
 
   @media (max-width: 450px) {
     .game-hud { font-size: 0.85rem; }
@@ -697,7 +699,7 @@ flex: 1;
   .utilities-row { flex-direction: row; gap: 2px; }
   .util-btn { width: 100%; padding: 10px; }
   .key { width: 32px; height: 36px; font-size: 0.8rem; }
-  .result-screen-overlay { padding-top: 0px; }
+  .result-screen-overlay { padding-top: 0px; backdrop-filter: blur(0px); background: rgba(10, 12, 16, 0.30);}
 }
 
 @media (max-width: 450px) {
@@ -707,4 +709,202 @@ flex: 1;
   .texto-btn-hud { display: none; }
   .pts-badge, .btn-menu-hud { padding: 0.35rem 0.5rem; font-size: 0.85rem; }
   .btn-menu-hud i { margin-right: 0 !important; }
+}
+/* ======================================================= */
+/* 5. PANTALLA DE RESULTADO ARCADE (MODAL MODULAR AISLADO) */
+/* ======================================================= */
+
+.result-screen-overlay {
+  position: absolute;
+  inset: 0; 
+  background: rgba(10, 12, 16, 0.85); 
+  backdrop-filter: blur(8px); 
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado en celular */
+  z-index: 100;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto !important; /* Evita recortes si la pantalla es muy petisa */
+}
+
+/* Alineación Flex fluida exclusiva para computadoras (Evita superposiciones) */
+@media (min-width: 769px) {
+  .result-screen-overlay { 
+    justify-content: flex-end !important; 
+    padding-right: 6% !important; 
+  }
+  .game-arena:has(.result-screen-overlay) .arena-left { 
+    position: relative; 
+    z-index: 110; 
+    pointer-events: none; 
+  }
+}
+
+/* ── LA NUEVA TARJETA DE RESULTADOS PROPIA ── */
+.arcade-result-card {
+  background: var(--bg-card) !important;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100% !important;
+  max-width: 410px !important; /* Ancho perfecto en PC */
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  flex-shrink: 0; 
+  margin: auto;
+}
+
+/* Manejo seguro de la barra neón sin interferencia de degradados externos */
+.arcade-result-card .result-top-bar {
+  height: 3px;
+  width: 100%;
+}
+.overlay-win .result-top-bar { background: #4ade80 !important; box-shadow: 0 0 12px #4ade80; }
+.overlay-lose .result-top-bar { background: #f87171 !important; box-shadow: 0 0 12px #f87171; }
+
+/* Contenedor adaptativo para la escena del muñequito */
+.result-img-container {
+  width: 100%;
+  height: clamp(130px, 22vh, 200px) !important; /* Dinámico según el alto de la pantalla */
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.result-grid-texture {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.result-character-img {
+  max-height: 100% !important; 
+  max-width: 100% !important;
+  object-fit: contain !important; 
+  image-rendering: pixelated;     
+  z-index: 2;
+}
+
+/* Badge interno de estado */
+.result-status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border-radius: 4px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  z-index: 2;
+}
+.overlay-win .result-status-badge { background: rgba(74, 222, 128, 0.12) !important; border: 1px solid rgba(74, 222, 128, 0.4) !important; color: #4ade80 !important; }
+.overlay-lose .result-status-badge { background: rgba(248, 113, 113, 0.12) !important; border: 1px solid rgba(248, 113, 113, 0.4) !important; color: #f87171 !important; }
+
+/* Cuerpo de la carta */
+.result-body-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.result-main-title {
+  font-size: clamp(1.3rem, 2.5vh, 1.65rem);
+  font-family: 'Righteous', cursive;
+  text-transform: uppercase;
+}
+.text-win-neon { color: #4ade80 !important; text-shadow: 0 0 8px rgba(74, 222, 128, 0.4) !important; }
+.text-lose-neon { color: #f87171 !important; text-shadow: 0 0 8px rgba(248, 113, 113, 0.4) !important; }
+
+/* Caja de métricas */
+.result-metrics-box {
+  background: rgba(0, 0, 0, 0.4) !important; 
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-radius: 12px;
+  padding: 4px 14px;
+}
+
+.metric-item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem !important; 
+  padding: 10px 0 !important;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+.metric-item-card.no-border { border-bottom: none; }
+.metric-item-card .text-muted { color: #94a3b8 !important; }
+.metric-item-card .text-light { color: #f8fafc !important; }
+.metric-item-card .text-info { color: #22d3ee !important; }
+.overlay-lose .metric-item-card span.text-muted { color: #64748b !important; }
+.metric-item-card .font-mono { font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+
+/* ── BOTONES PROPIOS DE LA TARJETA DE RESULTADO ── */
+.btn-result-primary {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(110, 231, 247, 0.06) !important;
+  border: 1px solid rgba(110, 231, 247, 0.4) !important;
+  color: #6ee7f7 !important;
+  font-size: 0.9rem !important;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.btn-result-primary:hover { 
+  background: #6ee7f7 !important; 
+  color: #0e1117 !important; 
+  box-shadow: 0 0 15px rgba(110, 231, 247, 0.4) !important; 
+}
+
+.btn-result-secondary {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94a3b8 !important;
+  font-size: 0.85rem !important;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.btn-result-secondary:hover { 
+  background: rgba(255, 255, 255, 0.08) !important; 
+  color: #ffffff !important; 
+  border-color: rgba(255, 255, 255, 0.2) !important; 
+}
+
+/* 📱 PROTECCIÓN RESPONSIVA PARA SMARTPHONES (768px o menos) */
+@media (max-width: 768px) {
+  .arcade-result-card {
+    max-width: 310px !important; /* Retorna a su escala compacta sin scroll */
+  }
+  .result-img-container {
+    height: 130px !important;
+  }
+  .result-body-content {
+    padding: 16px;
+  }
+  .result-main-title { font-size: 1.25rem !important; }
+  .result-card .result-word-display strong { font-size: 1.45rem !important; }
+  .metric-item-card { font-size: 0.78rem !important; padding: 8px 0 !important; }
 }
