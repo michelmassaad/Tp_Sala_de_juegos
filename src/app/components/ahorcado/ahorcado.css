@@ -123,10 +123,12 @@ flex: 1;
 
 .arena-top-layout {
   display: grid;
-  grid-template-columns: 35% 65%; 
+  grid-template-columns: 50% 50%; 
   gap: 20px;
   padding-right: 20px;
   min-height: 0;
+  /* 🌟 AGREGA ESTO: */
+  flex: 1 !important; /* Permite que esta sección crezca para llenar el espacio disponible */
 }
 
 .arena-left {
@@ -145,7 +147,7 @@ flex: 1;
   border: 1px solid rgba(var(--accent-primary-rgb), 0.25);
   border-radius: 16px;
   overflow: hidden;
-  min-height: 0;
+  min-height: 160px;
 }
 
 .hangman-img-big {
@@ -161,13 +163,14 @@ flex: 1;
 .wrong-zone {
   flex-shrink: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
   background: rgba(var(--black-rgb), 0.2);
   border: 1px solid rgba(var(--white-rgb), 0.06);
   border-radius: 12px;
-  padding: 12px;
+  padding: 5px;
+  min-height: 50px;
 }
 
 .wrong-label {
@@ -239,10 +242,13 @@ flex: 1;
   width: 100%;
   max-width: 100%;
 }
-
 .word-tile {
-  width: clamp(28px, 5vw, 46px); 
-  height: clamp(34px, 6vw, 52px);
+  /* Se ajusta solo según el ancho del viewport, sin queries */
+  width: clamp(24px, 4.5vw, 52px);
+  height: clamp(30px, 5.5vw, 60px);
+  font-size: clamp(0.8rem, 3vw, 1.8rem);
+
+  /* El resto queda igual */
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -254,9 +260,8 @@ flex: 1;
   color: transparent;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
   transition: all 0.2s ease;
-  flex-shrink: 1; 
-  font-size: clamp(0.9rem, 3.5vw, 1.5rem); 
-  padding: clamp(2px, 0.5vw, 4px);
+  flex-shrink: 1;
+  padding: clamp(2px, 0.4vw, 4px);
 }
 
 .word-tile.tile-on {
@@ -289,7 +294,7 @@ flex: 1;
 }
 
 .hint-text {
-  font-size: 1.1rem; 
+  font-size: 0.9rem; 
   color: #e2e8f0; 
   margin: 0;
   line-height: 1.4;
@@ -306,7 +311,7 @@ flex: 1;
   flex: 1;
   padding: 12px;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -421,8 +426,13 @@ flex: 1;
 }
 
 @media (min-width: 769px) {
-  .result-screen-overlay { padding-left: 45% !important;  }
-  .game-arena:has(.result-screen-overlay) .arena-left { position: relative; z-index: 110; pointer-events: none; }
+  .result-screen-overlay { 
+    padding-left: 51% !important; 
+
+  }
+  
+  
+    .game-arena:has(.result-screen-overlay) .arena-left { position: relative; z-index: 110; pointer-events: none; }
 }
 
 .result-card {
@@ -556,12 +566,10 @@ flex: 1;
 @media (min-width: 1400px) {
   .arena-top-layout { grid-template-columns: 46% 54%; }
   .hangman-img-big { max-height: 95%; max-width: 95%; }
-  .word-tile { width: 58px; height: 64px; font-size: 1.8rem; border-width: 3px; }
 }
 
 @media (max-width: 1199px) and (min-width: 769px) {
-  .arena-top-layout { grid-template-columns: 41% 59%; }
-  .word-tile { width: 40px; height: 46px; font-size: 1.3rem; }
+  .arena-top-layout { grid-template-columns: 50% 50%; }
 }
 /* ======================================================= */
 /* 📱 REDISEÑO MOBILE RECALIBRADO (SCROLL LIBRE EN MENÚ)   */
@@ -628,16 +636,10 @@ flex: 1;
   .word-display-box { 
     flex: none !important;     /* Evitamos que actúe como acordeón expandiéndose */
     height: auto !important;   /* Forzamos a que se cierre sobre las letras */
-    min-height: 65px !important; 
+    min-height: 100px !important; 
     padding: 10px !important;  /* Margen interno ajustado */
   }
   
-  .word-tile {
-    width: clamp(24px, 6.5vw, 36px); 
-    height: clamp(30px, 8.5vw, 42px);
-    border-radius: 6px;
-    font-size: clamp(0.85rem, 4vw, 1.2rem); 
-  }
   
   /* Pistas y utilidades compactas */
   .hint-panel { padding: 8px 12px; }
@@ -669,7 +671,8 @@ flex: 1;
     border-radius: 4px;
     box-shadow: 0 2px 0 rgba(0,0,0,0.4);
   }
-  .result-screen-overlay { padding-top: 0px; backdrop-filter: blur(0px); background: rgba(10, 12, 16, 0.30); }
+  .result-screen-overlay { padding-top: 0px; backdrop-filter: blur(0px) !important; background: rgba(10, 12, 16, 0.30) !important; }
+
 
   /* Calibración fina para resoluciones pequeñas */
   @media (max-width: 550px) {
@@ -751,11 +754,14 @@ flex: 1;
   display: flex;
   flex-direction: column;
   width: 100% !important;
-  max-width: 410px !important; /* Ancho perfecto en PC */
+  max-width: 380px !important; /* Ancho perfecto en PC */
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
   flex-shrink: 0; 
   margin: auto;
 }
+
+.arcade-result-card .mt-3 { margin-top: 10px !important; }
+.arcade-result-card .mt-4 { margin-top: 14px !important; }
 
 /* Manejo seguro de la barra neón sin interferencia de degradados externos */
 .arcade-result-card .result-top-bar {
@@ -768,7 +774,7 @@ flex: 1;
 /* Contenedor adaptativo para la escena del muñequito */
 .result-img-container {
   width: 100%;
-  height: clamp(130px, 22vh, 200px) !important; /* Dinámico según el alto de la pantalla */
+  height: clamp(110px, 17vh, 155px) !important; /* Dinámico según el alto de la pantalla */
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
@@ -813,10 +819,10 @@ flex: 1;
 
 /* Cuerpo de la carta */
 .result-body-content {
-  padding: 20px;
+  padding: 14px 20px 20px 20px !important;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .result-main-title {
@@ -840,7 +846,7 @@ flex: 1;
   justify-content: space-between;
   align-items: center;
   font-size: 0.88rem !important; 
-  padding: 10px 0 !important;
+  padding: 8px 0 !important;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
 }
 .metric-item-card.no-border { border-bottom: none; }
@@ -855,7 +861,7 @@ flex: 1;
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border-radius: 8px;
   background: rgba(110, 231, 247, 0.06) !important;
   border: 1px solid rgba(110, 231, 247, 0.4) !important;
@@ -876,7 +882,7 @@ flex: 1;
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px;
+  padding: 9px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.03) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -896,15 +902,98 @@ flex: 1;
 /* 📱 PROTECCIÓN RESPONSIVA PARA SMARTPHONES (768px o menos) */
 @media (max-width: 768px) {
   .arcade-result-card {
-    max-width: 310px !important; /* Retorna a su escala compacta sin scroll */
+    max-width: 300px !important; /* Retorna a su escala compacta sin scroll */
   }
   .result-img-container {
-    height: 130px !important;
+    height: 120px !important;
   }
   .result-body-content {
-    padding: 16px;
+    padding: 6px 0;
   }
   .result-main-title { font-size: 1.25rem !important; }
   .result-card .result-word-display strong { font-size: 1.45rem !important; }
   .metric-item-card { font-size: 0.78rem !important; padding: 8px 0 !important; }
+}
+
+
+
+/* ═══════════════════════════════════════════════
+   🛡️ PROTECCIÓN PARA PANTALLAS BAJAS / CHAT ABIERTO
+   ═══════════════════════════════════════════════ */
+
+/* Para pantallas medianamente bajas (Notebooks normales o pantallas con herramientas de dev abiertas) */
+@media (max-height: 740px) {
+  .game-arena {
+    padding: 10px 16px !important;
+    gap: 10px !important;
+  }
+
+  .arena-top-layout {
+    gap: 12px !important;
+  }
+
+  .word-display-box {
+    padding: 12px !important;
+  }
+
+  .hint-panel {
+    padding: 10px 16px !important;
+  }
+
+  .hint-text {
+    font-size: 0.9rem !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Reducimos la altura del teclado para recuperar toneladas de espacio vertical */
+  .key {
+    height: 34px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .arena-bottom-zone {
+    padding: 8px !important;
+  }
+}
+
+/* Para pantallas críticamente bajas (Laptops viejas o ventanas ultra comprimidas) */
+@media (max-height: 620px) {
+  .game-arena {
+    padding: 6px 12px !important;
+    gap: 6px !important;
+  }
+
+  .arena-top-layout {
+    gap: 8px !important;
+    grid-template-columns: 60% 40%;
+  }
+
+  .word-display-box {
+    padding: 8px !important;
+    min-height: 100px !important;
+  }
+
+  .hint-panel {
+    padding: 6px 12px !important;
+  }
+
+  .hint-label {
+    margin-bottom: 2px !important;
+  }
+
+  .hint-text {
+    font-size: 0.85rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .utilities-row .util-btn {
+    padding: 6px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Teclado ultra compacto modo supervivencia */
+  .key {
+    height: 28px !important;
+    font-size: 0.8rem !important;
+  }
 }

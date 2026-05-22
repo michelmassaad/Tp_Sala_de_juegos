@@ -86,13 +86,12 @@
           </div>
 
           <div class="wrong-zone">
-            <span class="wrong-label tech-font">LETRAS INCORRECTAS</span>
             <div class="wrong-chips">
               @for (l of letrasIncorrectas(); track l) {
                 <span class="chip-fail tech-font">{{ l }}</span>
               }
               @if (letrasIncorrectas().length === 0) {
-                <span class="chip-none">— NINGUNA —</span>
+                <span class="chip-none">— LETRAS INCORRECTAS —</span>
               }
             </div>
           </div>
