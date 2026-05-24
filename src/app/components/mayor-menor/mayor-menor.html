@@ -1,1 +1,124 @@
-<p>mayor-menor works!</p>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-7">
+
+            <!-- Header -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <button class="btn btn-custom-outline btn-sm px-3" (click)="volver()">
+                    <i class="bi bi-arrow-left me-1"></i> Volver
+                </button>
+                <h2 class="fun-title mb-0">Mayor o Menor</h2>
+                <div class="metric-row">
+                    <span class="metric-label">
+                        <i class="bi bi-stopwatch me-1"></i>Tiempo
+                    </span>
+                    <span class="metric-value metric-info">{{ cronometro.tiempoFormateado() }}</span>
+                </div>
+                <span class="badge bg-secondary">
+                    Ronda {{ ronda() }}/{{ 10 }}
+                </span>
+            </div>
+
+            <div class="card custom-card p-4">
+
+                <!-- Stats -->
+                <div class="d-flex justify-content-around mb-4">
+                    <div class="stat-box text-center">
+                        <span class="stat-num text-primary">{{ acertadas() }}</span>
+                        <span class="stat-label">Acertadas</span>
+                    </div>
+                    <div class="stat-box text-center">
+                        <span class="stat-num text-warning">{{ rachaActual() }}</span>
+                        <span class="stat-label">Racha</span>
+                    </div>
+                    <div class="stat-box text-center">
+                        <span class="stat-num text-success">{{ puntaje() }}</span>
+                        <span class="stat-label">Puntaje</span>
+                    </div>
+                </div>
+
+                @if (!juegoTerminado()) {
+
+                <!-- Cartas -->
+                <div class="cartas-area d-flex align-items-center justify-content-center gap-4 mb-5">
+
+                    <!-- Carta actual -->
+                    <div class="carta" [class.carta-roja]="esRoja(cartaActual()!.palo)">
+                        <span class="carta-valor-top">{{ cartaActual()?.nombre }}</span>
+                        <span class="carta-palo">{{ cartaActual()?.palo }}</span>
+                        <span class="carta-valor-bot">{{ cartaActual()?.nombre }}</span>
+                    </div>
+
+                    <!-- Resultado de la ronda -->
+                    <div class="resultado-icono">
+                        @if (ultimoResultado() === 'acierto') {
+                        <i class="bi bi-check-circle-fill text-success fs-2"></i>
+                        } @else if (ultimoResultado() === 'fallo') {
+                        <i class="bi bi-x-circle-fill text-danger fs-2"></i>
+                        } @else {
+                        <i class="bi bi-question-circle text-secondary fs-2"></i>
+                        }
+                    </div>
+
+                    <!-- Carta siguiente (oculta o revelada) -->
+                    <div class="carta" [class.carta-oculta]="!mostrarSiguiente()"
+                        [class.carta-roja]="mostrarSiguiente()&& esRoja(cartaSiguiente()!.palo)">
+                        @if (mostrarSiguiente()) {
+                        <span class="carta-valor-top">{{ cartaSiguiente()?.nombre }}</span>
+                        <span class="carta-palo">{{ cartaSiguiente()?.palo }}</span>
+                        <span class="carta-valor-bot">{{ cartaSiguiente()?.nombre }}</span>
+                        } @else {
+                        <span class="carta-palo">?</span>
+                        }
+                    </div>
+
+                </div>
+
+                <!-- Botones de elección -->
+                <div class="d-flex gap-3 justify-content-center">
+                    <button class="btn btn-mayor-menor btn-mayor" (click)="elegir('mayor')"
+                        [disabled]="mostrarSiguiente()">
+                        <i class="bi bi-arrow-up-circle-fill me-2 fs-5"></i>
+                        Mayor
+                    </button>
+                    <button class="btn btn-mayor-menor btn-menor" (click)="elegir('menor')"
+                        [disabled]="mostrarSiguiente()">
+                        <i class="bi bi-arrow-down-circle-fill me-2 fs-5"></i>
+                        Menor
+                    </button>
+                </div>
+
+                } @else {
+
+                <!-- Resultado final -->
+                <div class="text-center py-3">
+                    @if (acertadas() >= 5) {
+                    <p class="fs-1 mb-2">🏆</p>
+                    <h3 class="text-success fw-bold">¡Excelente!</h3>
+                    } @else {
+                    <p class="fs-1 mb-2">🃏</p>
+                    <h3 class="text-warning fw-bold">¡Buen intento!</h3>
+                    }
+                    <p class="text-secondary mb-1">Acertaste <strong class="text-primary">{{ acertadas() }}</strong> de
+                        10 cartas</p>
+                    <p class="text-secondary mb-4">Racha máxima: <strong class="text-warning">{{ rachaMaxima()
+                            }}</strong></p>
+                    <p class="fun-title fs-3 mb-4">Puntaje: {{ puntaje() }}</p>
+
+                    @if (guardando()) {
+                    <p class="text-muted small mb-3">
+                        <span class="spinner-border spinner-border-sm me-2"></span>Guardando resultado...
+                    </p>
+                    }
+
+                    <button class="btn btn-accent fw-bold px-5 py-2" (click)="nuevaPartida()">
+                        <i class="bi bi-arrow-repeat me-2"></i>Jugar de nuevo
+                    </button>
+                </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

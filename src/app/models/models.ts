@@ -52,4 +52,6 @@ export interface DetallesPartida {
   palabra?: string;               // Usado en Ahorcado
   letrasSeleccionadas?: number;   // Usado en Ahorcado
   errores?: number;               // Usado en Ahorcado
+  cartasAcertadas?:number;          // Usado en Mayor_Menor
+  rachaMaxima?:number;            // Usado en Mayor_Menor
 }

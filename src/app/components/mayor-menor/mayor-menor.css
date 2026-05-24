@@ -1,0 +1,130 @@
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-num {
+  font-family: 'Righteous', cursive;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Carta */
+.carta {
+  width: 90px;
+  height: 130px;
+  border-radius: 12px;
+  background: #fff;
+  color: #1a1a2e;
+  border: 2px solid rgba(var(--white-rgb), 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-weight: 900;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.carta-roja { color: #dc2626; }
+
+.carta-oculta {
+  background: linear-gradient(135deg, #1e3a5f, #0f2340);
+  color: var(--accent-primary);
+  border-color: rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.carta-valor-top {
+  position: absolute;
+  top: 8px; left: 10px;
+  font-size: 0.9rem;
+}
+
+.carta-palo {
+  font-size: 2rem;
+}
+
+.carta-valor-bot {
+  position: absolute;
+  bottom: 8px; right: 10px;
+  font-size: 0.9rem;
+  transform: rotate(180deg);
+}
+
+.resultado-icono {
+  width: 44px;
+  text-align: center;
+}
+
+/* Botones Mayor/Menor */
+.btn-mayor-menor {
+  padding: 12px 32px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1rem;
+  border: 2px solid;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+}
+
+.btn-mayor {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.4);
+  color: #4ade80;
+}
+
+.btn-mayor:hover:not(:disabled) {
+  background: rgba(74, 222, 128, 0.2);
+  border-color: #4ade80;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(74, 222, 128, 0.25);
+}
+
+.btn-menor {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #f87171;
+}
+
+.btn-menor:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.2);
+  border-color: #f87171;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(248, 113, 113, 0.25);
+}
+
+.btn-mayor-menor:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-custom-outline {
+  background: transparent;
+  border: 1px solid rgba(var(--white-rgb), 0.15);
+  color: var(--text-main);
+  transition: all 0.3s ease;
+}
+.btn-custom-outline:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.btn-accent {
+  background-color: var(--accent-primary);
+  color: var(--bg-base);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 576px) {
+  .carta { width: 72px; height: 105px; }
+  .carta-palo { font-size: 1.6rem; }
+}

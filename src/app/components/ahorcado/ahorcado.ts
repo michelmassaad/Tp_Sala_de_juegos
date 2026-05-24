@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ResultadosService } from '../../services/resultado';
 import { AuthService } from '../../services/auth';
 import { DetallesPartida } from '../../models/models';
+import { CronometroService } from '../../services/cronometro';
 
 interface PalabraJuego {
   palabra: string;
@@ -86,6 +87,7 @@ const BANCO_CATEGORIAS: CategoriaJuego[] = [
   selector: 'app-ahorcado',
   standalone: true,
   imports: [CommonModule, RouterModule],
+  providers: [CronometroService],
   templateUrl: './ahorcado.html',
   styleUrls: ['./ahorcado.css']
 })
@@ -94,6 +96,8 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService); 
   private resultadosService = inject(ResultadosService); 
   private scroller = inject(ViewportScroller);
+  public cronometro = inject(CronometroService);
+
   // En lugar de la señal, usamos el decorador tradicional
 @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
   
@@ -129,17 +133,6 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   bombaUsada     = signal(false);
 
   // ⏱️ CRONÓMETRO VISUAL E INTERNO
-  private tiempoInicio: number = 0;
-  private intervaloTimer: any; 
-  tiempoTranscurrido = signal(0); 
-  
-  tiempoFormateado = computed(() => {
-    const totalSegundos = this.tiempoTranscurrido();
-    const minutos = Math.floor(totalSegundos / 60).toString().padStart(2, '0');
-    const segundos = (totalSegundos % 60).toString().padStart(2, '0');
-    return `${minutos}:${segundos}`;
-  });
-
   get palabraStr(): string { return this.palabraActual()?.palabra ?? ''; }
 
   letrasAdivinadas = computed(() => this.palabraStr.split('').filter(l => this.letrasUsadas().has(l)));
@@ -157,7 +150,7 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
-    this.detenerCronometro();
+    this.cronometro.detenerCronometro();
   }
 
   seleccionarCategoria(cat: 'FÚTBOL' | 'VIDEOJUEGOS' | 'PELÍCULAS' | 'MÚSICA') {
@@ -186,24 +179,9 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
     this.oraculoUsado.set(false);
     this.bombaUsada.set(false);
 
-    this.iniciarCronometro(); 
+    this.cronometro.iniciarCronometro(); 
   }
 
-  iniciarCronometro() {
-    this.detenerCronometro(); 
-    this.tiempoTranscurrido.set(0);
-    this.tiempoInicio = Date.now();
-    
-    this.intervaloTimer = setInterval(() => {
-      this.tiempoTranscurrido.update(t => t + 1);
-    }, 1000);
-  }
-
-  detenerCronometro() {
-    if (this.intervaloTimer) {
-      clearInterval(this.intervaloTimer);
-    }
-  }
 
   elegirLetra(letra: string) {
     if (this.juegoTerminado() || this.guardando()) return;
@@ -260,7 +238,7 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
 
   private async chequearFinal() {
     if (this.victoria()) {
-      this.detenerCronometro(); 
+      this.cronometro.detenerCronometro(); 
       this.rachaVictorias.update(r => r + 1);
       this.nivelActual.update(n => n + 1);
       
@@ -269,7 +247,7 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
       this.juegoTerminado.set(true);
       await this.guardarResultado();
     } else if (this.derrota()) {
-      this.detenerCronometro(); 
+      this.cronometro.detenerCronometro(); 
       this.juegoTerminado.set(true);
       await this.guardarResultado();
     }
@@ -284,7 +262,7 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
     // 🌟 Centralizamos también la fórmula de puntos
     const puntaje = Math.max(0, (correctas * this.config.puntosPorAcierto) - (incorrectas * this.config.puntosPorError));
 
-    const segundosJugados = Math.round((Date.now() - this.tiempoInicio) / 1000);
+    const segundosJugados = this.cronometro.tiempoTranscurrido();
 
     const detallesExtras: DetallesPartida = {
       palabra: this.palabraStr,
@@ -304,7 +282,7 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   }
 
   irAlMenu() {
-    this.detenerCronometro(); 
+    this.cronometro.detenerCronometro(); 
     this.juegoIniciado.set(false);
     this.juegoTerminado.set(false);
 

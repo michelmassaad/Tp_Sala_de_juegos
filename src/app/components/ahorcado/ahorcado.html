@@ -74,7 +74,7 @@
         <div class="hud-right">
           <span class="pts-badge timer-badge tech-font">
             <i class="bi bi-stopwatch"></i>
-            {{ tiempoFormateado() }}
+            {{ cronometro.tiempoFormateado() }}
           </span>
           <span class="pts-badge coins-badge tech-font">
             <i class="bi bi-coin"></i>
@@ -235,7 +235,7 @@
                   <span class="metric-label">
                     <i class="bi bi-stopwatch me-1"></i>Tiempo
                   </span>
-                  <span class="metric-value metric-info">{{ tiempoFormateado() }}</span>
+                  <span class="metric-value metric-info">{{ cronometro.tiempoFormateado() }}</span>
                 </div>
                 <div class="metric-row no-border">
                   <span class="metric-label" [class.text-win-neon]="victoria()">

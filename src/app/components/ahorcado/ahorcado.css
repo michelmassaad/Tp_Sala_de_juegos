@@ -39,12 +39,21 @@
 .menu-screen {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  padding: 2.5rem 1.5rem; /* Manteniendo tus medidas en rem unificadas */
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* 🚀 CAMBIO: flex-start para que en celulares comience bien desde el título arriba */
+  
+  /* 🌟 LA MAGIA PARA ACTIVAR EL SCROLLMÓVIL */
+  flex: 1;                     /* Obliga a la pantalla del menú a ocupar el alto disponible */
+  overflow-y: auto;            /* Habilita el scroll vertical únicamente dentro de esta pantalla */
+  overflow-x: hidden;          /* Evita cualquier juego horizontal extraño */
+  
+  /* Scrollbar estético sutil estilo Arcade */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--accent-primary-rgb), 0.3) transparent;
 }
 
 .menu-screen .title-neon {
@@ -827,7 +836,7 @@
   .keyboard-zone { padding: 4px 10px; }
 }
 
-@media (max-height: 630px) {
+@media (max-height: 700px) {
   .ahorcado-wrapper {
     height: auto !important;
     min-height: calc(100svh - 74px);
