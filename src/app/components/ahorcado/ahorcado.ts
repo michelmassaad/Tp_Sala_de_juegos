@@ -28,7 +28,7 @@ const BANCO_PALABRAS: PalabraJuego[] = [
   { palabra: 'PIANO',     categoria: 'MÚSICA', pista: 'Instrumento clásico que tiene teclas blancas y negras.' }
 ];
 
-const MAX_INTENTOS = 6;
+const MAX_INTENTOS = 5;
 const LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 // 🌟 ARQUITECTURA LIMPIA: Centralizamos toda la economía y puntajes en un solo lugar
@@ -87,7 +87,7 @@ const BANCO_CATEGORIAS: CategoriaJuego[] = [
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './ahorcado.html',
-  styleUrls: ['./ahorcado.css', './ahorcado-categoria.css']
+  styleUrls: ['./ahorcado.css']
 })
 export class AhorcadoComponent implements OnInit, OnDestroy { 
   private router = inject(Router);
@@ -100,6 +100,7 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   readonly categorias = BANCO_CATEGORIAS;
   // Exponemos la configuración para poder leerla desde el HTML
   readonly config = CONFIG_ECONOMIA;
+  readonly intentosArray = Array(MAX_INTENTOS);
 
   public imagenesAhorcado = [
     '/ahorcado/ahorcado-0.png', '/ahorcado/ahorcado-1.png', '/ahorcado/ahorcado-2.png',

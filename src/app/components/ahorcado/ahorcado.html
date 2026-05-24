@@ -1,6 +1,10 @@
 <div #scrollContainer class="ahorcado-wrapper" [class.shake-effect]="errorDetectado()">
   <div class="canvas-texture"></div>
-@if (!juegoIniciado()) {
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!--  PANTALLA: SELECCIÓN DE CATEGORÍAS                      -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  @if (!juegoIniciado()) {
   <div class="menu-screen animate-fade-in">
     
     <div class="menu-header text-center mb-4">
@@ -41,48 +45,60 @@
 }
 
 
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!--  PANTALLA: JUEGO PRINCIPAL (una sola vista sin scroll)  -->
+  <!-- ═══════════════════════════════════════════════════════ -->
   @if (juegoIniciado()) {
+    <div class="game-layout animate-fade-in">
 
-    <div class="game-hud">
-      <div class="hud-meta">
-        <span class="hud-cat tech-font">{{ categoriaActual() }}</span>
-        <span class="hud-nivel fun-title">NIVEL {{ nivelActual() }}</span>
+      <!-- ──────────────────────────────────────────────── -->
+      <!--  HUD — Barra de estado superior                  -->
+      <!-- ──────────────────────────────────────────────── -->
+      <div class="game-hud">
+        <div class="hud-left">
+          <span class="hud-cat tech-font">{{ categoriaActual() }}</span>
+          <span class="hud-nivel fun-title">NIVEL {{ nivelActual() }}</span>
+        </div>
+
+        <div class="hud-lives">
+          @for (i of intentosArray; track $index) {
+            <i class="bi"
+              [class.bi-heart-fill]="$index < intentosRestantes()"
+              [class.bi-heart]="$index >= intentosRestantes()"
+              [class.life-active]="$index < intentosRestantes()"
+              [class.life-lost]="$index >= intentosRestantes()">
+            </i>
+          }
+        </div>
+
+        <div class="hud-right">
+          <span class="pts-badge timer-badge tech-font">
+            <i class="bi bi-stopwatch"></i>
+            {{ tiempoFormateado() }}
+          </span>
+          <span class="pts-badge coins-badge tech-font">
+            <i class="bi bi-coin"></i>
+            {{ monedas() }}
+            <span class="coins-label">MONEDAS</span>
+          </span>
+          <button class="btn-menu-hud tech-font" (click)="irAlMenu()">
+            <i class="bi bi-grid-fill"></i>
+            <span class="menu-hud-label">MENÚ</span>
+          </button>
+        </div>
       </div>
 
-      <div class="hud-lives">
-        @for (i of [1,2,3,4,5,6]; track i) {
-          <i class="bi"
-             [class.bi-heart-fill]="i <= intentosRestantes()"
-             [class.bi-heart]="i > intentosRestantes()"
-             [class.life-active]="i <= intentosRestantes()"
-             [class.life-lost]="i > intentosRestantes()">
-          </i>
-        }
-      </div>
+      <!-- ──────────────────────────────────────────────── -->
+      <!--  ARENA — 2 columnas desktop / 1 columna mobile  -->
+      <!-- ──────────────────────────────────────────────── -->
+      <div class="game-arena">
 
-      <div class="hud-right">
-        <span class="pts-badge timer-badge tech-font">
-          <i class="bi bi-stopwatch me-1 text-info"></i>{{ tiempoFormateado() }}
-        </span>
-        <span class="pts-badge tech-font" title="Tus Monedas">
-          <i class="bi bi-coin text-warning me-1"></i>{{ monedas() }}
-          <span class="d-none d-sm-inline ms-1">MONEDAS</span>
-        </span>
-        <button class="btn-menu-hud tech-font" (click)="irAlMenu()" title="Volver al Menú">
-          <i class="bi bi-grid-fill"></i> 
-          <span class="texto-btn-hud ms-1">MENÚ</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="game-arena animate-fade-in">
-      
-      <div class="arena-top-layout">
-        
+        <!-- PANEL IZQUIERDO: Monigote + Letras Incorrectas -->
         <div class="arena-left">
+
           <div class="hangman-frame">
             <img [src]="imagenesAhorcado[partesMostradas()]"
-                 class="hangman-img-big" alt="Ahorcado">
+                 class="hangman-img" alt="Ahorcado">
           </div>
 
           <div class="wrong-zone">
@@ -95,10 +111,18 @@
               }
             </div>
           </div>
+
         </div>
 
+        <!-- PANEL DERECHO: Palabra + Pista + Utilidades -->
         <div class="arena-right">
-          
+          <div class="hint-panel">
+            <span class="hint-label tech-font">
+              <i class="bi bi-geo-alt-fill"></i> PISTA DEL NIVEL
+            </span>
+            <p class="hint-text">"{{ palabraActual()?.pista }}"</p>
+          </div>
+
           <div class="word-display-box">
             <div class="word-row">
               @for (letra of palabraStr.split(''); track $index) {
@@ -109,35 +133,41 @@
             </div>
           </div>
 
-          <div class="hint-panel">
-            <span class="hint-label tech-font">
-              <i class="bi bi-geo-alt-fill me-1"></i> PISTA DEL NIVEL
-            </span>
-            <p class="hint-text">"{{ palabraActual()?.pista }}"</p>
-          </div>
 
           @if (!juegoTerminado()) {
             <div class="utilities-row">
               <button class="util-btn util-cyan tech-font"
                       [disabled]="oraculoUsado() || monedas() < 50"
                       (click)="comprarPista()">
-                <i class="bi bi-search me-1"></i> REVELAR LETRA
-                <span class="util-cost">-{{ config.costoPista }} <i class="bi bi-coin text-warning ms-1"></i></span>
+                <span class="util-text">
+                  <i class="bi bi-search"></i>
+                  REVELAR LETRA
+                </span>
+                <span class="util-cost">
+                  -{{ config.costoPista }} <i class="bi bi-coin"></i>
+                </span>
               </button>
               <button class="util-btn util-purple tech-font"
                       [disabled]="bombaUsada() || monedas() < 40"
                       (click)="comprarBomba()">
-                <i class="bi bi-trash me-1"></i> ELIMINAR LETRAS
-                <span class="util-cost">-{{ config.costoBomba }} <i class="bi bi-coin text-warning ms-1"></i></span>
+                <span class="util-text">
+                  <i class="bi bi-trash"></i>
+                  ELIMINAR LETRAS
+                </span>
+                <span class="util-cost">
+                  -{{ config.costoBomba }} <i class="bi bi-coin"></i>
+                </span>
               </button>
             </div>
           }
-        </div>
 
+        </div>
       </div>
 
-      <div class="arena-bottom-zone">
-        
+      <!-- ──────────────────────────────────────────────── -->
+      <!--  TECLADO                                         -->
+      <!-- ──────────────────────────────────────────────── -->
+      <div class="keyboard-zone">
         @if (!juegoTerminado()) {
           <div class="teclado animate-fade-in">
             @for (letra of letras; track letra) {
@@ -151,82 +181,87 @@
             }
           </div>
         }
-@if (juegoTerminado()) {
-  <div class="result-screen-overlay animate-fade-in" 
-       [class.overlay-win]="victoria()" 
-       [class.overlay-lose]="derrota()">
-    
-    <div class="arcade-result-card animate-scale-up">
-      
-      <div class="result-top-bar"></div>
-
-      <div class="result-img-container">
-        <div class="result-grid-texture"></div>
-        
-        @if (victoria()) {
-          <img src="/ahorcado/personaje-victoria.png" alt="¡Ganaste!" class="result-character-img animate-scale-up">
-        }
-        @if (derrota()) {
-          <img src="/ahorcado/personaje-derrota.png" alt="¡Perdiste!" class="result-character-img animate-scale-up">
-        }
-
-        <span class="result-status-badge">
-          {{ victoria() ? 'SUCCESS' : 'FAILED' }}
-        </span>
       </div>
 
-      <div class="result-body-content text-start">
-        
-        <h3 class="result-main-title text-center m-0 tracking-wide">
-          {{ victoria() ? 'STAGE CLEAR' : 'GAME OVER' }}
-        </h3>
+      <!-- ──────────────────────────────────────────────── -->
+      <!--  RESULTADO — Overlay sobre todo el game-layout   -->
+      <!--  (posición absoluta, anclado a .game-layout)     -->
+      <!-- ──────────────────────────────────────────────── -->
+      @if (juegoTerminado()) {
+        <div class="result-overlay animate-fade-in"
+             [class.overlay-win]="victoria()"
+             [class.overlay-lose]="derrota()">
 
-        <div class="result-word-display mt-3">
-          <span class="text-purple-muted d-block text-center" style="font-size: 0.65rem !important; letter-spacing: 1px;">
-            PALABRA DESCUBIERTA
-          </span>
-          <strong class="d-block text-center text-white tech-font tracking-widest mt-1" style="font-size: 1.6rem;">
-            {{ palabraStr }}
-          </strong>
-        </div>
+          <div class="result-card animate-scale-up">
+            <div class="result-top-bar"></div>
 
-        <div class="result-metrics-box mt-3 tech-font">
-          <div class="metric-item-card">
-            <span class="text-muted"><i class="bi bi-layer-forward me-2"></i>Fase</span>
-            <span class="text-light">Nivel {{ nivelActual() }}</span>
+            <div class="result-img-area">
+              <div class="result-grid-texture"></div>
+              @if (victoria()) {
+                <img src="/ahorcado/personaje-victoria.png"
+                     class="result-char-img" alt="¡Ganaste!">
+              }
+              @if (derrota()) {
+                <img src="/ahorcado/personaje-derrota.png"
+                     class="result-char-img" alt="¡Perdiste!">
+              }
+              <span class="result-status tech-font">
+                {{ victoria() ? 'SUCCESS' : 'FAILED' }}
+              </span>
+            </div>
+
+            <div class="result-body">
+              <h3 class="result-title fun-title"
+                  [class.text-win-neon]="victoria()"
+                  [class.text-lose-neon]="derrota()">
+                {{ victoria() ? 'STAGE CLEAR' : 'GAME OVER' }}
+              </h3>
+
+              <div class="decoded-box"
+                   [class.border-win]="victoria()"
+                   [class.border-lose]="derrota()">
+                <span class="decoded-label">PALABRA DESCUBIERTA</span>
+                <strong class="decoded-word tech-font">{{ palabraStr }}</strong>
+              </div>
+
+              <div class="result-metrics tech-font">
+                <div class="metric-row">
+                  <span class="metric-label">
+                    <i class="bi bi-layers me-1"></i>Fase
+                  </span>
+                  <span class="metric-value">Nivel {{ nivelActual() }}</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">
+                    <i class="bi bi-stopwatch me-1"></i>Tiempo
+                  </span>
+                  <span class="metric-value metric-info">{{ tiempoFormateado() }}</span>
+                </div>
+                <div class="metric-row no-border">
+                  <span class="metric-label" [class.text-win-neon]="victoria()">
+                    <i class="bi bi-coin me-1"></i>Monedas
+                  </span>
+                  <span class="metric-value" [class.text-win-neon]="victoria()">
+                    +{{ victoria() ? config.premioVictoria : 0 }} MND
+                  </span>
+                </div>
+              </div>
+
+              <div class="result-actions">
+                <button class="btn-result-primary tech-font" (click)="lanzarNuevaPalabra()">
+                  <i class="bi bi-controller me-2"></i>VOLVER A JUGAR
+                </button>
+                <button class="btn-result-secondary tech-font" (click)="irAlMenu()">
+                  <i class="bi bi-grid-fill me-2"></i>IR A CATEGORÍAS
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="metric-item-card">
-            <span class="text-muted"><i class="bi bi-stopwatch me-2"></i>Tiempo</span>
-            <span class="text-info font-mono">{{ tiempoFormateado() }}</span>
-          </div>
-          <div class="metric-item-card no-border">
-            <span [class.text-win-neon]="victoria()" [class.text-muted]="derrota()">
-              <i class="bi bi-coin me-2"></i>Monedas
-            </span>
-            <span class="fw-bold" [class.text-win-neon]="victoria()" [class.text-muted]="derrota()">
-              +{{ victoria() ? config.premioVictoria : 0 }} MND
-            </span>
-          </div>
-        </div>
 
-        <div class="result-actions-deck mt-4 w-100 d-flex flex-column gap-2">
-          <button class="btn-result-primary w-100 justify-content-center py-2.5" (click)="lanzarNuevaPalabra()">
-            <i class="bi bi-controller me-2"></i> VOLVER A JUGAR
-          </button>
-          
-          <button class="btn-result-secondary w-100 justify-content-center m-0 py-2" (click)="irAlMenu()">
-            <i class="bi bi-grid-fill me-2"></i> IR A CATEGORÍAS
-          </button>
         </div>
-
-      </div>
+      }
 
     </div>
-  </div>
-}
-
-      </div>
-    </div>
-
   }
+
 </div>
