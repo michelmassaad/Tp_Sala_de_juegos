@@ -54,4 +54,6 @@ export interface DetallesPartida {
   errores?: number;               // Usado en Ahorcado
   cartasAcertadas?:number;          // Usado en Mayor_Menor
   rachaMaxima?:number;            // Usado en Mayor_Menor
+  preguntasAcertadas?:number;           // Usado en PREGUNTADOS
+
 }

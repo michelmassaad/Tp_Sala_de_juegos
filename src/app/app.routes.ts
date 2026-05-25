@@ -7,6 +7,9 @@ import { authGuard } from './guards/auth';
 import { guestGuard } from './guards/guest';
 import { AhorcadoComponent } from './components/ahorcado/ahorcado';
 import { MayorMenor } from './components/mayor-menor/mayor-menor';
+import { Preguntados } from './components/preguntados/preguntados';
+import { BiciRush } from './components/bici-rush/bici-rush';
+import { Resultados } from './components/resultados/resultados';
 
 export const routes: Routes = [
     // Ruta por defecto: cuando entran a '/', van al home
@@ -18,10 +21,13 @@ export const routes: Routes = [
     { path:'registro', component:RegistroComponent, canActivate: [guestGuard]},
     { path:'quien-soy', component:QuienSoyComponent, canActivate: [authGuard] }, // <-- Ruta protegida},
 
-    {path:'home/ahorcado', component: AhorcadoComponent, canActivate: [authGuard]},
-    {path:'home/mayor-menor', component: MayorMenor, canActivate: [authGuard]},
-    
+    //Juegos:
+    { path:'home/ahorcado', component: AhorcadoComponent, canActivate: [authGuard]},
+    { path:'home/mayor-menor', component: MayorMenor, canActivate: [authGuard]},
+    { path:'home/preguntados', component:Preguntados, canActivate: [authGuard]},
+    { path:'home/bici-rush', component: BiciRush, canActivate: [authGuard]},
+    { path:'resultados', component:Resultados, canActivate: [authGuard] },
 
     // Comodín: cualquier ruta que no existe → home
-  { path: '**', redirectTo: 'home' }
+    { path: '**', redirectTo: 'home' }
 ];
