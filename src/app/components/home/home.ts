@@ -26,7 +26,7 @@ export class HomeComponent {
       nombre: 'Mayor o Menor',
       descripcion: 'Predecí si la próxima carta es mayor o menor que la actual.',
       ruta: '/home/mayor-menor',
-      urlImagen: 'mayor-menor.png'
+      urlImagen: '/mayor-menor/mayor-menor.png'
     },
     {
       nombre: 'Preguntados',
