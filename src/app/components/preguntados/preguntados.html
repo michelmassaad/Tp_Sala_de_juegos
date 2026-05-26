@@ -33,7 +33,7 @@
         </div>
       }
 
-      @if (juegoIniciado() && !juegoTerminado() && preguntaActual()) {
+      @if (juegoIniciado() && preguntaActual()) {
         <div class="trivia-panel animate-fade-in">
           <div class="panel-glow"></div>
           <div class="panel-grid"></div>
@@ -63,7 +63,7 @@
           <div class="answers-grid">
             @for (opcion of preguntaActual()?.all_answers; track opcion; let i = $index) {
               <button class="trivia-btn"
-                [disabled]="respondido()"
+                [disabled]="respondido() || juegoTerminado()"
                 [class.btn-correct]="respondido() && opcion === preguntaActual()?.correct_answer"
                 [class.btn-incorrect]="respondido() && respuestaSeleccionada() === opcion && opcion !== preguntaActual()?.correct_answer"
                 (click)="verificarRespuesta(opcion)">
@@ -122,17 +122,15 @@
                 </div>
               </div>
 
-              @if (guardando()) {
-                <p class="text-muted small text-center my-1">
-                  <span class="spinner-border spinner-border-sm me-2"></span>Sincronizando base de datos...
-                </p>
-              }
-
               <div class="result-actions mt-2">
-                <button class="btn-result-primary tech-font" (click)="reiniciar()">
+                <button class="btn-result-primary tech-font mb-2" (click)="reiniciar()">
                   <i class="bi bi-controller me-2"></i>JUGAR DE NUEVO
                 </button>
+                <button class="btn-result-secondary tech-font" (click)="volver()">
+                  <i class="bi bi-house-door-fill me-2"></i>VOLVER AL HOME
+                </button>
               </div>
+
             </div>
           </div>
         </div>

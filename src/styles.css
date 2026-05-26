@@ -244,17 +244,15 @@ hr.text-muted { border-color: rgba(var(--white-rgb), 0.1); opacity: 1; }
    7. MODAL DE RESULTADOS AISLADO
 ═══════════════════════════════════════════════════════════════════════ */
 .result-overlay {
-  position: absolute;
+  position: absolute; /* 🚀 Cambiado a absolute para que se clave DENTRO de cada juego */
   inset: 0;
-  background: rgba(10, 12, 16, 0.5);
-  /* backdrop-filter: blur(8px); */
+  background: rgba(10, 12, 16, 0.5); /* Filtro oscuro traslúcido */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  z-index: 1000; /* Suficiente para tapar el tablero pero no interfiere con el layout global */
   padding: 20px;
   box-sizing: border-box;
-  overflow-y: auto !important; 
 }
 
 .result-card {
@@ -267,9 +265,8 @@ hr.text-muted { border-color: rgba(var(--white-rgb), 0.1); opacity: 1; }
   flex-direction: column;
   width: 100% !important;
   max-width: 370px !important; 
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-  flex-shrink: 0; 
-  margin: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  margin: auto; /* Garantiza el centrado exacto en los ejes X e Y */
 }
 
 .result-top-bar { height: 3px; width: 100%; flex-shrink: 0; }

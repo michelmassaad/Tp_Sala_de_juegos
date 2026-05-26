@@ -20,25 +20,30 @@ export class HomeComponent {
       nombre: 'Ahorcado',
       descripcion: 'Juego para adivinar una palabra oculta por letras.',
       ruta: '/home/ahorcado',
-      urlImagen: '/ahorcado/ahorcado.png'
+      urlImagen: '/ahorcado/ahorcado.png',
+      categoria: 'LOGICA'
     },
     {
       nombre: 'Mayor o Menor',
       descripcion: 'Predecí si la próxima carta es mayor o menor que la actual.',
       ruta: '/home/mayor-menor',
-      urlImagen: '/mayor-menor/mayor-menor.png'
+      urlImagen: '/mayor-menor/mayor-menor.png',
+      categoria: 'AZAR'
     },
     {
       nombre: 'Preguntados',
       descripcion: 'Demostrá cuánto sabés respondiendo preguntas de cultura general.',
       ruta: '/home/preguntados',
-      urlImagen: 'preguntados.png'
+      urlImagen: 'preguntados/preguntados.png',
+      categoria: 'TRIVIA'
+
     },
     {
       nombre: 'Bici Rush',
       descripcion: 'Esquivá obstáculos y llegá lo más lejos posible en esta carrera sin fin.',
       ruta: '/home/bici-rush',
-      urlImagen: 'bici-rush.png'
+      urlImagen: '/bici-rush/bici-rush.png',
+      categoria: 'REFLEJOS'
     }
   ];
 

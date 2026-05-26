@@ -24,26 +24,30 @@ export class Resultados implements OnInit {
   resultadosAhorcado = computed(() => {
     return this.historialCompleto()
       .filter(r => r.juego === 'AHORCADO')
-      .sort((a, b) => b.puntaje - a.puntaje); // Mayor puntaje primero
+      .sort((a, b) => b.puntaje - a.puntaje)// Mayor puntaje primero
+      .slice(0, 10); // 🚀 Recorta y se queda solo con los primeros 10
   });
 
   resultadosMayorMenor = computed(() => {
     return this.historialCompleto()
       .filter(r => r.juego === 'MAYOR_MENOR')
-      .sort((a, b) => b.puntaje - a.puntaje);
+      .sort((a, b) => b.puntaje - a.puntaje)
+      .slice(0, 10); // 🚀 Recorta y se queda solo con los primeros 10
   });
 
   resultadosPreguntados = computed(() => {
     return this.historialCompleto()
       .filter(r => r.juego === 'PREGUNTADOS')
-      .sort((a, b) => b.puntaje - a.puntaje);
+      .sort((a, b) => b.puntaje - a.puntaje)
+      .slice(0, 10); // 🚀 Recorta y se queda solo con los primeros 10
   });
 
   // En este juego el mejor desempeño se mide por quién lo hizo en menos tiempo
   resultadosBiciRush = computed(() => {
     return this.historialCompleto()
       .filter(r => r.juego === 'BICI_RUSH')
-      .sort((a, b) => a.tiempo_de_partida - b.tiempo_de_partida); // Menor tiempo primero
+      .sort((a, b) => b.puntaje - a.puntaje)// mayor puntaje primero
+      .slice(0, 10); // 🚀 Recorta y se queda solo con los primeros 10
   });
 
   ngOnInit() {

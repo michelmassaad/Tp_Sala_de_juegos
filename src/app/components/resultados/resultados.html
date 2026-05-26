@@ -135,8 +135,8 @@
               <thead>
                 <tr>
                   <th>JUGADOR</th>
+                  <th>RECORRIDO</th>
                   <th>TIEMPO RÉCORD</th>
-                  <th>PUNTAJE</th>
                 </tr>
               </thead>
               <tbody>
@@ -146,8 +146,8 @@
                       <span class="position-tag tech-font">{{ idx + 1 }}</span>
                       {{ res.nombre_completo }}
                     </td>
-                    <td class="score-value text-emerald tech-font">⏱️ {{ formatearTiempo(res.tiempo_de_partida) }}</td>
-                    <td class="time-value text-main tech-font">{{ res.puntaje }} PTS</td>
+                    <td class="time-value text-emerald text-main tech-font">{{ res.puntaje }} M</td>
+                    <td class="score-value  tech-font">⏱️ {{ formatearTiempo(res.tiempo_de_partida) }}</td>
                   </tr>
                 } @empty {
                   <tr class="empty-row"><td colspan="3">Nadie ha jugado todavía</td></tr>

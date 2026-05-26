@@ -56,5 +56,6 @@ export interface DetallesPartida {
   cartasAcertadas?:number;          // Usado en Mayor_Menor
   rachaMaxima?:number;            // Usado en Mayor_Menor
   preguntasAcertadas?:number;           // Usado en PREGUNTADOS
-
+  monedasGanadas?:number;           // Usado en BICI_RUSH
+  distanciaMetros?:number;          // Usado en BICI_RUSH
 }
