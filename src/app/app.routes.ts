@@ -1,33 +1,57 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home';
-import { LoginComponent } from './components/login/login';
-import { RegistroComponent } from './components/registro/registro';
-import { QuienSoyComponent } from './components/quien-soy/quien-soy';
 import { authGuard } from './guards/auth';
 import { guestGuard } from './guards/guest';
-import { AhorcadoComponent } from './components/ahorcado/ahorcado';
-import { MayorMenor } from './components/mayor-menor/mayor-menor';
-import { Preguntados } from './components/preguntados/preguntados';
-import { BiciRush } from './components/bici-rush/bici-rush';
-import { Resultados } from './components/resultados/resultados';
 
 export const routes: Routes = [
-    // Ruta por defecto: cuando entran a '/', van al home
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  
+  // Las páginas principales livianas podés dejarlas estáticas o perezosas
+  { 
+    path: 'home', 
+    loadComponent: () => import('./components/home/home').then(m => m.HomeComponent) 
+  },
+  { 
+    path: 'login', 
+    loadComponent: () => import('./components/login/login').then(m => m.LoginComponent), // Tu clase se llama Login
+    canActivate: [guestGuard] 
+  },
+  { 
+    path: 'registro', 
+    loadComponent: () => import('./components/registro/registro').then(m => m.RegistroComponent), 
+    canActivate: [guestGuard]
+  },
+  { 
+    path: 'quien-soy', 
+    loadComponent: () => import('./components/quien-soy/quien-soy').then(m => m.QuienSoyComponent), 
+    canActivate: [authGuard] 
+  },
 
-    // Rutas para cada componente de la aplicación
-    { path:'home', component:HomeComponent },
-    { path:'login', component:LoginComponent, canActivate: [guestGuard] },
-    { path:'registro', component:RegistroComponent, canActivate: [guestGuard]},
-    { path:'quien-soy', component:QuienSoyComponent, canActivate: [authGuard] }, // <-- Ruta protegida},
+  // 🚀 LA MAGIA: Los juegos pesados del Sprint 3 y 4 se cargan ÚNICAMENTE si el usuario hace clic en ellos
+  { 
+    path: 'home/ahorcado', 
+    loadComponent: () => import('./components/ahorcado/ahorcado').then(m => m.AhorcadoComponent), 
+    canActivate: [authGuard]
+  },
+  { 
+    path: 'home/mayor-menor', 
+    loadComponent: () => import('./components/mayor-menor/mayor-menor').then(m => m.MayorMenor), 
+    canActivate: [authGuard]
+  },
+  { 
+    path: 'home/preguntados', 
+    loadComponent: () => import('./components/preguntados/preguntados').then(m => m.Preguntados), 
+    canActivate: [authGuard]
+  },
+  { 
+    path: 'home/bici-rush', 
+    loadComponent: () => import('./components/bici-rush/bici-rush').then(m => m.BiciRush), 
+    canActivate: [authGuard]
+  },
+  { 
+    path: 'resultados', 
+    loadComponent: () => import('./components/resultados/resultados').then(m => m.Resultados), 
+    canActivate: [authGuard]
+  },
 
-    //Juegos:
-    { path:'home/ahorcado', component: AhorcadoComponent, canActivate: [authGuard]},
-    { path:'home/mayor-menor', component: MayorMenor, canActivate: [authGuard]},
-    { path:'home/preguntados', component:Preguntados, canActivate: [authGuard]},
-    { path:'home/bici-rush', component: BiciRush, canActivate: [authGuard]},
-    { path:'resultados', component:Resultados, canActivate: [authGuard] },
-
-    // Comodín: cualquier ruta que no existe → home
-    { path: '**', redirectTo: 'home' }
+  { path: '**', redirectTo: 'home' }
 ];
