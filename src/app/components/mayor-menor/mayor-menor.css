@@ -1,0 +1,299 @@
+.mayor-menor-wrapper {
+  min-height: calc(85vh);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 2rem;
+}
+
+.canvas-texture {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tech-font {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+}
+
+/* =======================================================================
+   HUD SUPERIOR
+   ======================================================================= */
+/* =======================================================================
+   HUD SUPERIOR (REPARADO PARA CENTRADO PERFECTO)
+   ======================================================================= */
+.game-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 22px;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.35);
+  background: rgba(14, 17, 23, 0.97);
+  border-bottom: 1px solid rgba(var(--accent-primary-rgb), 0.12);
+}
+
+/* 🚀 LA MAGIA: Obliga a ambos lados a ocupar exactamente el mismo espacio */
+.hud-left, 
+.hud-right {
+  flex: 1; 
+  display: flex;
+  align-items: center;
+}
+
+.hud-left {
+  justify-content: flex-start; /* El botón Volver se pega a la izquierda */
+}
+
+.hud-right {
+  justify-content: flex-end;   /* Los badges se pegan a la derecha */
+  gap: 10px;
+}
+
+.hud-center {
+  flex: 0 0 auto;              /* El centro no se estira, mantiene su tamaño real */
+  text-align: center;
+}
+
+.hud-subtitle {
+  color: var(--text-muted);
+  font-size: .65rem;
+  letter-spacing: .2em;
+  font-weight: 700;
+}
+
+.hud-badge {
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255,255,255,.05);
+  background: rgba(255,255,255,.02);
+}
+
+.timer-badge { color: #6ee7f7; border-color: rgba(110,231,247,.15); background: rgba(110,231,247,.05); }
+.ronda-badge { color: #a78bfa; border-color: rgba(167,139,250,.15); background: rgba(167,139,250,.05); }
+
+.btn-menu-hud {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.35);
+  color: var(--accent-primary);
+  padding: 0.4rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-menu-hud:hover { background: rgba(var(--accent-primary-rgb), 0.1); }
+
+
+/* =======================================================================
+   ESTADÍSTICAS DEL JUEGO
+   ======================================================================= */
+.stat-box { display: flex; flex-direction: column; gap: 2px; }
+.stat-num { font-family: 'Righteous', cursive; font-size: 1.8rem; line-height: 1; }
+.stat-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* EFECTOS INTERNOS DE LA TARJETA */
+.panel-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at bottom left, rgba(167,139,250, .06), transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.panel-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.01) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.01) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* =======================================================================
+   ESTILADO DE LAS CARTAS (ESTILO CASINO NEÓN)
+   ======================================================================= */
+.carta {
+  width: 100px;
+  height: 145px;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #11141c;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-family: 'Righteous', cursive;
+  font-weight: 900;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.carta-roja {
+  color: #e11d48; /* Rojo vivo premium */
+  border-color: #f43f5e;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(244,63,94,0.15);
+}
+
+.carta-oculta {
+  background: linear-gradient(135deg, #161b27, #0f131c);
+  color: var(--accent-primary);
+  border-color: rgba(110,231,247, 0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.card-back-pattern {
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed rgba(110,231,247, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(110,231,247, 0.02);
+}
+.card-back-pattern span {
+  font-size: 2.2rem;
+  color: rgba(110,231,247, 0.6);
+  text-shadow: 0 0 10px rgba(110,231,247, 0.4);
+}
+
+.carta-valor-top { position: absolute; top: 8px; left: 12px; font-size: 1rem; }
+.carta-palo { font-size: 2.5rem; line-height: 1; }
+.carta-valor-bot { position: absolute; bottom: 8px; right: 12px; font-size: 1rem; transform: rotate(180deg); }
+
+/* ICONOS DE INTERMEDIACIÓN */
+.resultado-icono { width: 56px; height: 145px; }
+.status-indicator { font-size: 1.8rem; display: flex; align-items: center; justify-content: center; }
+.icon-idle { color: rgba(255,255,255,0.15); }
+.icon-success-pulse { color: #4ade80; filter: drop-shadow(0 0 8px rgba(74,222,128,0.6)); }
+.icon-error-pulse { color: #f87171; filter: drop-shadow(0 0 8px rgba(248,113,113,0.6)); }
+
+/* =======================================================================
+   BOTONES MAYOR Y MENOR
+   ======================================================================= */
+.btn-mayor-menor {
+  padding: 14px 36px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  border: 2px solid;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+}
+
+.btn-mayor {
+  background: rgba(74, 222, 128, 0.05);
+  border-color: rgba(74, 222, 128, 0.3);
+  color: #4ade80;
+}
+.btn-mayor:hover:not(:disabled) {
+  background: rgba(74, 222, 128, 0.15);
+  border-color: #4ade80;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.3), 0 0 15px rgba(74, 222, 128, 0.2);
+}
+
+.btn-menor {
+  background: rgba(248, 113, 113, 0.05);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
+.btn-menor:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: #f87171;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.3), 0 0 15px rgba(248, 113, 113, 0.2);
+}
+
+.btn-mayor-menor:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+}
+.btn-mayor-menor:disabled { opacity: 0.25; cursor: not-allowed; transform: none; }
+
+/* ANIMACIONES */
+.animate-fade-in { animation: fadeIn 0.25s ease forwards; }
+.animate-scale-up { animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleUp { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+/* =======================================================================
+   🖥️ BREAKPOINT: RESPONSIVE EN ESCRITORIO (≥ 1200px)
+   ====================================================================== */
+@media (min-width: 1200px) {
+  .game-hud { padding: 18px 26px; border-radius: 20px; }
+  .hud-badge { padding: 10px 20px; font-size: 0.98rem; }
+  .hud-subtitle { font-size: 0.72rem; }
+  
+  .custom-card { padding: 40px !important; border-radius: 24px; }
+  
+  .stat-num { font-size: 2.3rem; }
+  .stat-label { font-size: 0.78rem; }
+
+  /* Las cartas escalan de manera majestuosa sin perder proporciones */
+  .carta {
+    width: 124px;
+    height: 180px;
+    border-radius: 18px;
+  }
+  .carta-valor-top { top: 12px; left: 16px; font-size: 1.2rem; }
+  .carta-palo { font-size: 3.2rem; }
+  .carta-valor-bot { bottom: 12px; right: 16px; font-size: 1.2rem; }
+  
+  .resultado-icono { width: 70px; height: 180px; }
+  .status-indicator { font-size: 2.2rem; }
+  
+  .btn-mayor-menor { padding: 16px 44px; font-size: 1.15rem; border-radius: 16px; }
+}
+
+/* =======================================================================
+   🖥️ BREAKPOINT: ULTRA-WIDE Y MONITORES GRANDES (≥ 1600px)
+   ======================================================================= */
+@media (min-width: 1600px) {
+  .custom-card { padding: 50px !important; }
+  
+  .carta {
+    width: 140px;
+    height: 205px;
+    border-radius: 20px;
+  }
+  .carta-valor-top { top: 14px; left: 18px; font-size: 1.35rem; }
+  .carta-palo { font-size: 3.8rem; }
+  .carta-valor-bot { bottom: 14px; right: 18px; font-size: 1.35rem; }
+  
+  .resultado-icono { height: 205px; }
+  .btn-mayor-menor { padding: 18px 52px; font-size: 1.2rem; }
+}
+
+/* =======================================================================
+   📱 RESPONSIVE EN SMARTPHONES (≤ 576px)
+   ======================================================================= */
+@media (max-width: 576px) {
+  .game-hud { flex-direction: column; text-align: center; gap: 8px; padding: 12px; }
+  .hud-right { width: 100%; justify-content: center; }
+  .carta { width: 85px; height: 125px; border-radius: 10px; }
+  .carta-palo { font-size: 1.9rem; }
+  .carta-valor-top { top: 6px; left: 8px; font-size: 0.85rem; }
+  .carta-valor-bot { bottom: 6px; right: 8px; font-size: 0.85rem; }
+  .resultado-icono { width: 36px; height: 125px; }
+  .status-indicator { font-size: 1.4rem; }
+  .btn-mayor-menor { padding: 12px 24px; font-size: 0.95rem; }
+}

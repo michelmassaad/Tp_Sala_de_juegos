@@ -28,7 +28,7 @@
 | --------- | ------------------------------------- | ---------------- | --------------------------------------------------------------------------------- |
 | Sprint #1 | Estructura, Deploy y Presentación     | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-1-michelmassaads-projects.vercel.app/) |
 | Sprint #2 | Autenticación y Home Dinámico         | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-2-michelmassaads-projects.vercel.app/) |
-| Sprint #3 | Ahorcado, Mayor o Menor, Chat         | 🚧 En desarrollo | —                                                                                 |
+| Sprint #3 | Ahorcado, Mayor o Menor, Chat         | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-3-michelmassaads-projects.vercel.app/) |
 | Sprint #4 | Preguntados, Juego propio, Resultados | 🔜 Pendiente     | —                                                                                 |
 
 ---
@@ -82,3 +82,59 @@ Sistema de autenticación completo contra Supabase con interfaz condicional seg�
 - Migración completa a `ReactiveFormsModule`.
 - Toggle de visibilidad de contraseña ("ojito").
 - Estilos de error en tiempo real sobre cada input.
+
+---
+
+## 🎲 Sprint #3 — Ahorcado, Mayor o Menor y Chat Realtime
+
+> Deploy: https://tp-sala-de-juegos-git-sprint-3-michelmassaads-projects.vercel.app/<br>
+> Tag: `v3.0.0`
+
+Implementación de juegos interactivos con persistencia en base de datos y sistema de chat global en tiempo real utilizando Supabase Realtime.
+
+### 🔤 Ahorcado (`AhorcadoComponent`)
+
+**Entrada de datos**
+
+- Interacción exclusiva mediante botones en pantalla (abecedario).
+- Entrada por teclado físico deshabilitada.
+
+**Persistencia**
+
+- Al finalizar, guarda en la base de datos:
+  - Usuario
+  - Tiempo de finalización
+  - Letras seleccionadas
+  - Errores cometidos
+
+---
+
+### 🃏 Mayor o Menor (`MayorMenor`)
+
+**Mecánica**
+
+- Sistema de predicción (`mayor / menor`) utilizando un mazo de cartas francesas barajadas aleatoriamente.
+
+**Persistencia**
+
+- Registro instantáneo de:
+  - Usuario
+  - Cantidad de cartas acertadas
+  - Racha máxima
+  - Tiempo jugado
+
+---
+
+### 💬 Sala de Chat Global (`SalaChatComponent / ChatService`)
+
+**Tiempo Real**
+
+- Suscripción activa a cambios de Supabase mediante `postgres_changes`.
+- Sincronización usando `NgZone` para actualizar mensajes automáticamente en todos los clientes.
+
+**UX / UI**
+
+- Visualización de remitente y hora exacta de cada mensaje.
+- Los mensajes propios se alinean a la derecha y poseen estilos diferenciados.
+
+---
