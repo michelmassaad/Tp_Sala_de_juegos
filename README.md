@@ -204,7 +204,8 @@ Integración de API externa de trivia, desarrollo de juego propio y sistema comp
   ```
 
 - `Bici Rush`:
-  - Ordenado competitivamente por menor tiempo récord:
+  - Ordenado competitivamente por mayor puntaje:
   ```ts
-  a.tiempo_de_partida - b.tiempo_de_partida;
+  b.puntaje - a.puntaje;
+
   ```
