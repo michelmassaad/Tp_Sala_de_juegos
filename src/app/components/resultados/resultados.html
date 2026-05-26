@@ -1,0 +1,163 @@
+<div class="rankings-wrapper">
+  <div class="canvas-texture"></div>
+
+  <div class="game-hud mb-5">
+    <div class="hud-left">
+      <button class="btn-menu-hud tech-font" (click)="volver()">
+        <i class="bi bi-arrow-left me-2"></i> VOLVER AL MENÚ
+      </button>
+    </div>
+
+    <div class="hud-center">
+      <h2 class="fun-title mb-0">RANKING GENERAL</h2>
+      <p class="hud-subtitle mb-0">TABLA GLOBAL DE POSICIONES</p>
+    </div>
+
+    <div class="hud-right">
+      <div class="hud-badge data-badge tech-font">
+        <i class="bi bi-trophy-fill text-warning me-2"></i>TOP 10 LIVE
+      </div>
+    </div>
+  </div>
+
+  @if (cargando()) {
+    <div class="ranking-panel loading-panel text-center py-5 animate-fade-in">
+      <div class="loading-ring mb-4"></div>
+      <h3 class="text-white fw-bold tech-font tracking-wider">SINCRONIZANDO MARCAS</h3>
+      <p class="text-secondary mb-0">Descargando registros desde la base de datos central...</p>
+    </div>
+  } @else {
+
+    <div class="row animate-fade-in">
+
+      <div class="col-12 col-xl-6 mb-4">
+        <div class="ranking-panel border-ahorcado">
+          <div class="panel-glow accent-cyan"></div>
+          <h3 class="tabla-titulo tech-font"><i class="bi bi-hash me-2"></i>AHORCADO</h3>
+          <div class="table-responsive">
+            <table class="neo-table">
+              <thead>
+                <tr>
+                  <th>JUGADOR</th>
+                  <th>PUNTAJE</th>
+                  <th>TIEMPO</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (res of resultadosAhorcado(); track res.created_at; let idx = $index) {
+                  <tr [class.top-podium]="idx < 3">
+                    <td class="player-name">
+                      <span class="position-tag tech-font">{{ idx + 1 }}</span>
+                      {{ res.nombre_completo }}
+                    </td>
+                    <td class="score-value text-cyan tech-font">{{ res.puntaje }} PTS</td>
+                    <td class="time-value text-main tech-font">{{ formatearTiempo(res.tiempo_de_partida) }}</td>
+                  </tr>
+                } @empty {
+                  <tr class="empty-row"><td colspan="3">Nadie ha jugado todavía</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6 mb-4">
+        <div class="ranking-panel border-preguntados">
+          <div class="panel-glow accent-purple"></div>
+          <h3 class="tabla-titulo tech-font"><i class="bi bi-patch-question me-2"></i>PREGUNTADOS</h3>
+          <div class="table-responsive">
+            <table class="neo-table">
+              <thead>
+                <tr>
+                  <th>JUGADOR</th>
+                  <th>PUNTAJE</th>
+                  <th>TIEMPO</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (res of resultadosPreguntados(); track res.created_at; let idx = $index) {
+                  <tr [class.top-podium]="idx < 3">
+                    <td class="player-name">
+                      <span class="position-tag tech-font">{{ idx + 1 }}</span>
+                      {{ res.nombre_completo }}
+                    </td>
+                    <td class="score-value text-purple tech-font">{{ res.puntaje }} PTS</td>
+                    <td class="time-value text-main tech-font">{{ formatearTiempo(res.tiempo_de_partida) }}</td>
+                  </tr>
+                } @empty {
+                  <tr class="empty-row"><td colspan="3">Nadie ha jugado todavía</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6 mb-4">
+        <div class="ranking-panel border-mayor">
+          <div class="panel-glow accent-pink"></div>
+          <h3 class="tabla-titulo tech-font"><i class="bi bi-suit-spade me-2"></i>MAYOR O MENOR</h3>
+          <div class="table-responsive">
+            <table class="neo-table">
+              <thead>
+                <tr>
+                  <th>JUGADOR</th>
+                  <th>PUNTAJE</th>
+                  <th>TIEMPO</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (res of resultadosMayorMenor(); track res.created_at; let idx = $index) {
+                  <tr [class.top-podium]="idx < 3">
+                    <td class="player-name">
+                      <span class="position-tag tech-font">{{ idx + 1 }}</span>
+                      {{ res.nombre_completo }}
+                    </td>
+                    <td class="score-value text-pink tech-font">{{ res.puntaje }} PTS</td>
+                    <td class="time-value text-main tech-font">{{ formatearTiempo(res.tiempo_de_partida) }}</td>
+                  </tr>
+                } @empty {
+                  <tr class="empty-row"><td colspan="3">Nadie ha jugado todavía</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6 mb-4">
+        <div class="ranking-panel border-bici">
+          <div class="panel-glow accent-emerald"></div>
+          <h3 class="tabla-titulo tech-font"><i class="bi bi-bicycle me-2"></i>BICI RUSH</h3>
+          <div class="table-responsive">
+            <table class="neo-table">
+              <thead>
+                <tr>
+                  <th>JUGADOR</th>
+                  <th>RECORRIDO</th>
+                  <th>TIEMPO RÉCORD</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (res of resultadosBiciRush(); track res.created_at; let idx = $index) {
+                  <tr [class.top-podium]="idx < 3">
+                    <td class="player-name">
+                      <span class="position-tag tech-font">{{ idx + 1 }}</span>
+                      {{ res.nombre_completo }}
+                    </td>
+                    <td class="time-value text-emerald text-main tech-font">{{ res.puntaje }} M</td>
+                    <td class="score-value  tech-font">⏱️ {{ formatearTiempo(res.tiempo_de_partida) }}</td>
+                  </tr>
+                } @empty {
+                  <tr class="empty-row"><td colspan="3">Nadie ha jugado todavía</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  }
+</div>

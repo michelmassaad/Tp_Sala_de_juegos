@@ -1,0 +1,133 @@
+.bici-rush-wrapper {
+  min-height: calc(85vh);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 2rem;
+}
+
+.canvas-texture {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tech-font {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+}
+
+/* HUD */
+.game-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 22px;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.35);
+  background: rgba(14,17,23,.97);
+}
+
+.hud-left, .hud-right { flex: 1; display: flex; align-items: center; }
+.hud-left  { justify-content: flex-start; }
+.hud-right { justify-content: flex-end; gap: 10px; }
+.hud-center { flex: 0 0 auto; text-align: center; }
+
+.hud-badge {
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: .9rem;
+  border: 1px solid rgba(255,255,255,.05);
+  background: rgba(255,255,255,.02);
+}
+.timer-badge    { color: #6ee7f7; border-color: rgba(110,231,247,.15); }
+.distance-badge { color: #10b981; border-color: rgba(16,185,129,.15); }
+.coin-badge     { color: #ffca28; border-color: rgba(255,202,40,.2); }
+
+.btn-menu-hud {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff;
+  padding: .4rem 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+/* Panel & Canvas */
+.bici-panel {
+  width: 90%;
+  margin: auto;
+  min-height: 470px;
+  border-radius: 24px;
+  background-color: #0b0d19 !important;
+  border: 1px solid rgba(255,255,255,.04);
+  box-shadow: 0 18px 45px rgba(0,0,0,.5);
+}
+
+.game-render-area {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  border-radius: 12px;
+  /* El secreto para agrandar el juego sin perder nitidez de píxeles */
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Botón Revivir y Animaciones */
+.bg-warning-neon {
+  background: linear-gradient(135deg, #ff6a00 0%, #ee0000 100%);
+  border: 1px solid #ffb700;
+  box-shadow: 0 0 15px rgba(238,0,0,.4);
+}
+
+.btn-revivir {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-result-primary {
+  width: 100%;
+  padding: 10px;
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-result-secondary {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  color: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dynamic-pulse { animation: arcadePulse 1.4s infinite ease-in-out; }
+@keyframes arcadePulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.animate-scale-up { animation: scaleUp .25s cubic-bezier(.34,1.56,.64,1) forwards; }
+@keyframes scaleUp { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
+.animate-fade-in { animation: fadeIn .2s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 768px) {
+  .game-hud { flex-direction: column; padding: 12px; }
+  .hud-right, .hud-left { width: 100%; justify-content: center; }
+}

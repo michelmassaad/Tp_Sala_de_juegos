@@ -98,8 +98,8 @@
    GRILLA DE JUEGOS
    ══════════════════════════════════════ */
 .games-section {
-  padding: 0 24px;
-  max-width: 1200px;
+  padding: 0 3%;
+  /* max-width: 1200px; */
   margin: 0 auto;
   width: 100%;
   transition: max-width 0.3s ease;
@@ -146,20 +146,43 @@
 .game-card:hover .card-top-bar {
   opacity: 1;
 }
-
 .card-badge {
   position: absolute;
   top: 14px;
   right: 12px;
-  background: rgba(var(--accent-logo-rgb), 0.12);
-  border: 1px solid rgba(var(--accent-logo-rgb), 0.35);
-  color: var(--accent-logo);
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  padding: 3px 8px;
-  border-radius: 4px;
+  
+  /* 🚀 ULTRA CONTRASTE: Fondo oscuro semi-sólido para anular el ruido de la imagen de abajo */
+  background: rgba(11, 14, 22, 0.94) !important;
+  
+  /* 🚀 LUZ NEÓN: Borde y color sólido definido con las variables globales */
+  border: 1px solid var(--accent-primary) !important;
+  color: var(--accent-primary) !important;
+  
+  /* Un pelito más grandes y corpóreos para que se lean de un vistazo */
+  font-size: 0.65rem; 
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border-radius: 6px;
   z-index: 2;
+  
+  /* 🚀 EFECTO GLOW: Sombra exterior e interior para dar profundidad de cápsula encendida */
+  box-shadow: 0 0 12px rgba(var(--accent-primary-rgb), 0.3),
+              inset 0 0 4px rgba(var(--accent-primary-rgb), 0.2);
+  text-shadow: 0 0 4px rgba(var(--accent-primary-rgb), 0.4);
+  
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* 🎮 Toque extra: Cuando pasás el mouse por la tarjeta, el badge brilla más duro */
+.game-card:hover .card-badge {
+  border-color: var(--text-main) !important;
+  color: var(--text-main) !important;
+  background: var(--accent-primary) !important;
+  color: var(--bg-base) !important; /* El texto muta a oscuro para contraste perfecto */
+  box-shadow: 0 0 16px var(--accent-primary),
+              0 0 4px var(--accent-primary);
+  text-shadow: none;
 }
 
 .card-img-area {
@@ -309,9 +332,9 @@
    RESPONSIVE Y ESCALABILIDAD ULTRA-WIDE
    ══════════════════════════════════════ */
 @media (min-width: 1400px) {
-  .games-section {
+  /* .games-section {
     max-width: 1450px;
-  }
+  } */
   
   .games-grid {
     gap: 24px;

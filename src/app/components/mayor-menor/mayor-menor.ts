@@ -136,6 +136,7 @@ export class MayorMenor implements OnInit, OnDestroy {
       // Si es la última ronda, terminar el juego y guardar los resultados
 
       if (this.ronda() > TOTAL_CARTAS) {
+        this.ronda.set(TOTAL_CARTAS);
         this.juegoTerminado.set(true);
         this.cronometro.detenerCronometro();
         // 🚀 DIRECTO A LA BASE DE DATOS: Guardamos al instante sin transacciones de monedas

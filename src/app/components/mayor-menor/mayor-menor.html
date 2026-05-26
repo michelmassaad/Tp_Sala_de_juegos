@@ -14,7 +14,7 @@
 
     <div class="hud-right">
       <div class="hud-badge ronda-badge tech-font">
-        <i class="bi bi-layers-fill me-2"></i>RONDA {{ ronda() }} / 10
+        <i class="bi bi-layers-fill me-2"></i>RONDA {{ ronda() > 10 ? 10 : ronda() }} / 10
       </div>
       <div class="hud-badge timer-badge tech-font">
         <i class="bi bi-stopwatch me-2"></i>{{ cronometro.tiempoFormateado() }}
@@ -44,62 +44,61 @@
           </div>
         </div>
 
-        @if (!juegoTerminado()) {
-          <div class="cartas-area d-flex align-items-center justify-content-center gap-4 mb-5 position-relative z-2">
+        <div class="cartas-area d-flex align-items-center justify-content-center gap-4 mb-5 position-relative z-2">
 
-            <div class="carta animate-fade-in" [class.carta-roja]="esRoja(cartaActual()!.palo)">
-              <span class="carta-valor-top">{{ cartaActual()?.nombre }}</span>
-              <span class="carta-palo">{{ cartaActual()?.palo }}</span>
-              <span class="carta-valor-bot">{{ cartaActual()?.nombre }}</span>
-            </div>
-
-            <div class="resultado-icono d-flex align-items-center justify-content-center">
-              @if (ultimoResultado() === 'acierto') {
-                <div class="status-indicator icon-success-pulse animate-scale-up">
-                  <i class="bi bi-check-circle-fill"></i>
-                </div>
-              } @else if (ultimoResultado() === 'fallo') {
-                <div class="status-indicator icon-error-pulse animate-scale-up">
-                  <i class="bi bi-x-circle-fill"></i>
-                </div>
-              } @else {
-                <div class="status-indicator icon-idle">
-                  <i class="bi bi-question-diamond-fill"></i>
-                </div>
-              }
-            </div>
-
-            <div class="carta" 
-                 [class.carta-oculta]="!mostrarSiguiente()"
-                 [class.carta-roja]="mostrarSiguiente() && esRoja(cartaSiguiente()!.palo)">
-              @if (mostrarSiguiente()) {
-                <div class="animate-scale-up h-100 w-100 d-flex flex-column align-items-center justify-content-center position-relative">
-                  <span class="carta-valor-top">{{ cartaSiguiente()?.nombre }}</span>
-                  <span class="carta-palo">{{ cartaSiguiente()?.palo }}</span>
-                  <span class="carta-valor-bot">{{ cartaSiguiente()?.nombre }}</span>
-                </div>
-              } @else {
-                <div class="card-back-pattern">
-                  <span class="tech-font">?</span>
-                </div>
-              }
-            </div>
-
+          <div class="carta animate-fade-in" [class.carta-roja]="esRoja(cartaActual()!.palo)">
+            <span class="carta-valor-top">{{ cartaActual()?.nombre }}</span>
+            <span class="carta-palo">{{ cartaActual()?.palo }}</span>
+            <span class="carta-valor-bot">{{ cartaActual()?.nombre }}</span>
           </div>
 
-          <div class="d-flex gap-3 justify-content-center position-relative z-2 mb-2">
-            <button class="btn btn-mayor-menor btn-mayor tech-font" 
-                    (click)="elegir('mayor')"
-                    [disabled]="mostrarSiguiente()">
-              <i class="bi bi-arrow-up-circle-fill me-2"></i>MAYOR
-            </button>
-            <button class="btn btn-mayor-menor btn-menor tech-font" 
-                    (click)="elegir('menor')"
-                    [disabled]="mostrarSiguiente()">
-              <i class="bi bi-arrow-down-circle-fill me-2"></i>MENOR
-            </button>
+          <div class="resultado-icono d-flex align-items-center justify-content-center">
+            @if (ultimoResultado() === 'acierto') {
+              <div class="status-indicator icon-success-pulse animate-scale-up">
+                <i class="bi bi-check-circle-fill"></i>
+              </div>
+            } @else if (ultimoResultado() === 'fallo') {
+              <div class="status-indicator icon-error-pulse animate-scale-up">
+                <i class="bi bi-x-circle-fill"></i>
+              </div>
+            } @else {
+              <div class="status-indicator icon-idle">
+                <i class="bi bi-question-diamond-fill"></i>
+              </div>
+            }
           </div>
-        }
+
+          <div class="carta" 
+               [class.carta-oculta]="!mostrarSiguiente()"
+               [class.carta-roja]="mostrarSiguiente() && esRoja(cartaSiguiente()!.palo)">
+            @if (mostrarSiguiente()) {
+              <div class="animate-scale-up h-100 w-100 d-flex flex-column align-items-center justify-content-center position-relative">
+                <span class="carta-valor-top">{{ cartaSiguiente()?.nombre }}</span>
+                <span class="carta-palo">{{ cartaSiguiente()?.palo }}</span>
+                <span class="carta-valor-bot">{{ cartaSiguiente()?.nombre }}</span>
+              </div>
+            } @else {
+              <div class="card-back-pattern">
+                <span class="tech-font">?</span>
+              </div>
+            }
+          </div>
+
+        </div>
+
+        <div class="d-flex gap-3 justify-content-center position-relative z-2 mb-2">
+          <button class="btn btn-mayor-menor btn-mayor tech-font" 
+                  (click)="elegir('mayor')"
+                  [disabled]="mostrarSiguiente() || juegoTerminado()">
+            <i class="bi bi-arrow-up-circle-fill me-2"></i>MAYOR
+          </button>
+          <button class="btn btn-mayor-menor btn-menor tech-font" 
+                  (click)="elegir('menor')"
+                  [disabled]="mostrarSiguiente() || juegoTerminado()">
+            <i class="bi bi-arrow-down-circle-fill me-2"></i>MENOR
+          </button>
+        </div>
+
       </div>
 
       @if (juegoTerminado()) {
@@ -140,17 +139,15 @@
                 </div>
               </div>
 
-              @if (guardando()) {
-                <p class="text-muted small text-center my-1">
-                  <span class="spinner-border spinner-border-sm me-2"></span>Sincronizando registro...
-                </p>
-              }
-
               <div class="result-actions mt-2">
-                <button class="btn-result-primary tech-font" (click)="nuevaPartida()">
+                <button class="btn-result-primary tech-font mb-2" (click)="nuevaPartida()">
                   <i class="bi bi-controller me-2"></i>JUGAR DE NUEVO
                 </button>
+                <button class="btn-result-secondary tech-font" (click)="volver()">
+                  <i class="bi bi-house-door-fill me-2"></i>VOLVER AL HOME
+                </button>
               </div>
+
             </div>
           </div>
         </div>

@@ -39,6 +39,7 @@ export interface Mensaje {
 
 export interface ResultadoPartida {
   user_id?: string;
+  nombre_completo?: string; // Campo adicional para mostrar el nombre completo del usuario
   created_at?: string; 
   juego: 'AHORCADO' | 'MAYOR_MENOR' | 'PREGUNTADOS' | 'BICI_RUSH';
   puntaje: number;
@@ -54,4 +55,7 @@ export interface DetallesPartida {
   errores?: number;               // Usado en Ahorcado
   cartasAcertadas?:number;          // Usado en Mayor_Menor
   rachaMaxima?:number;            // Usado en Mayor_Menor
+  preguntasAcertadas?:number;           // Usado en PREGUNTADOS
+  monedasGanadas?:number;           // Usado en BICI_RUSH
+  distanciaMetros?:number;          // Usado en BICI_RUSH
 }

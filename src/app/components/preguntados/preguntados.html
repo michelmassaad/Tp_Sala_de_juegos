@@ -1,0 +1,141 @@
+<div class="preguntados-wrapper">
+  <div class="canvas-texture"></div>
+
+  <div class="game-hud mb-4">
+    <div class="hud-left">
+      <button class="btn-menu-hud tech-font" (click)="volver()">
+        <i class="bi bi-arrow-left me-2"></i>VOLVER
+      </button>
+    </div>
+
+    <div class="hud-center">
+      <h2 class="fun-title mb-0">Preguntados</h2>
+    </div>
+
+    <div class="hud-right">
+      <div class="hud-badge timer-badge tech-font">
+        <i class="bi bi-stopwatch me-2"></i>{{ cronometro.tiempoFormateado() }}
+      </div>
+      <div class="hud-badge score-badge tech-font">
+        <i class="bi bi-lightning-charge-fill me-2"></i>{{ puntaje() }} PTS
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-8 col-xxl-7">
+
+      @if (loading()) {
+        <div class="trivia-panel loading-panel">
+          <div class="loading-ring mb-4"></div>
+          <h3 class="text-white fw-bold mb-3">Sincronizando Preguntas</h3>
+          <p class="text-secondary mb-0">Conectando con el servidor de trivia...</p>
+        </div>
+      }
+
+      @if (juegoIniciado() && preguntaActual()) {
+        <div class="trivia-panel animate-fade-in">
+          <div class="panel-glow"></div>
+          <div class="panel-grid"></div>
+
+          <div class="question-topbar mb-2">
+            <div class="category-chip">
+              <i class="bi bi-controller me-2"></i>{{ preguntaActual()?.category }}
+            </div>
+            <div class="question-counter tech-font">
+              PREGUNTA {{ indiceActual() + 1 }} / 10
+            </div>
+          </div>
+
+          <div class="progress trivia-progress mb-4">
+            <div class="progress-bar trivia-progress-bar"
+                 [style.width.%]="((indiceActual() + 1) / 10) * 100">
+            </div>
+          </div>
+
+          <div class="question-box">
+            <div class="question-icon">
+              <i class="bi bi-patch-question-fill"></i>
+            </div>
+            <h3 class="question-text" [innerHTML]="preguntaActual()?.question"></h3>
+          </div>
+
+          <div class="answers-grid">
+            @for (opcion of preguntaActual()?.all_answers; track opcion; let i = $index) {
+              <button class="trivia-btn"
+                [disabled]="respondido() || juegoTerminado()"
+                [class.btn-correct]="respondido() && opcion === preguntaActual()?.correct_answer"
+                [class.btn-incorrect]="respondido() && respuestaSeleccionada() === opcion && opcion !== preguntaActual()?.correct_answer"
+                (click)="verificarRespuesta(opcion)">
+                
+                <div class="answer-letter">{{ ['A','B','C','D'][i] }}</div>
+                <div class="answer-text" [innerHTML]="opcion"></div>
+                <div class="answer-glow"></div>
+              </button>
+            }
+          </div>
+
+          <div class="question-footer">
+            <div class="footer-stat">
+              <span class="footer-label">ACIERTOS</span>
+              <span class="footer-value success-text">{{ acertadas() }}</span>
+            </div>
+            <div class="footer-stat">
+              <span class="footer-label">RESTANTES</span>
+              <span class="footer-value warning-text">{{ 10 - (indiceActual() + 1) }}</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (juegoTerminado()) {
+        <div class="result-overlay animate-fade-in" [class.overlay-win]="victoria()" [class.overlay-lose]="!victoria()">
+          <div class="result-card animate-scale-up">
+            <div class="result-top-bar"></div>
+
+            <div class="result-img-area">
+              <div class="result-grid-texture"></div>
+              <span class="result-status tech-font">
+                {{ victoria() ? 'SUCCESS' : 'FAILED' }}
+              </span>
+              <p style="font-size: 3.5rem; z-index: 2; margin: 0;">{{ victoria() ? '🧠🏆' : '🃏❌' }}</p>
+            </div>
+
+            <div class="result-body">
+              <h3 class="result-title fun-title" [class.text-win-neon]="victoria()" [class.text-lose-neon]="!victoria()">
+                {{ victoria() ? 'STAGE CLEAR' : 'GAME OVER' }}
+              </h3>
+
+              <div class="decoded-box" [class.border-win]="victoria()" [class.border-lose]="!victoria()">
+                <span class="decoded-label">RENDIMIENTO DE TRIVIA</span>
+                <strong class="decoded-word tech-font">{{ acertadas() }} / 10 ACIERTOS</strong>
+              </div>
+
+              <div class="result-metrics tech-font">
+                <div class="metric-row">
+                  <span class="text-secondary"><i class="bi bi-clock me-2"></i>Tiempo</span>
+                  <span class="text-info">{{ cronometro.tiempoFormateado() }}</span>
+                </div>
+                <div class="metric-row no-border">
+                  <span class="text-secondary"><i class="bi bi-lightning-fill me-2"></i>Puntaje Final</span>
+                  <span class="text-primary fw-bold">{{ puntaje() }} PTS</span>
+                </div>
+              </div>
+
+              <div class="result-actions mt-2">
+                <button class="btn-result-primary tech-font mb-2" (click)="reiniciar()">
+                  <i class="bi bi-controller me-2"></i>JUGAR DE NUEVO
+                </button>
+                <button class="btn-result-secondary tech-font" (click)="volver()">
+                  <i class="bi bi-house-door-fill me-2"></i>VOLVER AL HOME
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

@@ -28,8 +28,9 @@
 | --------- | ------------------------------------- | ---------------- | --------------------------------------------------------------------------------- |
 | Sprint #1 | Estructura, Deploy y Presentación     | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-1-michelmassaads-projects.vercel.app/) |
 | Sprint #2 | Autenticación y Home Dinámico         | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-2-michelmassaads-projects.vercel.app/) |
-| Sprint #3 | Ahorcado, Mayor o Menor, Chat         | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-3-michelmassaads-projects.vercel.app/) |
-| Sprint #4 | Preguntados, Juego propio, Resultados | 🔜 Pendiente     | —                                                                                 |
+| Sprint #3 | Ahorcado, Mayor o Menor, Chat         | ✅ Completado | [ver](https://tp-sala-de-juegos-git-sprint-3-michelmassaads-projects.vercel.app/) ||
+| Sprint #4 | Preguntados, Juego propio, Resultados | ✅ Completado     | [ver](https://tp-sala-de-juegos-git-sprint-4-michelmassaads-projects.vercel.app/) |
+|
 
 ---
 
@@ -138,3 +139,74 @@ Implementación de juegos interactivos con persistencia en base de datos y siste
 - Los mensajes propios se alinean a la derecha y poseen estilos diferenciados.
 
 ---
+
+## 🏁 Sprint #4 — Preguntados, Juego Propio y Rankings
+
+> Deploy: https://tp-sala-de-juegos-git-sprint-4-michelmassaads-projects.vercel.app/<br>
+> Tag: `v4.0.0`
+
+Integración de API externa de trivia, desarrollo de juego propio y sistema completo de rankings persistidos.
+
+### ❓ Preguntados (`Preguntados`)
+
+**Consumo de API**
+
+- Conexión directa con la API de trivia `OpenTDB` mediante `HttpClient`.
+
+**Interfaz**
+
+- Renderizado dinámico de respuestas en botones.
+- Opciones mezcladas aleatoriamente.
+- Persistencia de:
+  - Usuario
+  - Cantidad de respuestas acertadas
+
+---
+
+### 🚴 Juego Propio — Bici Rush (`BiciRush`)
+
+**Reglas y Guía**
+
+- Manual de juego y descripción técnica incorporados en `Quién Soy`.
+- Mecánicas:
+  - Saltar obstáculos con `Espacio` o `Click`
+  - Recolectar monedas
+  - Completar un recorrido de 2000 metros
+
+**Medición de desempeño**
+
+- Al ganar o perder, se registra:
+  - Usuario
+  - Distancia máxima alcanzada
+  - Monedas obtenidas
+  - Tiempo total de partida
+
+- Incluye lógica transaccional de revivir.
+
+---
+
+### 📊 Listado de Resultados (`Resultados`)
+
+**Página Dedicada**
+
+- Creación de la page `Resultados` alimentada mediante `Signals` computadas independientes.
+
+**Neo-Tables**
+
+- 4 tablas independientes (una por juego) mostrando rankings de jugadores.
+
+**Ordenamiento**
+
+- `Ahorcado`, `Mayor/Menor` y `Preguntados`:
+  - Ordenados de mayor a menor puntaje:
+
+  ```ts
+  b.puntaje - a.puntaje;
+  ```
+
+- `Bici Rush`:
+  - Ordenado competitivamente por mayor puntaje:
+  ```ts
+  b.puntaje - a.puntaje;
+
+  ```

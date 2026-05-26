@@ -1,0 +1,128 @@
+<div class="bici-rush-wrapper">
+  <div class="canvas-texture"></div>
+
+  <div class="game-hud mb-4">
+    <div class="hud-left">
+      <button class="btn-menu-hud tech-font" (click)="presionarVolver()">
+        <i class="bi bi-arrow-left me-2"></i>VOLVER
+      </button>
+    </div>
+
+    <div class="hud-center">
+      <h2 class="fun-title mb-0">Bici Rush</h2>
+    </div>
+
+    <div class="hud-right">
+      <div class="hud-badge coin-badge tech-font" title="Tus Monedas Globales">
+        <i class="bi bi-coin text-warning me-1"></i>{{ monedasUsuario() }} <span class="small-label ms-1">MND</span>
+      </div>
+      <div class="hud-badge reward-badge tech-font" title="Monedas ganadas en esta carrera">
+        <i class="bi bi-plus-circle-fill text-success me-1"></i>+{{ monedasPartida() }}
+      </div>
+      <div class="hud-badge timer-badge tech-font">
+        <i class="bi bi-stopwatch me-2"></i>{{ obtenerTiempoTotal() }}
+      </div>
+      <div class="hud-badge distance-badge tech-font">
+        <i class="bi bi-bicycle me-2"></i>{{ metros() }} / 2000m
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-11">
+
+      <div class="bici-panel position-relative overflow-hidden d-flex justify-content-center align-items-center">
+        <div class="panel-glow"></div>
+        <div class="panel-grid"></div>
+
+        @if (!juegoCorriendo() && !juegoTerminado()) {
+        <div class="intro-screen py-5 text-center position-relative z-3 animate-scale-up">
+          <p class="display-3 mb-3">🏔️🚴‍♂️🌲</p>
+          <h3 class="fw-bold mb-3 tech-font text-cyan">MTB EXTREMO: SENDERO NATURAL</h3>
+          <p class="text-secondary small max-w-text mx-auto mb-4">
+            Presioná la barra de <strong>Espacio</strong> o tocá el canvas para saltar obstáculos y recolectar
+            monedas.<br>
+            ¡Cruzá la meta a los 2000 metros a máxima velocidad!
+          </p>
+          <button class="btn btn-accent px-5 py-3 fw-bold tech-font streaming-btn" (click)="iniciarJuego()">
+            <i class="bi bi-lightning-charge-fill me-2"></i>EMPEZAR DESCENSO
+          </button>
+        </div>
+        }
+
+        <canvas #gameCanvas width="1000" height="450" class="game-render-area"
+          [class.d-none]="!juegoCorriendo() && !juegoTerminado()" (click)="saltar()">
+        </canvas>
+
+      </div>
+        @if (juegoTerminado()) {
+        <div class="result-overlay animate-fade-in" [class.overlay-win]="victoria()" [class.overlay-lose]="!victoria()">
+
+          <div class="result-card animate-scale-up">
+            <div class="result-top-bar"></div>
+
+            <div class="result-img-area">
+              <div class="result-grid-texture"></div>
+              <span class="result-status tech-font">
+                {{ esperandoRevivir() ? 'CONTINUE?' : (victoria() ? 'SUCCESS' : 'FAILED') }}
+              </span>
+              <p style="font-size: 3rem; z-index: 2; margin: 0;">
+                {{ esperandoRevivir() ? '❤️🩹' : (victoria() ? '🏁🏆' : '💥🤕') }}
+              </p>
+            </div>
+
+            <div class="result-body">
+              <h3 class="result-title fun-title" [class.text-win-neon]="victoria() && !esperandoRevivir()"
+                [class.text-lose-neon]="!victoria() || esperandoRevivir()">
+                {{ esperandoRevivir() ? '¿REANUDAR CARRERA?' : (victoria() ? 'META CONQUISTADA' : 'CARRERA TERMINADA')
+                }}
+              </h3>
+
+              <div class="decoded-box" [class.border-win]="victoria()" [class.border-lose]="!victoria()">
+                <span class="decoded-label">PROGRESO ALCANZADO</span>
+                <strong class="decoded-word tech-font">{{ metros() }} METROS</strong>
+              </div>
+
+              <div class="result-metrics tech-font">
+                <div class="metric-row">
+                  <span class="text-secondary"><i class="bi bi-clock me-2"></i>Tiempo de este Tramo</span>
+                  <span class="text-info font-monospace">{{ obtenerTiempoTotal() }}</span>
+                </div>
+                <div class="metric-row">
+                  <span class="text-secondary"><i class="bi bi-coin me-2"></i>Monedas del Intento</span>
+                  <span class="text-success fw-bold">+{{ monedasPartida() }} MND</span>
+                </div>
+              </div>
+
+              <div class="result-actions mt-3 d-flex flex-column gap-2">
+
+                @if (mostrarBotonRevivir() && esperandoRevivir()) {
+                <button class="btn-revivir tech-font text-white bg-warning-neon dynamic-pulse" [disabled]="guardando()"
+                  (click)="revivirPartida()">
+                  <i class="bi bi-heart-fill me-2"></i>CONTINUAR (-{{ costoRevivir }} MND)
+                  <span class="badge bg-dark ms-2 px-2 py-1 fs-6" style="border: 1px solid rgba(255,255,255,0.2)">
+                    {{ tiempoParaRevivir() }}s
+                  </span>
+                </button>
+                }
+
+                <!-- Usamos los interceptores para asegurar el salvado de datos -->
+                <button class="btn-result-primary tech-font" [disabled]="guardando()" (click)="presionarNuevaCarrera()">
+                  <i class="bi bi-arrow-repeat me-2"></i>
+                  {{ esperandoRevivir() ? 'DESCARTAR Y NUEVA CARRERA' : 'NUEVA CARRERA' }}
+                </button>
+
+                <button class="btn-result-secondary tech-font" [disabled]="guardando()" (click)="presionarVolver()">
+                  <i class="bi bi-house-door-fill me-2"></i>
+                  {{ esperandoRevivir() ? 'DESCARTAR Y IR AL HOME' : 'VOLVER AL HOME' }}
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        }
+
+      </div>
+    </div>
+  </div>
