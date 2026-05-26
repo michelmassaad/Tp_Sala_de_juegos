@@ -29,7 +29,6 @@
 | Sprint #1 | Estructura, Deploy y Presentación     | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-1-michelmassaads-projects.vercel.app/) |
 | Sprint #2 | Autenticación y Home Dinámico         | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-2-michelmassaads-projects.vercel.app/) |
 | Sprint #3 | Ahorcado, Mayor o Menor, Chat         | ✅ Completado    | [ver](https://tp-sala-de-juegos-git-sprint-3-michelmassaads-projects.vercel.app/) |
- | —                                                                                 |
 | Sprint #4 | Preguntados, Juego propio, Resultados | 🔜 Pendiente     | —                                                                                 |
 
 ---
